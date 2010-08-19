@@ -1,0 +1,125 @@
+# glossary file format 5.21
+
+# General values, not tied to any product
+glossary_version=<string>
+product_count=<integer>
+
+# Product-related values; one set per product
+<product_number>.name=<string>
+<product_number>.alteredTime=<long>
+<product_number>.count=<integer>
+<product_number>.cvs_import_original_path=<string>
+<product_number>.cvs_import_translation_path=<string>
+<product_number>.cvs_export_translation_path=<string>
+<product_number>.consider_locale_abcd_only=<boolean>
+
+# Platform-related values; one set per platform (either neutral or not)
+<product_number>.P.<platform_number>.isneutral=<boolean> // DEPRECATED
+<product_number>.P.<platform_number>.type=<integer>
+<product_number>.P.<platform_number>.name=<string>
+<product_number>.P.<platform_number>.jarfile=<string>
+<product_number>.P.<platform_number>.alteredTime=<long>
+<product_number>.P.<platform_number>.count=<integer>
+
+# A first level component (=dir) related values
+<product_number>.P.<platform_number>.<component_number>.name=<string>
+<product_number>.P.<platform_number>.<component_number>.alteredTime=<slong>
+<product_number>.P.<platform_number>.<component_number>.count=<integer>
+<product_number>.P.<platform_number>.<component_number>.nodetype=<string("dir"|"file")>
+
+# A second level component (=dir) related values
+<product_number>.P.<platform_number>.<component_number>.<component_number>.name=<string>
+<product_number>.P.<platform_number>.<component_number>.<component_number>.alteredTime=<slong>
+<product_number>.P.<platform_number>.<component_number>.<component_number>.count=<integer>
+<product_number>.P.<platform_number>.<component_number>.<component_number>.nodetype=<string("dir"|"file")>
+<product_number>.P.<platform_number>.<component_number>.<component_number>.exportTo=<pathname>
+
+# A file hanging from a second level component related values
+# Files and components in the same level share one numbering sequence
+<product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.name=<string>
+<product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.alteredTime=<long>
+<product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.count=<integer>
+<product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.nodetype=<string("dir"|"file")>
+<product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.license_block=<string>
+<product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.license_contributor=<string>
+<product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.license_inspoint=<integer>
+<product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.md5=<string>
+
+# A DTD file with external entities
+<product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.name=<string>
+<product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.alteredTime=<long>
+<product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.count=<integer>
+<product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.nodetype=<string("dir"|"file")>
+<product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.license_block=<string>
+<product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.license_contributor=<string>
+<product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.license_inspoint=<integer>
+<product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.E.count=<integer>
+<product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.E.<entity_number>.name=<string>
+<product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.E.<entity_number>.publicId=<string>
+<product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.E.<entity_number>.systemId=<string>
+
+# Key (a localizable string) related values
+<product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.<phrase_number>.key=<string>
+<product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.<phrase_number>.text=<string>
+<product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.<phrase_number>.keep=<boolean>
+<product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.<phrase_number>.alteredTime=<long>
+<product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.<phrase_number>.count=<integer>
+<product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.<phrase_number>.fuzzy=<boolean>
+<product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.<phrase_number>.sort=<integer>
+<product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.<phrase_number>.L10n_note=<string>
+
+# Translation related values (several translations may be bound to a single
+# key; each translation is identified (.name) by the ab-CD locale code)
+<product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.<phrase_number>.<translation_number>.name=<string>
+<product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.<phrase_number>.<translation_number>.status=<integer>
+<product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.<phrase_number>.<translation_number>.text=<string>
+<product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.<phrase_number>.<translation_number>.alteredTime=<long>
+<product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.<phrase_number>.<translation_number>.comment=<string>
+
+<product_number>.R.name=<string>
+<product_number>.R.jarfile=<string>
+<product_number>.R.alteredTime=<long>
+<product_number>.R.count=<integer>
+<product_number>.R.<component_number>.name=<string>
+<product_number>.R.<component_number>.alteredTime=<long>
+<product_number>.R.<component_number>.count=<integer>
+<product_number>.R.<component_number>.nodetype=<string("dir"|"file")>
+<product_number>.R.<component_number>.<component_number>.name=<string>
+<product_number>.R.<component_number>.<component_number>.alteredTime=<long>
+<product_number>.R.<component_number>.<component_number>.count=<integer>
+<product_number>.R.<component_number>.<component_number>.nodetype=<string("dir"|"file")>
+<product_number>.R.<component_number>.<component_number>.<file_number>.name=<string>
+<product_number>.R.<component_number>.<component_number>.<file_number>.alteredTime=<long>
+<product_number>.R.<component_number>.<component_number>.<file_number>.count=<integer>
+<product_number>.R.<component_number>.<component_number>.<file_number>.nodetype=<string("dir"|"file")>
+<product_number>.R.<component_number>.<component_number>.<file_number>.license_block=<string>
+<product_number>.R.<component_number>.<component_number>.<file_number>.license_contributor=<string>
+<product_number>.R.<component_number>.<component_number>.<file_number>.license_inspoint=<integer>
+<product_number>.R.<component_number>.<component_number>.<file_number>.<phrase_number>.key=<string>
+<product_number>.R.<component_number>.<component_number>.<file_number>.<phrase_number>.text=<string>
+<product_number>.R.<component_number>.<component_number>.<file_number>.<phrase_number>.keep=<boolean>
+<product_number>.R.<component_number>.<component_number>.<file_number>.<phrase_number>.alteredTime=<long>
+<product_number>.R.<component_number>.<component_number>.<file_number>.<phrase_number>.count=<integer>
+<product_number>.R.<component_number>.<component_number>.<file_number>.<phrase_number>.fuzzy=<boolean>
+<product_number>.R.<component_number>.<component_number>.<file_number>.<phrase_number>.sort=<integer>
+<product_number>.R.<component_number>.<component_number>.<file_number>.<phrase_number>.L10n_note=<string>
+<product_number>.R.<component_number>.<component_number>.<file_number>.<phrase_number>.<translation_number>.name=<string>
+<product_number>.R.<component_number>.<component_number>.<file_number>.<phrase_number>.<translation_number>.status=<integer>
+<product_number>.R.<component_number>.<component_number>.<file_number>.<phrase_number>.<translation_number>.text=<string>
+<product_number>.R.<component_number>.<component_number>.<file_number>.<phrase_number>.<translation_number>.alteredTime=<long>
+<product_number>.R.<component_number>.<component_number>.<file_number>.<phrase_number>.<translation_number>.comment=<string>
+
+# custom files
+<product_number>.C.count=integer
+<product_number>.C.<custom_number>.name=<string>
+<product_number>.C.<custom_number>.relative=<string>
+<product_number>.C.<custom_number>.source=<string>
+<product_number>.C.<custom_number>.phrase_count=<integer>
+<product_number>.C.<custom_number>.<phrase_number>.key=<string>
+<product_number>.C.<custom_number>.<phrase_number>.text=<string>
+<product_number>.C.<custom_number>.<phrase_number>.keep=<boolean>
+<product_number>.C.<custom_number>.<phrase_number>.translation_count=<integer>
+<product_number>.C.<custom_number>.<phrase_number>.<translation_number>.name=<string>
+<product_number>.C.<custom_number>.<phrase_number>.<translation_number>.status=<integer>
+<product_number>.C.<custom_number>.<phrase_number>.<translation_number>.text=<string>
+

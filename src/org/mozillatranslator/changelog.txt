@@ -1,0 +1,672 @@
+--------------------------------------------------------------------------
+Version 5.25
+--------------------------------------------------------------------------
+* New semi-automatic accesskeys assignment feature.
+
+* Most Chrome and Edit views actions have now their own button image.
+
+* Advanced Search dialog has been slightly redesigned and now text field
+  content is selected on focus gain.
+
+* In Search and Replace dialogs, text fields content are selected on focus
+  gain.
+
+* Sorting columns in table views is faster, although Product column is
+  still reaaaaaaally slow (and I don't know why).
+
+* Fix for an endless loop when reading a .properties file which is not
+  actually a Properties file.
+
+* About dialog now performs a System.gc() (memory garbage collect) and
+  displays memory figures.
+
+* MozillaTranslator now renames Glossary.zip to Glossary.bkf on save, thus
+  creating a backup before saving.
+
+* If an OutOfMemory exception happens while saving Glossary.zip, MT tries
+  to save glossary.txt (the actual text file inside Glossary.zip with the
+  datamodel; it still means that image files will be lost if no
+  Glossary.bkf is around, but at least the text-based work will survive).
+
+* Lots of code cleanup.
+
+Known bugs: there is a nasty memory leak still not traced to root cause,
+so it is strongly recommended to run MT with -Xms 128M -Xmx 512M (your
+figures may be different depending on your glossary size).
+
+--------------------------------------------------------------------------
+Version 5.24
+--------------------------------------------------------------------------
+* Run "All Above at Once" automated test no longer throws false positives
+  (bug 461203).
+
+* New automated tests: duplicated words and mismatched characters (bug 461025).
+
+* Tree in Import/Export file dialog gets refreshed on every invocation, so
+  if there are new/obsolete files due to a product update, the tree reflects
+  the changes (bug 461024).
+
+* New translation suggestions feature in Edit Phrase Dialog (bug 461022).
+
+* Redundant View no longer throws an exception (bug 450464).
+
+* Adjusted some dialog and controls to look good in new Nimbus Look & Feel.
+
+* Revamped setup dialog.
+
+* "QA Queries" renamed to "Automated Tests Queries" to better suit
+  Axel's taste. :-)
+
+* Changed references to specific "CVS" to generic "SCM" (Source Control
+  Management).
+
+--------------------------------------------------------------------------
+Version 5.23
+--------------------------------------------------------------------------
+* MozillaTranslator no longer complains on empty region JAR files when writing
+  XPIs for products without region JAR files (bug 445558).
+
+* Added preference to set fonts for Edit Phrase dialog and table views, as some
+  L10n teams were having problems with DialogInput and Dialog fonts (bug 445557).
+
+* MozillaTranslator now can check for different ending characters in original
+  vs. translated strings (bug 439352).
+
+  ** WARNING **: this MAY raise a number of errors in your translation. Fixing
+  them may require filing bugs to request approval, since L10n for Firefox 3
+  is frozen.
+
+* MozillaTranslator properly handles now newline escape sequences
+  (bug 439349). Properties file escape sequences in the form \r\n or \n
+  were wrongly removed and parsed as real newlines, which was wrong, despite
+  it works and looks nicer in the Edit Phrase dialog. This has been solved.
+
+  ** WARNING **: this WILL raise a number of modified strings in the properties
+  files. You will need to fix the corresponding translations, which may require
+  filing bugs to request approval, since L10n for Firefox 3 is frozen.
+
+* MozillaTranslator now parses INI files as Properties files (bug 420450).
+
+  ** WARNING **: this means that, if you had translated the file as a
+  "MT_UnknownFormatFile" node, you will lose the translation. To solve it,
+  make sure you have exported the translated file before updating MT, and
+  import the translated file after updating MT to v5.23.
+
+* Images no longer appear as modified on every Update Product run unless
+  they are really modified (bug 415975)
+* MozillaTranslator now properly manages weird Firefox/Thunderbird ab-CD.JAR
+  structures (bug 383914)
+
+--------------------------------------------------------------------------
+Version 5.22
+--------------------------------------------------------------------------
+* MozillaTranslator no longer asks twice for the path to localization import
+  (bug 384465).
+* "Do not show this dialog again" tickable box now behaves properly if
+  switched on/off in the same dialog run (bug 393840).
+* "All above at once" QA query shortcut changed from [Ctrl]+[A] to
+  [Shift]+[Ctrl]+[A], and Advanced Search shortcut set to
+  [Shift]+[Ctrl]+[F] (bug 393841).
+* When importing or exporting a file (Import -> File and Export -> File),
+  if you select file "foo.dtd" in the tree selector from MT product, and
+  then type/choose a file in disk named other than "foo.dtd", you'll get a
+  confirmation dialog, to prevent you from overwriting files (bug 408549).
+* Edit Phrase Dialog includes now the current entity/key name in the
+  dialog title (bug 408551).
+* Cursor focus is placed in the translated textarea on entering Edit Phrase
+  dialog, since it is where the localizer is going to type (bug 408551).
+* You can now type the ellipsis "…" without having to resort to copy &
+  paste from the original string with the [Alt]+[.] combination in both
+  Edith Phrase dialog (Translated textarea) and in table view (Translated
+  column cells) (bug 408551).
+
+--------------------------------------------------------------------------
+Version 5.21
+--------------------------------------------------------------------------
+* Added a "export to" field for CVS exports, so MT can deal with the
+  differences between en-US and ab-CD different directory layouts in
+  Mozilla CVS (bug 376285).
+* Locale Field in Show Which Columns dialog is now mandatory and must have
+  at least two characters, to prevent people translating for (null) and
+  getting angry when later they discover they have just lose everything. :-)
+* MT ignores now ".svn" directories as well as "CVS" on CVS imports.
+
+--------------------------------------------------------------------------
+Version 5.20
+--------------------------------------------------------------------------
+* Localization notes are now parsed for DTD and Properties files, and
+  persisted in Glossary.zip (bug 363691).
+* New QA query for strings with a DONT_TRANSLATE localization note, but
+  still having translation (bug 363691).
+* Edit -> QA queries -> Check above all at once includes DONT_TRANSLATE
+  QA query.
+* Text files others than DTD/Properties can be imported now with an
+  specific charset selected by user on MT preferences, including UTF-8
+  (bug 253214).
+* JAR and XPI exports manage now the localeVersion in a better, more
+  strict way (bug 258274).
+* Chrome View shows image files inside the window, avoiding having to
+  go to "Edit Image file" button (bug 161247).
+* New "Info" tab in Chrome View allows to know some data about the
+  component/file selected in tree, and provides statistics (bug 161247).
+* Check Variables QA query detects now more errors: ${variable} parameters
+  for Properties files inside installer directory, DTD entities (with
+  two new preferences for excluding entities from comparison), and %name%
+  parameters for Properties files.
+* Language packs can now be created with the right permissions, by making
+  a external call to zip/unzip utilities (bug 197792). This is only needed
+  on Linux (and possibly Mac OS X); Windows didn't show this problem.
+* Shortcuts on MozillaTranslator GUI have been changed to use [Ctrl]
+  instead [Alt], adding and removing some of them (bug 363833).
+* Update Product includes now functionality of Import CVS Directory (which
+  has been removed).
+* Updating a product (either JAR or CVS based) saves the old original value in
+  the QA result field for review/comparison purposes.
+* Edit Product dialog has been redesigned.
+* Several visual minor enhancements to Import JAR dialog.
+* Loading and saving Glossary.zip shows now more information about the
+  progress of action.
+* MT runs OK now with JRE 1.6 in Windows (and Linux), despite a minor
+  difference in the behaviour of JRE in both platforms regarding SAX
+  parsing.
+* Yet another error on external entities persistence (they weren't properly
+  loaded from Glossary.zip) fixed.
+* Dependency of Apache's implementation of Soundex algorithm has been
+  removed, by reimplementing it as part of org.mozillatranslator.util.
+
+--------------------------------------------------------------------------
+Version 5.13
+--------------------------------------------------------------------------
+* DTDs with PE references were not having their external entities being
+  persisted in Glossary.zip; that's solved now. A product refresh (File
+  -> Product Update or Import -> CVS Import Directory) should be done,
+  followed by a File -> Save Glossary run to get the external entities
+  correctly saved in the Glossary.zip
+* PE references were being exported with a missing ";". Also, "PUBLIC"
+  and "SYSTEM" were being swapped, thus exporting as PUBLIC PEs what actually
+  were SYSTEM and viceversa (I'll put my wet fingers into the plug by this one).
+* When no customized install.properties was found in working dir, MT was
+  unable to correcty load the bundled install.properties in mt51x.jar.
+  This is solved.
+* If a file in the glossary turned into a directory, or viceversa, a
+  ClassCastException was raised and Update time (File -> Update Product or
+  Import -> CVS Directory), and no update happened. This is solved now.
+* Added new buttons in chrome / list views to allow fuzzy/unfuzzy,
+  keep/unkeep original and clear translation texts in multiple strings
+  selected by user (either consecutive or sparced).
+* Migrate product now works again.
+* Chrome View now shows components and files sorted by name (components
+  always before files).
+* Added new "Check Variables" query, looking for errors in %S, %1$S
+  parameter mismatch between original and translation.
+* Added new, non persistent filterResult field to Phrase to hold information
+  about some QA queries (Check keybinding, Check variables). This new field
+  is visible in read-only way as the new "Result comment" column in Chrome
+  View. A new tab has been added to Edit Phrase dialog to accomodate this
+  field.
+* Plain files and binary files "MT_UnknownFileType" fake rows display now
+  "No translated content available" if there is no translation. This makes
+  easier to find out which images actually have translations and which
+  should have "Keep original" flag set.
+* Table tooltip "Click header to sort..." removed by popular demand.
+
+
+--------------------------------------------------------------------------
+Version 5.12
+--------------------------------------------------------------------------
+* DTDs with PE references are currently correctly imported and exported.
+* Solved problem with Import -> Translation
+* When exporting an XPI, install.properties is now correctly bundled
+  along with install.js. You can get XPI to show localized installation
+  messages by translating install.properties and putting in your working
+  directory (next to Glossary.zip).
+
+--------------------------------------------------------------------------
+Version 5.11
+--------------------------------------------------------------------------
+* Solved high CPU usage when sorting a view on File column.
+
+--------------------------------------------------------------------------
+Version 5.1
+--------------------------------------------------------------------------
+* Multiple directories are correctly managed now. For this, MT_default
+  ficticious branches no longer exist. Instead, if a directory (categorized
+  as a Component) includes both directories and files, the Chrome View
+  sort them so files are always behind directories.
+* CVS Import directory now correctly removes obsolete files and entities,
+  so there is no further needed to create a new product, import, migrate
+  and delete the old one.
+* Original file license (delimited with ***** BEGIN LICENSE BLOCK *** ...
+  ***** END LICENSE BLOCK *****) now is preserved; it is possible also
+  include the localizer as contributor (new preference added at File ->
+  Setup -> License).
+* Enhanced accesskeys and commandkeys vs. label & buttons detection,
+  including the ability for user to set which key suffixes tag the string
+  as a label, an accesskey or a commandkey.
+* Field "Comment" added to persistance (i.e.: saved in Glossary.zip). But
+  it keeps being tied to the _translation_ instead of the _phrase_ so you
+  can't get it to persist if the string is marked as "Keep Original".
+* New "Replace" feature, for quick changing translated strings.
+* Edit Image dialog now has an additional button to switch between vertical
+  and horizontal split. A bit rough (usually a window resize is needed to
+  make everything fit gently), but it works (more or less).
+* Some typos corrected.
+* Fixed error in build.xml making Userguide.odt being included in the JAR.
+* Development environment upgraded to NetBeans 5.5 Beta 2.
+* Added debug targets to build.xml for its use in NetBeans 5.5.
+
+--------------------------------------------------------------------------
+Version 5.05pl5
+--------------------------------------------------------------------------
+* fixed a regression in the directory name for saved images into the glossary
+
+--------------------------------------------------------------------------
+Version 5.05pl4
+--------------------------------------------------------------------------
+* .properties file writing error on lines with newline (\n) fixed
+* .properties file UTF-8 reading ability
+* added fields to specify CVS paths on a per-product basis
+
+--------------------------------------------------------------------------
+Version 5.05pl3
+--------------------------------------------------------------------------
+* some typos corrected
+* install.js generation based on scripts by Rober Kaiser
+
+--------------------------------------------------------------------------
+Version 5.05pl2
+--------------------------------------------------------------------------
+* fixed install.js to work with OS/2
+* .properties files are written now in UTF-8 and do not include date/time comment
+  (which was a Bad Thing (tm) for CVS)
+* minor usability enhancements in Edit Phrase Dialog
+
+
+------------------------------
+Refactoring options
+------------------------------
+* Change ComplexColumn from interface to AbstractClass and add common code.
+* Make private Controls in the dialogs to use Local variables if they are not needed outside init
+* Make file IO pluggable (new IO sub system)
+* Toolbar FOnt settings.
+* Subclass platform (not until after io refactoring.)
+
+
+
+
+------------------------------
+Before release
+------------------------------
+* correct xml start tag (charset and more)
+* FIX CACHE files.
+
+
+
+------------------------------
+* known bugs / limitations
+------------------------------
+* A update must be performed after installing any new version
+* Binary files is allways added to the changelist, since i have no<li> detection if they are really changed
+* Binary files does only have 1 translation.
+
+
+--------------------------------------------------------------------------
+Version 5.05 (getting ready for firefox 1.0)
+--------------------------------------------------------------------------
+* license files can now be attached to the individual files.
+* Sort now kept
+* Added possibility to search using regular expression language from Java 1.5
+
+
+--------------------------------------------------------------------------
+Version 5.04 (bugfix release)
+--------------------------------------------------------------------------
+* FEATURE: now poible to import translations from cvs structures.
+* BUGFIX: keep original now works in tables again
+* BUGFIX; keep original now works again in edit dialog
+* BUGFIX: binary files now respect keep original
+* BUGFIX: locale version should now be written correctly.
+* BUGFIX: netbeans .form files was missing from src archieve.
+
+
+--------------------------------------------------------------------------
+Version 5.03 (Getting back on track, awaiting long term info rgrd. new moz roadmap)
+--------------------------------------------------------------------------
+<ul>
+  <li>FEATURE: added basic cvs input/output</li>
+  <li>FEATURE: added basic sorting of strings in during file save, does not work for properties</li>
+  <li>FEATURE: Added Undo/Redo functionality into Edit Phrase dialog translation text area.</li>
+  <li>FEATURE: Automatic sorting product tree view.</li>
+  <li>FEATURE: Added Binary filter to Edit menu</li>
+  <li>FEATURE: Easy product manipulation in export XPI product table: click on product will select product checkboxes</li>
+  <li>FEATURE: Tables sorting by [Shift + ] left click on column header</li>
+  <li>FEATURE: Automatical Mozilla version detecting</li>
+  <li>FEATURE: Advanced search functionality, same as in 4.36 version</li>
+  <li>FEATURE: Added Fuzzy bit to phrases, so they can be spotted as changed after restart</li>
+  <li>FEATURE: Phrases are automatically saved in Edit Phrase dialog</li>
+  <li>FEATURE: Soft wrapping text in Edit Phrase dialog</li>
+  <li>FEATURE: Dialogs now have default button - "Ok", which can be accessed by pressing Enter</li>
+  <li>FEATURE: Button Cancel in dialogs now can be pressed by ESC key</li>
+  <li>FEATURE: "Cancel" button in dialogs can be accessed by pressing Esc</li>
+  <li>FEATURE: File open dialogs now remember last selected directory.</li>
+  <li>FEATURE: ShowWhat dialog "don't show again". Visibility is managed by Setup dialog.</li>
+  <li>BUGFIX: Cache filenames are now based on timestamps instead of product names
+  <li>BUGFIX: Remove old debug code from saving binary files</li>
+  <li>REFACTOR: Took alot of the same code in DTDAccess,PropertiesAccess and TextAccess and put it in a base class
+  <li>REFACTOR: Simplyfied the the of get/setMark()</li>
+  <li>REFACTOR: Merge the logs into one, and start streamlining</li>
+  <li>REFACTOR: Start decoupling the gui from the tasks to make it possible to a have a batch mode
+     <ul>
+        <li>Make a feedback provider to handle feedback in gui and batch mode</li>
+        <li>Make a MozTask that does basic feedback reporting and exception catching<li>
+        <li>Make Load Glossary use the new stuff to test the framework</li>
+        <li>Created TaskAction to automate showing a input dialog and running a task.
+            Sorta like DialogAction version 2</li>
+        <li>Remove the deprecated status code</li>
+        <li>Converted task to use MozTask instead of MozRunner</li>
+        <li>Converted all DialogActions classes to use TaskAction</li>
+        <li>Retrofit DialogAction to handle simple searches</li>
+        <li>Refactor View<XX>Actions to use the new DialogAction</li>       
+    </ul>
+  <li>REFACTOR: use refactorIT (www.refactorit.com) to run an audit on the code, and clean it up.
+  <li>REFACTOR: Using  checkstyle to find problems in the code and fix them (manually).
+  <li>REFACTOR: Settings now have getter moethod that does not take fallback values</li>
+ </li>
+</ul>
+
+
+
+
+--------------------------------------------------------------------------
+Version 5.02 (yes another bugfix- refactoring release)
+--------------------------------------------------------------------------
+<ul>
+  <li> created rudimentary batch control methods and suntax.</li>
+  <li> REFACTOR: create a dummy mainwindow, but don't show it, when it batch mode. preparation for batch mode</li>
+  <li> REFACTOR: io package reorganization</li>
+    <ul>
+        <li>REFACTOR: Move FileUtils into the io.common</li>
+        <li>REFACTOR: Merge FileInputOutputDataObject and SubcomponentInputOutputDataObjects
+            into ImportExportDataObject</li>
+        <li>REFACTOR: Move XmlEksporter to io.common </li>
+        <li>REFACTOR: Move BinaryAccess to io.file</li>
+        <li>REFACTOR: Move DTDAccess to io.file</li>
+        <li>REFACTOR: Move FileAccess to io.file</li>
+        <li>REFACTOR: Move FileToXmlAccess to io.file</li>
+        <li>REFACTOR: Move PropertiesAccess to io.file</li>
+        <li>REFACTOR: Move TextAccess to io.file</li>
+        <li>REFACTOR: Move GlossaryAccess to io.glossary</li>
+        <li>REFACTOR: Move PropertiesPersistance to io.glossary</li>
+        <li>REFACTOR: Move SerializedPersistance to io.glossary</li>
+        <li>REFACTOR: Move writeImagesTraverse to io.glossary</li>
+        <li>REFACTOR: Move SubcomponentToXml to io.subcomponent</li>
+    </ul>
+    <li>REFACTOR: rename extractFile to loadFile in FileUtils</li>
+    <li>REFACTOR: rename compactFile to saveFile  and saveFileWithLicense in FileUtils</li>
+    <li>BUGFIX:more fixing of XPI export</li>
+    <li>REFACTOR: redid XML export to use a DOM and XSLT</li>
+    <li>CONTRIBUTION:Andrea (ciopz@bigfoot.com) added lots of info in the UserManual</li>
+</ul>
+
+--------------------------------------------------------------------------
+Version 5.01 (quick fixes)
+--------------------------------------------------------------------------
+<ul>
+  <li>partly fixed XML export.bug #161298</li>
+  <li>Fixed edit Selected phrase / edit binary mixup bug #161211</li>
+  <li>Fixed XPI export,bug #161199
+</ul>
+
+
+--------------------------------------------------------------------------
+Version 5.0 Final (new features, and massive refactoring and bugfixing)
+--------------------------------------------------------------------------
+<ul>
+  <li>REFACTOR: remove accept() method in TreeNode and MozTreeNode</li>
+  <li>REFACTOR: added treelevel parameter to MozTreeNode</li>
+  <li>REFACTOR: refactor TreeNode.buildTree() so we dont need a method in each level</li>
+  <li>REFACTOR: changed MozTreeNode.hasChildren() to use terny operator</li>
+  <li>REFACTOR: refactor TreeNode.traverse() so we dont need a method in each level</li>
+  <li>REFACTOR: refactor TreeNode.fillParentArray() so we dont need a method in each level</li>
+  <li>REFACTOR: remove getChild(int) since it is never used</li>
+  <li>REFACTOR: remove useless check if icon is found</li>
+  <li>REFACTOR: remove my own logging class and replace with the JDK 1.4 one,as a first step to refactor error handling.</li>
+  <li>REFACTOR: remove the StructureAccessVisitor class since it is never used</li>
+  <li>REFACTOR: remove FilterRunner.FilterProduct() as it is not used</li>
+  <li>REFACTOR: Refactor the traverse functionality to use a sorta command pattern</li>
+  <li>REFACTOR: Refactor DataUtils.fillWithPors() to use the traverse method</li>
+  <li>REFACOTR: filter runner refactored to take advantage of the new traverse method</li>
+  <li>REFACTOR: redundant view refactored to take advantage of the new traverse method</li>
+  <li>REFACTOR: let veiwRedundant live in its own thread, since it takes a long time.</li>
+  <li>REFACTOR: make MigrateProductRunner use the new traverse stuff</li>
+  <li>REFACTOR: make extract and compact file use byteArrays instead of tempfiles</li>
+  <li>REFACTOR: change DTDAccess to use the new byteArray method</li>
+  <li>REFACTOR: change PropertiesAccess to use the new ByteArray method</li>
+  <li>REFACTOR: change TextAccess to use the new ByteArray method</li>
+  <li>REFACTOR: change BinaryAccess to use the new ByteArray method</li>
+  <li>REFACTOR: change XPI writer to use the new ByteArray method</li>
+  <li>REFACTOR: change clearMark call into using the new traverse</li>
+  <li>REFACTOR: remove clearmark from the Datamodel class</li>
+  <li>REFACTOR: removeing Visitor class as it is never used</li>
+  <li>REFACTOR: removing Utils class since it has been superceeded by the GUiTools class</li>
+  <li>REFACTOR: refactoring error handling (maybe it need more work)</li>
+
+  <li>BUGFIX: if a text with a labelConnection is found last, it is no longer just assigned to a access key</li>
+  <li>BUGFIX: views other than Chromeview now work again</li>
+  <li>BUGFIX: fix a bug that made emtpy files trow an excpetion during import translation</li>
+  <li>BUGFIX: edit phrase no longer throws exception if no phrase is selected</li>
+  <li>BUGFIX: chnages to one row now coorectly updates the display of the others</li>
+  <li>BUGFIX: it is no longer required to do a update before an export</li>
+  <li>FEATURE: next and previous buttons added to edit phrase dialog</li>
+  <li>FEATURE: Toolbars in views</li>
+  <li>FEATURE: Copy to all in redundant view</li>
+  <li>FEATURE: images are now saved inside the glossary.zip</li>
+  <li>FEATURE: binary Edit dialog for loading and saving of images</li>
+  <li>FEATURE: Exports should now export translated images if present, otherwise it will,save the original.</li>
+  <li>FEATURE: Export file as XML.</li>
+  <li>FEATURE: export subcomponent as XML.</li>
+  <li>FEATURE: export glossary as XML.</li>
+</ul>
+
+
+
+-------------------
+Version 5.0 beta 9
+-------------------
+<ul>
+  <li>Added disc chache for the glossary.</li>
+  <li>fixed use of keepOriginal when saving files</li>
+  <li>keepOriginal is now migrated also (#149358)</li>
+  <li>removed a speed performance tricks that was costing too much in footprint performance, and not really doing giving any speedups</li>
+  <li>we are now recycling the EditPhrase window instead of creating a new one each time</li>
+  <li>fixed it so that we do not keep a list of children lying around for translations since they never have children.</li>
+  <li>you will now get a progress indicator when saving (bug #150249)</li>
+  <li>the program should now remove old entries (bug #151639)</li>
+  <li>The program now uses hyphen insteda of underscore in </li>
+  <li>Hack to preserve GIF images</li>
+</ul>
+-------------------
+
+Version 5.0 beta 8b
+-------------------
+<ul>
+  <li>small error in install.js fixed</li>
+</ul>
+
+
+-------------------
+Version 5.0 beta 8
+-------------------
+<ul>
+  <li>Added shortcut to chrome view: ALT + C</li>
+  <li>Added shortcut to Search: ALT + S</li>
+  <li>Fixed search so that search on translated text and comments now work</li>
+  <li>Window of changed strings should now appear after update.</li>
+  <li>Now escape the % sign in DTD files (both in save original and save translated)</li>
+  <li>Content.rdf is now UTF-8 encoded</li>
+  <li>Install.js now saved as iso8859-1</li>
+  <li>Several chnages to the user guide (which is inside the zip file)</li>
+  <li>Changed ant script to produce zip files and put the doc in there - Now users must unzip the zip file,<li> in order to find the jar execuatble</li>
+  <li>Changed install.js to increase needed filespace to 600kb, thanx to kairo</li>
+  <li>Changed install.js by addning several logcomments, thanx to kairo</li>
+  <li>Changed install.js by handling Reboot_needed (999) better, thanx to kairo</li>
+  <li>Changed install.js by inserting licence block</li>
+  <li>BUGFIX: strings showing up in accessKey columns that were actually labels.</li>
+  <li>BUGFIX: change save glossary to not save corrected accesskey and commandkey connections, but only the valid ones.</li>
+  <li>Added comments column</li>
+</ul>
+-------------------
+Version 5.0 beta 7
+-------------------
+<ul>
+  <li>Started working on a user manual.currently it is in both zip files as a OpenOffice document</li>
+  <li>FEATURE: MT will now delete Strings that at no longer used in the chrome when updateing</li>
+  <li>FEATURE: MT can now migrate translation from one product e.g. mozilla to another e.g. Netscape</li>
+  <li>BUGFIX: updated the install.js and contents.rdf generated by the export <li> rutines, thanx to Taco and Kairo for helpfull information and contributions.</li>
+  <li>BUGFIX: initial window size has been increased</li>
+  <li>BUGFIX:  When importing from a single file, dont save original text as translation of no translation</li>
+</ul>
+-------------------
+Version 5.0 beta 6
+-------------------
+<ul>
+  <li>refactor: now settings allways require an default value.</li>
+  <li>refactor: add DataObject Interface</li>
+  <li>Changed to JDK 1.4</li>
+  <li>Refactor status feedback</li>
+  <li>refactor the running of long tasks</li>
+  <ul>
+    <li>refactor Export/Import of single files</li>
+    <li>refactor export/import of subcomponents (Partial glossary)</li>
+    <li>refactor import of 4.x style glossary</li>
+    <li>refactor export JAR</li>
+    <li>refactor export xpi</li>
+  </ul>
+  <li>refactor of single file load/save</li>
+  <ul>
+    <li>refactor calls to Generic file to use a DataObject</li>
+    <li>clean up DTDaccess to support the new DataObject</li>
+    <li>clean up PropertiesAccess to support the new DataObject</li>
+    <li>clean  up TextAccess (unsupported files) to support the new DataObject</li>
+    <li>clean up StructureAccess to support the new DataObject</li>
+    <li>clean up ImportFileRunner to support the new DataObject</li>
+    <li>clean up CustomContainerAccesss to support the new DataObject</li>
+    <li>clean up ExportFileRunner to support the new DataObject</li>
+  </ul>
+  <li>refactor of platform/region/custom files load/save</li>
+  <ul>
+    <li>make new DataObject to handle information needed to load and save</li>
+    <li>move load method of platform/region to shared superclass</li>
+    <li>move save method of platform/region to shared superclass</li>
+    <li>refactor WriteJarRunner to take advantage of new DataObject</li>
+    <li>remove the WriteJarDataObject as it is no longer needed</li>
+    <li>refactor WriteXpiRunner to take advantage of the new approach</li>
+    <li>refactor WriteXPIDialog to take advantage of the new approach</li>
+    <li>refactor WriteJarDialog to take advantage of the new approach</li>
+    <li>refactor writing of the install script</li>
+  </ul>
+  <li>refactor import/export of subcomponents (Partial glossary)</li>
+  <li>bugfix: File not closed after reading DTD file.</li>
+  <li>added Ant build file, to allow for easy building of exe and source+doc jars</li>
+  <li>marked exception handling for later refactoring</li>
+  <li>added better status feedback during load of glossary at startup</li>
+  <li>bugfix: upateing glossary made an endless loop silently in background</li>
+  <li>Added: Keep original view</li>
+  <li>Added: Original == Translated view</li>
+  <li>Added: Check keybinding</li>
+  <li>Added: Simple Search</li>
+  <li>Fixed / Added: support for accesskey and commandKey</li>
+</ul>
+
+-------------------
+Version 5.0 beta 5
+-------------------
+<ul>
+  <li>Refactor the file part of the datamodel.</li>
+  <li>Refactor the overall MozFile, into a interface and a abstract class</li>
+  <li>refactor export xpi/jar code (needed for export jar file)</li>
+  <li>Make datamodel traverse functionality in the TreeNode interface. This should make<li> a bunch of things go much easier.</li>
+  <li>Removed references for CustomFile since it is no longer relevant</li>
+  <li>Fixed editPhrase dialog to better handle normal and custom files thanx to fillParentList().</li>
+  <li>New Column: File</li>
+  <li>New Column: Subcomponent</li>
+  <li>New column: Component</li>
+  <li>New Column: Platform, Region or Custom file</li>
+  <li>New Column: Product</li>
+  <li>More JavaDoc</li>
+  <li>fix "save Custom" bug</li>
+  <li>fix centering of setup dialog box</li>
+  <li>fix license addition to files.</li>
+  <li>fix bug that gave FileNotFound exception if you don't have all the files registered</li>
+  <li>Found reason for bug that give StringIndexOutOfBounds. It turned out to be a mozilla bug</li>
+  <li>fixed longstanding bug that threw exception if collapsing the part of the tree in chromeview that had a selected file</li>
+  <li>added the current file to the title of the chromeview window</li>
+  <li>added import and export of single files</li>
+  <li>added export jar file</li>
+  <li>refactored the building of the JTree that appear in the gui</li>
+  <li>fixed remembering of columns</li>
+  <li>write xpi dialog now remembers values entered</li>
+  <li>write jar dialog now remembers values entered</li>
+</ul>
+
+
+-------------------
+Version 5.0 beta 4
+-------------------
+<ul>
+  <li>Converted KeyValuePair to use Objects instead of int's</li>
+  <li>changed MigrateGlossary not to use the chromeview</li>
+  <li>changed ImportTranslations not to use chromeview</li>
+  <li>added About dialog</li>
+  <li>added Edit Phrase Dialog</li>
+  <li>added keyboard shortcuts</li>
+  <li>access key and command key now supported, but only after restart of mt5.<li> (this is because the information is built during the read of the glossary)</li>
+  <li>new Column : Original accesskey</li>
+  <li>new Column : Original commandkey</li>
+  <li>new Column : Translated accesskey</li>
+  <li>new Column : Translated commandkey</li>
+  <li>new Column : current Text</li>
+  <li>new Column : Current Acesskey</li>
+  <li>new Column : current Commandkey</li>
+  <li>Changed Text columns to not whos content of unsupported files.</li>
+  <li>License files inserted when writing dtd and properties files.</li>
+  <li>Changed Platform to have type (Neutral,Windows,Unix,Mac,Other)</li>
+  <li>added View Redudant string</li>
+  <li>prepare for l10n of the actual program (mozillatranslator)</li>
+</ul>
+
+
+
+-------------------
+Version 5.0 beta 3
+-------------------
+<ul>
+  <li>Migrate the keep attribute of phrases</li>
+  <li>Implement cachable timestamp in Kernel class</li>
+  <li>Implement altered date in the tree nodes</li>
+  <li>BUGFIX: platform count didn't get reset on more than 1 product</li>
+  <li>PropertiesPersistance now persist alteredDate</li>
+  <li>Added attributes to "Phrase" to accomendate for acceskeys, commandkays, and unsupported file formats</li>
+  <li>Added Custom Files to the product</li>
+  <li>added write XPI action, but with known bugs</li>
+  <li>added custom files to the product</li>
+</ul>
+
+-------------------
+Version 5.0 beta 2
+-------------------
+<ul>
+  <li>More columns</li>
+  <li>Migrate function</li>
+  <li>Import translation</li>
+  <li>minor adjusments</li>
+</ul>
+
+
+
+-------------------
+Version 5.0 beta 1
+-------------------
+<ul>
+  <li>initial 5.0 beta</li>
+</ul>
