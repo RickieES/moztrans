@@ -30,8 +30,6 @@ package org.mozillatranslator.gui;
 //import java.util.Enumeration;
 import java.awt.Window;
 import java.util.List;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import org.mozillatranslator.datamodel.*;
@@ -39,7 +37,6 @@ import javax.swing.*;
 import org.mozillatranslator.gui.model.ComplexTableModel;
 import org.mozillatranslator.gui.model.FuzzyColumn;
 import org.mozillatranslator.gui.model.KeepOriginalColumn;
-import org.mozillatranslator.kernel.Kernel;
 
 /**
  * a panel to show original and translated image in the JSplitPane of ChromeView
@@ -75,6 +72,7 @@ public class EditImagePanel extends javax.swing.JPanel {
       transImage = new TranslatedImagePanel(transImageData);
       splitPane.setBottomComponent(transImage);
       listener = new TreeSelectionListener() {
+            @Override
           public void valueChanged(TreeSelectionEvent e) {
               treeValueChanged(e);
           }
