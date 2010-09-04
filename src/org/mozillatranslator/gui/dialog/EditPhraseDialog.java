@@ -912,7 +912,7 @@ public class EditPhraseDialog extends javax.swing.JDialog {
                 currentTranslation.setComment(comment);
                 currentPhrase.addChild(currentTranslation);
             } else {
-                if (!currentTranslation.getText().equalsIgnoreCase(translation)) {
+                if (!currentTranslation.getText().equals(translation)) {
                     currentTranslation.setText(translation);
                 }
 
@@ -1143,7 +1143,7 @@ private void suggestionButtonActionPerformed(java.awt.event.ActionEvent evt) {//
                 suggestionButton.setEnabled(true);
             } else {
                 suggestionButton.setIcon(null);
-                suggestionButton.setText("no sug.");
+                suggestionButton.setText("0/0");
                 suggestionButton.setEnabled(false);
             }
         }
