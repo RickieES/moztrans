@@ -22,10 +22,8 @@
  * Ricardo Palomares (refactoring to remove subcomponent from the datamodel)
  *
  */
-
 package org.mozillatranslator.io;
 
-import org.mozillatranslator.io.common.FileUtils;
 import java.io.*;
 import java.util.*;
 import java.util.jar.*;
@@ -35,7 +33,6 @@ import org.mozillatranslator.kernel.*;
 import org.mozillatranslator.datamodel.*;
 import org.mozillatranslator.io.common.*;
 
-
 /**
  * This class is used to load the contents of a JAR file (i.e. a platform,
  * including the ab-CD.jar neutral platform, or a region JAR)
@@ -44,15 +41,14 @@ import org.mozillatranslator.io.common.*;
  * @version 1.0
  */
 public class StructureAccess {
+
     public static final String DEFAULT_SUBCOMPONENT = "MT_default";
     private static ImportExportDataObject dao = new ImportExportDataObject();
-    private static final Logger fLogger = Logger.getLogger(StructureAccess.class.
-            getPackage().getName());
+    private static final Logger fLogger = Logger.getLogger(StructureAccess.class.getPackage().getName());
 
     /************************************************************************
      ** LOAD JAR ROUTINES
      ************************************************************************/
-
     /**
      * Loads the files
      *
@@ -119,8 +115,8 @@ public class StructureAccess {
                 if (!done) {
                     // If the JAR entry is a directory entry or if it is a
                     // contents.rdf, we don't need to process it
-                    if (je.getName().endsWith("/") ||
-                            je.getName().endsWith("contents.rdf")) {
+                    if (je.getName().endsWith("/")
+                            || je.getName().endsWith("contents.rdf")) {
                         continue;
                     }
 
@@ -219,7 +215,6 @@ public class StructureAccess {
         }
     }
 
-
     /**
      * Loads the files into the translated product
      *
@@ -272,8 +267,8 @@ public class StructureAccess {
                 if (!done) {
                     // If the JAR entry is a directory entry or if it is a
                     // contents.rdf, we don't need to process it
-                    if (je.getName().endsWith("/") ||
-                            je.getName().endsWith("contents.rdf")) {
+                    if (je.getName().endsWith("/")
+                            || je.getName().endsWith("contents.rdf")) {
                         continue;
                     }
 
@@ -324,7 +319,7 @@ public class StructureAccess {
                             // children (dir/files)
                             currentComponent = (Component) parent.getChildByName(thisLevelToken);
                             if (currentComponent != null) {
-                              parent = currentComponent;
+                                parent = currentComponent;
                             } else {
                                 itMayExists = false;
                             }
@@ -349,13 +344,9 @@ public class StructureAccess {
         }
     }
 
-
-
     /************************************************************************
      ** SAVE JAR ROUTINES
      ************************************************************************/
-
-
     /**
      * Saves the files
      *
@@ -384,14 +375,14 @@ public class StructureAccess {
 
             componentIterator = pc.iterator();
             relative = "locale";
-            
+
             // If the product only has to have content under /locale/ab-CD
             if (((Product) pc.getParent()).isOnlyLocaleAbCD()) {
                 relative = relative + "/" + dataObject.getLocaleDisplay();
             }
 
             saveComponent(componentIterator, relative, dataObject, jos);
-            
+
             // We only generate manifests (contents.rdf files) if the product
             // is flagged as to only have content under /locale/ab-CD
             if (((Product) pc.getParent()).isOnlyLocaleAbCD()) {
@@ -411,7 +402,6 @@ public class StructureAccess {
             throw new IOException("Error writing jar file \n" + e.getMessage());
         }
     }
-
 
     /**
      * Saves a component, iterating recursively through its component children
@@ -448,8 +438,8 @@ public class StructureAccess {
 
                     // If user preference is to replace "en-US" directories name
                     // wit "ab-CD" name, let's take it into account
-                    if (currentNode.getName().equals(Kernel.ORIGINAL_L10N) &&
-                            !dataObject.getLocaleDisplay().equals(Kernel.ORIGINAL_L10N)) {
+                    if (currentNode.getName().equals(Kernel.ORIGINAL_L10N)
+                            && !dataObject.getLocaleDisplay().equals(Kernel.ORIGINAL_L10N)) {
                         subDir = dataObject.getLocaleDisplay();
                     } else {
                         subDir = currentNode.getName();
@@ -463,7 +453,6 @@ public class StructureAccess {
             }
         }
     }
-
 
     /**
      * Saves a file
@@ -511,8 +500,7 @@ public class StructureAccess {
             dao.setL10n(lz);
             mfile.load(dao);
         } catch (IOException e) {
-            // FIXME:Exception
-            Kernel.appLog.severe("Could not read file "  + mfile.getName());
+            Kernel.appLog.log(Level.SEVERE, "Could not read file {0}", mfile.getName());
             throw new IOException("Could not read file " + mfile.getName());
         }
     }
@@ -541,7 +529,7 @@ public class StructureAccess {
         String maniFest;
         PrintWriter pw;
 
-        fLogger.info("Version is" + dataObject.getVersion());
+        fLogger.log(Level.INFO, "Version is{0}", dataObject.getVersion());
         try {
             currentPlatform = dataObject.getProductChild();
             manifestIterator = currentPlatform.iterator();
@@ -566,14 +554,14 @@ public class StructureAccess {
                 pw.println();
                 pw.println("  <!-- list all the skins being supplied by this package -->");
                 pw.println("  <RDF:Seq about=\"urn:mozilla:locale:root\">");
-                pw.println("    <RDF:li resource=\"urn:mozilla:locale:" +
-                        dataObject.getLocaleDisplay() + "\"/>");
+                pw.println("    <RDF:li resource=\"urn:mozilla:locale:"
+                        + dataObject.getLocaleDisplay() + "\"/>");
 
                 pw.println("  </RDF:Seq>");
                 pw.println();
                 pw.println("  <!-- locale information -->");
-                pw.println("  <RDF:Description about=\"urn:mozilla:locale:" +
-                        dataObject.getLocaleDisplay() + "\"");
+                pw.println("  <RDF:Description about=\"urn:mozilla:locale:"
+                        + dataObject.getLocaleDisplay() + "\"");
 
                 pw.println("       chrome:displayName=\"" + dataObject.getDisplay() + "\"");
                 pw.println("       chrome:author=\"" + dataObject.getAuthor() + "\"");
@@ -586,25 +574,25 @@ public class StructureAccess {
 
                 pw.println("       chrome:previewURL=\"" + dataObject.getPreviewUrl() + "\">");
                 pw.println("   <chrome:packages>");
-                pw.println("      <RDF:Seq about=\"urn:mozilla:locale:" +
-                        dataObject.getLocaleDisplay() + ":packages\">");
+                pw.println("      <RDF:Seq about=\"urn:mozilla:locale:"
+                        + dataObject.getLocaleDisplay() + ":packages\">");
 
-                pw.println("        <RDF:li resource=\"urn:mozilla:locale:" +
-                        dataObject.getLocaleDisplay() + ":" + manifestComponent.getName() + "\"/>");
+                pw.println("        <RDF:li resource=\"urn:mozilla:locale:"
+                        + dataObject.getLocaleDisplay() + ":" + manifestComponent.getName() + "\"/>");
 
                 pw.println("      </RDF:Seq>");
                 pw.println("    </chrome:packages>");
                 pw.println("  </RDF:Description>");
-                pw.println("<RDF:Description about=\"urn:mozilla:locale:" +
-                        dataObject.getLocaleDisplay() + ":" + manifestComponent.getName() +
-                        "\" chrome:localeVersion=\"" + dataObject.getVersion() + "\"/>");
+                pw.println("<RDF:Description about=\"urn:mozilla:locale:"
+                        + dataObject.getLocaleDisplay() + ":" + manifestComponent.getName()
+                        + "\" chrome:localeVersion=\"" + dataObject.getVersion() + "\"/>");
 
                 pw.println("</RDF:RDF>");
                 // END OF MANIFEST !!
 
                 pw.close();
-                maniFest = "locale/"  + dataObject.getLocaleDisplay() + "/" +
-                        manifestComponent.getName() + "/contents.rdf";
+                maniFest = "locale/" + dataObject.getLocaleDisplay() + "/"
+                        + manifestComponent.getName() + "/contents.rdf";
 
                 JarEntry je = new JarEntry(maniFest);
                 jos.putNextEntry(je);

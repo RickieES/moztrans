@@ -85,15 +85,13 @@ public class BinaryAccess implements FileAccess {
                 digest.update(binFile.getBinaryContent());
                 hash = digest.digest();
             } catch (NoSuchAlgorithmException ex) {
-                // Hopefully, we won't ever run on a JVM without MD5 support!!
-                ex.printStackTrace();
                 hash = new byte[0];
             }
             
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             for(int i = 0; i < hash.length; i++) {
                 String s = Integer.toHexString(0xFF & hash[i]).toUpperCase();
-                sb.append((hash[i] < 0x10 ? "0" : "") + s);
+                sb.append(hash[i] < 0x10 ? "0" : "").append(s);
             }
             
             currentPhrase = (Phrase) binFile.getChildByName("MT_UknownFileType");
