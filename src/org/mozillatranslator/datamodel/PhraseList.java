@@ -108,10 +108,12 @@ public class PhraseList extends ArrayList<Phrase> implements ListModel {
         return p;
     }
 
+    @Override
     public int getSize() {
         return this.size();
     }
 
+    @Override
     public Object getElementAt(int index) {
         if (this.get(index).getChildByName(l10n) != null) {
             return ((Translation) this.get(index).getChildByName(l10n)).getText();
@@ -120,10 +122,12 @@ public class PhraseList extends ArrayList<Phrase> implements ListModel {
         }
     }
     
+    @Override
     public void addListDataListener(ListDataListener l) {
         this.ldls.add(l);
     }
 
+    @Override
     public void removeListDataListener(ListDataListener l) {
         this.ldls.remove(l);
     }
