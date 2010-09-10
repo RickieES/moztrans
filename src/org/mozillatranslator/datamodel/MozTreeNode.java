@@ -479,7 +479,7 @@ public abstract class MozTreeNode extends AbstractListModel implements TreeNode 
     public boolean deleteUntouched() {
         boolean result = false;
         if (!mark) {
-            fLogger.info("Found untouched " + name);
+            fLogger.log(Level.INFO, "Found untouched {0}", name);
             result = true;
         } else {
             Iterator childIterator = children.iterator();
@@ -487,7 +487,7 @@ public abstract class MozTreeNode extends AbstractListModel implements TreeNode 
             while (childIterator.hasNext()) {
                 TreeNode currentChild = (TreeNode) childIterator.next();
                 if (currentChild.deleteUntouched()) {
-                    fLogger.info("Removing child " + currentChild.getName());
+                    fLogger.log(Level.INFO, "Removing child {0}", currentChild.getName());
                     childIterator.remove();
                 }
             }
