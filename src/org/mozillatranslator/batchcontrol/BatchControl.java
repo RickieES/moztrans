@@ -21,100 +21,85 @@
  * Henrik Lynggaard Hansen (Initial Code)
  *
  */
-
 package org.mozillatranslator.batchcontrol;
 
 /** Runs Batch jobs from the command line
  * @author Henrik Lynggaard
  * @version 1.0
  */
-
 import java.io.*;
 import java.util.*;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.parsers.*;
 import org.w3c.dom.*;
 
 import org.mozillatranslator.kernel.*;
+import org.xml.sax.SAXException;
 
-public class BatchControl
-{
-    
+public class BatchControl {
     private HashMap commandMap = new HashMap();
-    
-    public BatchControl()
-    {
+
+    public BatchControl() {
         int count = Kernel.settings.getInteger(Settings.BATCH_COMMAND_COUNT);
-        try
-        {
-            for (int i = 0; i < count; i++)
-            {
+        for (int i = 0; i < count; i++) {
+            try {
                 String curName = Kernel.settings.getString(Settings.BATCH_COMMAND_PREFIX + i + Settings.BATCH_COMMAND_NAME);
                 String curClass = Kernel.settings.getString(Settings.BATCH_COMMAND_PREFIX + i + Settings.BATCH_COMMAND_CLASS);
-                
                 BatchCommand curCommand = (BatchCommand) Class.forName(curClass).newInstance();
-                
                 commandMap.put(curName, curCommand);
+            } catch (InstantiationException ex) {
+                Logger.getLogger(BatchControl.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IllegalAccessException ex) {
+                Logger.getLogger(BatchControl.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(BatchControl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        catch (Exception e)
-        {
-            Kernel.appLog.log(Level.SEVERE, "Could not initialize BatchControl", e);
-        }
-        
-        
     }
+
     /** Runs a set of batch commands
      * @param commands The commands to run
      */
-    public void run(String[] args)
-    {
-        String commandFile;
-        DocumentBuilder builder;
-        Document document;
-        FileInputStream fis;
-        Node currentNode;
-        NodeList commands;
-        String commandName;
-        BatchCommand currentCommand;
-        boolean failed = false;
-        int i = 0;
-        
-        commandFile = args[0];
-        
-        try
-        {
+    public void run(String[] args) {
+        try {
+            String commandFile;
+            DocumentBuilder builder;
+            Document document;
+            FileInputStream fis;
+            Node currentNode;
+            NodeList commands;
+            String commandName;
+            BatchCommand currentCommand;
+            boolean failed = false;
+            int i = 0;
+            commandFile = args[0];
             builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            
             fis = new FileInputStream(commandFile);
             document = builder.parse(fis);
-            
             commands = document.getDocumentElement().getChildNodes();
-            
-            
-            while (!failed && i < commands.getLength())
-            {
+            while (!failed && i < commands.getLength()) {
                 currentNode = commands.item(i);
-                
-                if (currentNode.getNodeType() == Element.ELEMENT_NODE)
-                {
+                if (currentNode.getNodeType() == Element.ELEMENT_NODE) {
                     commandName = currentNode.getNodeName();
-                    
-                    if (commandMap.containsKey(commandName))
-                    {
+                    if (commandMap.containsKey(commandName)) {
                         currentCommand = (BatchCommand) commandMap.get(commandName);
                         failed = currentCommand.action((Element) currentNode);
                     }
                 }
                 i++;
             }
-            
+        } catch (BatchException ex) {
+            Logger.getLogger(BatchControl.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SAXException ex) {
+            Logger.getLogger(BatchControl.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(BatchControl.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(BatchControl.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParserConfigurationException ex) {
+            Logger.getLogger(BatchControl.class.getName()).log(Level.SEVERE, null, ex);
         }
-        catch (Exception e)
-        {
-            Kernel.appLog.log(Level.SEVERE, "Batch run stopped", e);
-        }
-        
+
     }
 }
-
