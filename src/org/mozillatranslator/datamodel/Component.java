@@ -21,28 +21,24 @@
  * Henrik Lynggaard Hansen (Initial Code)
  *
  */
-
 package org.mozillatranslator.datamodel;
 
 import org.mozillatranslator.io.component.ComponentToXmlAccess;
 import org.mozillatranslator.io.common.ImportExportDataObject;
 import org.mozillatranslator.io.*;
 import java.io.*;
-import java.util.Iterator;
 
 /** Represent a Mozilla component
  * @author Henrik Lynggaard
  * @version 1.0
  */
 public class Component extends MozTreeNode {
+
     public static final String TYPE_DIR = "dir";
     public static final String TYPE_FILE = "file";
     public static final String ALTEXPORTDIR_LOCALE_PATTERN = "[:locale:]";
-    
-    private PartialAccess pa = new PartialAccess();
-    private ComponentToXmlAccess xmlAccess = new ComponentToXmlAccess();
     private String exportedToDir = null;
-    
+
     /** Creates new Component
      * @param n the name of the component
      * @param p The parent of this component, usually
@@ -51,7 +47,7 @@ public class Component extends MozTreeNode {
     public Component(String n, TreeNode p) {
         super(n, p, TreeNode.LEVEL_COMPONENT);
     }
-    
+
     /**
      * Loads a partial glossary (as a glossary o XML file)
      *
@@ -62,15 +58,17 @@ public class Component extends MozTreeNode {
         dataObject.setNode(this);
         switch (dataObject.getFormat()) {
             case ImportExportDataObject.FORMAT_PARTIALGLOSSARY:
+                PartialAccess pa = new PartialAccess();
                 pa.load(dataObject);
                 break;
-                
+
             case ImportExportDataObject.FORMAT_XML:
+                ComponentToXmlAccess xmlAccess = new ComponentToXmlAccess();
                 xmlAccess.load(dataObject);
                 break;
         }
     }
-    
+
     /**
      * Saves a partial glossary (as a glossary or XML file)
      *
@@ -81,10 +79,12 @@ public class Component extends MozTreeNode {
         dataObject.setNode(this);
         switch (dataObject.getFormat()) {
             case ImportExportDataObject.FORMAT_PARTIALGLOSSARY:
+                PartialAccess pa = new PartialAccess();
                 pa.save(dataObject);
                 break;
-                
+
             case ImportExportDataObject.FORMAT_XML:
+                ComponentToXmlAccess xmlAccess = new ComponentToXmlAccess();
                 xmlAccess.save(dataObject);
                 break;
         }
