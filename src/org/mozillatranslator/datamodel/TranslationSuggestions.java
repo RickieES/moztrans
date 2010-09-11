@@ -134,7 +134,7 @@ public class TranslationSuggestions implements PropertyChangeListener {
             suggestions = new PhraseList(l10n);
             
             while ((idx < pl.size())
-                   && (pl.get(idx).getText().equals(p.getText()))) {
+                   && (pl.get(idx).getText().equalsIgnoreCase(p.getText()))) {
                 
                 Phrase pInList = pl.get(idx);
                 
