@@ -201,17 +201,15 @@ public class ExportComponentDialog extends MozDialog {
         org.mozillatranslator.datamodel.TreeNode ourObject;
 
         tp = evt.getNewLeadSelectionPath();
-        if (tp != null) {
-            chosen = (DefaultMutableTreeNode) tp.getLastPathComponent();
+        chosen = (DefaultMutableTreeNode) tp.getLastPathComponent();
 
+        try {
             ourObject = (org.mozillatranslator.datamodel.TreeNode) chosen.getUserObject();
-
-            if (ourObject instanceof Component) {
-                okButton.setEnabled(true);
-            } else {
-                okButton.setEnabled(false);
-            }
-        } else {
+            // Enable OK button only if the node selected to export is a Component
+            okButton.setEnabled(ourObject instanceof Component);
+        } catch (NullPointerException e) {
+            okButton.setEnabled(false);
+        } catch (ClassCastException e) {
             okButton.setEnabled(false);
         }
     }//GEN-LAST:event_exportTreeValueChanged
@@ -223,6 +221,7 @@ public class ExportComponentDialog extends MozDialog {
 
     }//GEN-LAST:event_closeDialog
 
+    @Override
     protected void collect() {
         ComponentTransferDataObject dao = new ComponentTransferDataObject();
         dao.setFileName(fileField.getText());
@@ -234,6 +233,7 @@ public class ExportComponentDialog extends MozDialog {
         data = dao;
     }
 
+    @Override
     protected void init() {
         initComponents();
         exportLabel.setText(way);
@@ -244,6 +244,7 @@ public class ExportComponentDialog extends MozDialog {
         GuiTools.placeFrameAtCenter(this);
     }
 
+    @Override
     protected void populate() {
         fileField.setText("");
     }
