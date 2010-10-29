@@ -54,34 +54,61 @@ public class RelinkFilter implements Filter {
      * @param phrase    the Phrase object to be "filtered"
      * @return true     if the phrase has had its connections relinked
      */
+    @Override
     public boolean check(Phrase phrase) {
         boolean result = false;
-        String currentAKey = phrase.getAccessConnection().toString();
-        String currentCKey = phrase.getCommandConnection().toString();
-        
+        String currentAKey = null;
+        String currentCKey = null;
+        String newAKey = null;
+        String newCKey = null;
+
+        try {
+            Phrase p = phrase.getAccessConnection();
+            currentAKey = p.toString();
+        } catch (NullPointerException e) {
+            currentAKey = "(nothing)";
+        }
+
+        try {
+            Phrase p = phrase.getCommandConnection();
+            currentCKey = p.toString();
+        } catch (NullPointerException e) {
+            currentCKey = "(nothing)";
+        }
+
         if (phrase.isLabel()) {
             result = phrase.linkLabel2Keys(keepExisting);
-            
+
             if (result) {
-                if (!currentAKey.equals(phrase.getAccessConnection().toString())) {
+                try {
+                    Phrase p = phrase.getAccessConnection();
+                    newAKey = p.toString();
+                } catch (NullPointerException e) {
+                    newAKey = "(nothing)";
+                }
+
+                try {
+                    Phrase p = phrase.getCommandConnection();
+                    newCKey = p.toString();
+                } catch (NullPointerException e) {
+                    newCKey = "(nothing)";
+                }
+
+                if (!currentAKey.equals(newAKey)) {
                     phrase.addFilterResult("Accesskey changed from [" +
-                            currentAKey + "] to [" +
-                            phrase.getAccessConnection().toString());
+                            currentAKey + "] to [" + newAKey + "]");
                 }
                 
-                if (!currentCKey.equals(phrase.getCommandConnection().toString())) {
+                if (!currentCKey.equals(newCKey)) {
                     phrase.addFilterResult("Commandkey changed from [" +
-                            currentCKey + "] to [" +
-                            phrase.getCommandConnection().toString());
+                            currentCKey + "] to [" + newCKey + "]");
                 }
             }
         }
-        
         return result;
     }
 
     public String getLocaleName() {
         return localeName;
     }
-    
 }
