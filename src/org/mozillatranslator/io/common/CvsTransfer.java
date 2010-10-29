@@ -45,8 +45,8 @@ public class CvsTransfer {
     private Product prod;
     private File imexDir;
     private Settings set = Kernel.settings;
-    private final Logger fLogger = Logger.getLogger(CvsTransfer.class.getPackage().
-            getName());
+    private static final Logger fLogger = Logger.
+            getLogger(CvsTransfer.class.getPackage().getName());
     
     
     /**
@@ -177,14 +177,16 @@ public class CvsTransfer {
         
         try {
             if (data.getFileContent() != null && data.getFileContent().length > 0) {
-                fLogger.info("Should be " + thisFile.getCanonicalPath());
+                fLogger.log(Level.INFO, "Should be {0}", thisFile.getCanonicalPath());
                 FileUtils.saveWithLicence(thisFile.getCanonicalPath(),
                         data.getFileContent(), currentFile);
             } else {
-                fLogger.info("Empty file: " + thisFile.getCanonicalPath() + " not written");
+                fLogger.log(Level.INFO, "Empty file: {0} not written",
+                        thisFile.getCanonicalPath());
             }
         } catch (IOException e) {
-            fLogger.warning("Error during file export: " + e.getMessage());
+            fLogger.log(Level.WARNING, "Error during file export: {0}",
+                    e.getMessage());
         }
         currentFile.decreaseReferenceCount();
     }
@@ -259,7 +261,8 @@ public class CvsTransfer {
         try {
             numFilesOrDirs = thisLevelFiles.length;
         } catch (java.lang.NullPointerException e) {
-            fLogger.warning("Dir not found or is empty: " + parent.getName());
+            fLogger.log(Level.WARNING, "Dir not found or is empty: {0}",
+                    parent.getName());
             numFilesOrDirs = 0;
         }
         
@@ -390,9 +393,11 @@ public class CvsTransfer {
             dao.setL10n(l10n);
             mfile.load(dao);
         } catch(FileNotFoundException e) {
-            fLogger.warning("File " + loadFile.getAbsolutePath() + "couldn't be found, ignored.");
+            fLogger.log(Level.WARNING, "File {0} couldn''t be found, ignored.",
+                    loadFile.getAbsolutePath());
         } catch (IOException e) {
-            fLogger.severe("An I/O error happened while reading " + loadFile.getAbsolutePath());
+            fLogger.log(Level.SEVERE, "An I/O error happened while reading {0}",
+                    loadFile.getAbsolutePath());
         }
     }
 }
