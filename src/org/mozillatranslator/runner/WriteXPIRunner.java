@@ -49,6 +49,7 @@ public class WriteXPIRunner extends MozTask {
     /** The method that is run and that creates the file
      * @throws MozException 
      */
+    @Override
     public void taskImplementation() throws MozException {
         Iterator currentIterator;
         ProductChild currentChild;
@@ -759,6 +760,7 @@ public class WriteXPIRunner extends MozTask {
         }
     }
 
+    @Override
     public String getTitle() {
          return "Write XPI";
     }

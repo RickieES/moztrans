@@ -41,8 +41,17 @@ public abstract class MozFile extends MozTreeNode implements GenericFile {
      * file. Obsolete
      */
     protected String licenseFile;
+
+    /** The real filename of this datamodel object */
+
     private String realFilename;
+
+    /** The relative filename of this datamodel object */
     private String relativeFilename;
+
+    /** True if the file must not be exported in JAR, XPI or SCM exports */
+    private boolean dontExport;
+
     /** Holds value of property referenceCount. */
     private int referenceCount = 0;
 
@@ -51,6 +60,7 @@ public abstract class MozFile extends MozTreeNode implements GenericFile {
         realFilename = "";
         relativeFilename = "";
         licenseFile = "";
+        dontExport = false;
     }
 
     /** This builds thee part of the JTree that this file takes part in
@@ -105,6 +115,16 @@ public abstract class MozFile extends MozTreeNode implements GenericFile {
     @Override
     public void setLicenseBlock(MozLicense license) {
         this.licenseBlock = license;
+    }
+
+    @Override
+    public void setDontExport(boolean dontExport) {
+        this.dontExport = dontExport;
+    }
+
+    @Override
+    public boolean isDontExport() {
+        return this.dontExport;
     }
 
     @Override

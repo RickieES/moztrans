@@ -9,8 +9,6 @@
 
 package org.mozillatranslator.io;
 
-import org.mozillatranslator.kernel.DataObject;
-
 /**
  *
  * @author rpalomares

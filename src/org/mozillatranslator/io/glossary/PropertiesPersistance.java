@@ -49,7 +49,7 @@ import org.mozillatranslator.io.common.FileUtils;
 public class PropertiesPersistance implements GlossaryAccess {
 
     private static final String PERSISTANCE_VERSION_KEY = "glossary_version";
-    private static final String PERSISTANCE_VERSION_VALUE = "5.2";
+    private static final String PERSISTANCE_VERSION_VALUE = "5.26";
     private static final String PLATFORM = ".P";
     private static final String REGION = ".R";
     private static final String CUSTOM = ".C";
@@ -70,6 +70,7 @@ public class PropertiesPersistance implements GlossaryAccess {
     private static final String FILE_LICENSE_BLOCK = ".license_block";
     private static final String FILE_LICENSE_CONTRIB = ".license_contributor";
     private static final String FILE_LICENSE_INSPOINT = ".license_inspoint";
+    private static final String FILE_DONTEXPORT = ".dontexport";
     private static final String BINFILE_MD5 = ".md5";
     private static final String ENTITY_BAG = ".E";
     private static final String PUBLICID = ".publicId";
@@ -405,6 +406,9 @@ public class PropertiesPersistance implements GlossaryAccess {
                         model.setProperty(thisLevelPrefix + FILE_LICENSE_INSPOINT,
                                 "" + currentFile.getLicenseBlock().getInsertionPos());
                     }
+
+                    model.setProperty(thisLevelPrefix + FILE_DONTEXPORT,
+                            "" + currentFile.isDontExport());
 
                     // If the file is a DTD, maybe it has external entities to be saved
                     if ((currentFile instanceof DTDFile)
@@ -914,6 +918,8 @@ public class PropertiesPersistance implements GlossaryAccess {
 
         currentFile.setLicenseFile(licenseFile);
         currentFile.setAlteredTime(alteredTime);
+        currentFile.setDontExport(Boolean.valueOf(model.getProperty(filePrefix
+                + FILE_DONTEXPORT, "false")).booleanValue());
 
         // If there is a license block
         if (model.getProperty(filePrefix + FILE_LICENSE_BLOCK) != null) {
@@ -1123,7 +1129,7 @@ public class PropertiesPersistance implements GlossaryAccess {
                 }
             }
         } catch (Exception e) {
-            Kernel.appLog.severe("Error during reading of images " + e);
+            Kernel.appLog.log(Level.SEVERE, "Error during reading of images {0}", e);
         }
     }
 

@@ -469,19 +469,21 @@ public class StructureAccess {
     private void saveFile(MozFile currentFile, String parentPath,
             ProductChildInputOutputDataObject dataObject, JarOutputStream jos)
             throws IOException {
-
         String relative;
         JarEntry je;
 
-        currentFile.increaseReferenceCount();
-        relative = parentPath + "/" + currentFile.getName();
-        je = new JarEntry(relative);
-        try {
-            jos.putNextEntry(je);
-            writeFile(currentFile, dataObject.getL10n(), jos);
-            currentFile.decreaseReferenceCount();
-        } catch (ZipException e1) {
-            // Kernel.appLog.log(Level.SEVERE, "Error putting entry into jar file", e1);
+        if (!currentFile.isDontExport()) {
+            currentFile.increaseReferenceCount();
+            relative = parentPath + "/" + currentFile.getName();
+            je = new JarEntry(relative);
+            try {
+                jos.putNextEntry(je);
+                writeFile(currentFile, dataObject.getL10n(), jos);
+                currentFile.decreaseReferenceCount();
+            } catch (ZipException e1) {
+                Kernel.appLog.log(Level.SEVERE,
+                        "Error putting entry into jar file", e1);
+            }
         }
     }
 

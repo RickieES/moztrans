@@ -21,49 +21,48 @@
  * Henrik Lynggaard Hansen (Initial Code)
  *
  */
-
 package org.mozillatranslator.datamodel;
 
+import org.mozillatranslator.io.common.ImportExportDataObject;
 
-import org.mozillatranslator.io.common.*;
 /**
- *
+ * General interface for all files in datamodel
  * @author  Henrik Lynggaard
  * @version 1.0
  */
-public interface GenericFile extends TreeNode
-{
+public interface GenericFile extends TreeNode {
 
     public String getRealFilename();
 
     public void setRealFilename(String value);
-    
-    public String getRelativeFilename();    
+
+    public String getRelativeFilename();
 
     public void setRelativeFilename(String value);
-    
-    public String getLicenseFile();
-    
-    public void setLicenseFile(String file);
-    
-    public MozLicense getLicenseBlock();
-    
-    public void setLicenseBlock(MozLicense License);
-    
-    public void save(ImportExportDataObject dataObject);
-    
-    public void load(ImportExportDataObject dataObject);
-    
-    public void decreaseReferenceCount();
-    
-    public void increaseReferenceCount();
-    
-    public void removeAllChildren();
-    
-    public void startRefFromOne();
-    
-    public String getTypeName();
-    
-    
-}
 
+    public String getLicenseFile();
+
+    public void setLicenseFile(String file);
+
+    public MozLicense getLicenseBlock();
+
+    public void setLicenseBlock(MozLicense License);
+
+    public void setDontExport(boolean dontExport);
+
+    public boolean isDontExport();
+
+    public void save(ImportExportDataObject dataObject);
+
+    public void load(ImportExportDataObject dataObject);
+
+    public void decreaseReferenceCount();
+
+    public void increaseReferenceCount();
+
+    public void removeAllChildren();
+
+    public void startRefFromOne();
+
+    public String getTypeName();
+}

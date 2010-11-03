@@ -47,6 +47,7 @@ public class CustomContainerAccess extends StructureAccess {
     public CustomContainerAccess() {
     }
 
+    @Override
     public void save(ProductChildInputOutputDataObject dataObject) throws IOException {
         JarOutputStream jos;
         FileOutputStream fos;
@@ -66,28 +67,33 @@ public class CustomContainerAccess extends StructureAccess {
         childIterator = currentContainer.iterator();
 
         while (childIterator.hasNext()) {
-            try {
-                GenericFile childfile = (GenericFile) childIterator.next();
-                childfile.increaseReferenceCount();
+            GenericFile childFile = (GenericFile) childIterator.next();
 
-                ImportExportDataObject dao = new ImportExportDataObject();
-                dao.setChangeList(null);
-                dao.setFormat(ImportExportDataObject.FORMAT_MOZILLA);
-                dao.setL10n(dataObject.getL10n());
-                dao.setFileContent(null);
-                childfile.save(dao);
-                childfile.decreaseReferenceCount();
+            if (!childFile.isDontExport()) {
+                try {
+                    childFile.increaseReferenceCount();
+                    ImportExportDataObject dao = new ImportExportDataObject();
+                    dao.setChangeList(null);
+                    dao.setFormat(ImportExportDataObject.FORMAT_MOZILLA);
+                    dao.setL10n(dataObject.getL10n());
+                    dao.setFileContent(null);
+                    childFile.save(dao);
+                    childFile.decreaseReferenceCount();
 
-                JarEntry en = new JarEntry(childfile.getRelativeFilename());
-                jos.putNextEntry(en);
-                FileUtils.saveFile(jos, dao.getFileContent());
-            } catch (Exception e) {
-                Kernel.appLog.log(Level.SEVERE, "Unable to write custom file", e);
-                throw new IOException("Unable to write custom file \n" + e.getMessage());
+                    JarEntry en = new JarEntry(childFile.getRelativeFilename());
+                    jos.putNextEntry(en);
+                    FileUtils.saveFile(jos, dao.getFileContent());
+                } catch (Exception e) {
+                    Kernel.appLog.log(Level.SEVERE,
+                            "Unable to write custom file", e);
+                    throw new IOException("Unable to write custom file \n"
+                            + e.getMessage());
+                }
             }
         }
     }
 
+    @Override
     public void load(ProductChildInputOutputDataObject dataObject) throws IOException {
         Iterator containerIterator;
 

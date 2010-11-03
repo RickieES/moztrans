@@ -149,46 +149,49 @@ public class CvsTransfer {
     private void saveFile(MozFile currentFile, String parentPath) {
         File thisFile;
         File subDirFile;
-        ImportExportDataObject data = new ImportExportDataObject();
-        
-        // If user preference is to replace "en-US" directories name
-        // wit "ab-CD" name, let's take it into account
-        if (set.getBoolean(Settings.EXPORT_REPLACE_ENUS) &&
-                !this.l10n.equals(Kernel.ORIGINAL_L10N) &&
-                (parentPath.indexOf(Kernel.ORIGINAL_L10N) > -1)) {
-            parentPath = parentPath.replace(Kernel.ORIGINAL_L10N, this.l10n);
-        }
-        
-        subDirFile = new File(parentPath);
-        
-        if (!subDirFile.exists()) {
-            subDirFile.mkdirs();
-        }
-        
-        thisFile = new File(parentPath, currentFile.getName());
-        currentFile.increaseReferenceCount();
-        
-        data.setChangeList(null);
-        data.setFormat(ImportExportDataObject.FORMAT_MOZILLA);
-        data.setL10n(l10n);
-        data.setFileName(thisFile.getAbsolutePath());
-        data.setFileContent(null);
-        currentFile.save(data);
-        
-        try {
-            if (data.getFileContent() != null && data.getFileContent().length > 0) {
-                fLogger.log(Level.INFO, "Should be {0}", thisFile.getCanonicalPath());
-                FileUtils.saveWithLicence(thisFile.getCanonicalPath(),
-                        data.getFileContent(), currentFile);
-            } else {
-                fLogger.log(Level.INFO, "Empty file: {0} not written",
-                        thisFile.getCanonicalPath());
+        ImportExportDataObject data;
+
+        if (!currentFile.isDontExport()) {
+            // If user preference is to replace "en-US" directories name
+            // wit "ab-CD" name, let's take it into account
+            if (set.getBoolean(Settings.EXPORT_REPLACE_ENUS) &&
+                    !this.l10n.equals(Kernel.ORIGINAL_L10N) &&
+                    (parentPath.indexOf(Kernel.ORIGINAL_L10N) > -1)) {
+                parentPath = parentPath.replace(Kernel.ORIGINAL_L10N, this.l10n);
             }
-        } catch (IOException e) {
-            fLogger.log(Level.WARNING, "Error during file export: {0}",
-                    e.getMessage());
+
+            subDirFile = new File(parentPath);
+            if (!subDirFile.exists()) {
+                subDirFile.mkdirs();
+            }
+
+            thisFile = new File(parentPath, currentFile.getName());
+            currentFile.increaseReferenceCount();
+
+            data = new ImportExportDataObject();
+            data.setChangeList(null);
+            data.setFormat(ImportExportDataObject.FORMAT_MOZILLA);
+            data.setL10n(l10n);
+            data.setFileName(thisFile.getAbsolutePath());
+            data.setFileContent(null);
+            currentFile.save(data);
+
+            try {
+                if (data.getFileContent() != null && data.getFileContent().length > 0) {
+                    fLogger.log(Level.INFO, "Should be {0}",
+                            thisFile.getCanonicalPath());
+                    FileUtils.saveWithLicence(thisFile.getCanonicalPath(),
+                            data.getFileContent(), currentFile);
+                } else {
+                    fLogger.log(Level.INFO, "Empty file: {0} not written",
+                            thisFile.getCanonicalPath());
+                }
+            } catch (IOException e) {
+                fLogger.log(Level.WARNING, "Error during file export: {0}",
+                        e.getMessage());
+            }
+            currentFile.decreaseReferenceCount();
         }
-        currentFile.decreaseReferenceCount();
     }
     
     

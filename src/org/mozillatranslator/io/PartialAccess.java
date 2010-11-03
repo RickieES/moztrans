@@ -26,13 +26,8 @@
 package org.mozillatranslator.io;
 
 import org.mozillatranslator.io.common.ImportExportDataObject;
-import java.util.*;
-import java.util.zip.*;
-import java.util.logging.*;
-import java.io.*;
 import org.mozillatranslator.io.glossary.PropertiesPersistance;
 import org.mozillatranslator.datamodel.*;
-import org.mozillatranslator.kernel.*;
 
 /**
  *

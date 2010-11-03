@@ -26,7 +26,6 @@ package org.mozillatranslator.io;
 
 import java.io.File;
 import java.util.*;
-import org.mozillatranslator.kernel.*;
 
 /**
  *
@@ -70,6 +69,7 @@ public class WriteXpiDataObject implements JarXpiDataObject {
     /** Getter for property author.
      * @return Value of property author.
      */
+    @Override
     public String getAuthor() {
         return this.author;
     }
@@ -77,6 +77,7 @@ public class WriteXpiDataObject implements JarXpiDataObject {
     /** Setter for property author.
      * @param author New value of property author.
      */
+    @Override
     public void setAuthor(String author) {
         this.author = author;
     }
@@ -84,6 +85,7 @@ public class WriteXpiDataObject implements JarXpiDataObject {
     /** Getter for property display.
      * @return Value of property display.
      */
+    @Override
     public String getDisplay() {
         return this.display;
     }
@@ -91,6 +93,7 @@ public class WriteXpiDataObject implements JarXpiDataObject {
     /** Setter for property display.
      * @param display New value of property display.
      */
+    @Override
     public void setDisplay(String display) {
         this.display = display;
     }
@@ -98,6 +101,7 @@ public class WriteXpiDataObject implements JarXpiDataObject {
     /** Getter for property previewUrl.
      * @return Value of property previewUrl.
      */
+    @Override
     public String getPreviewUrl() {
         return this.previewUrl;
     }
@@ -105,6 +109,7 @@ public class WriteXpiDataObject implements JarXpiDataObject {
     /** Setter for property previewUrl.
      * @param previewUrl New value of property previewUrl.
      */
+    @Override
     public void setPreviewUrl(String previewUrl) {
         this.previewUrl = previewUrl;
     }
@@ -112,6 +117,7 @@ public class WriteXpiDataObject implements JarXpiDataObject {
     /** Getter for property version.
      * @return Value of property version.
      */
+    @Override
     public String getVersion() {
         return this.version;
     }
@@ -119,6 +125,7 @@ public class WriteXpiDataObject implements JarXpiDataObject {
     /** Setter for property version.
      * @param version New value of property version.
      */
+    @Override
     public void setVersion(String version) {
         this.version = version;
     }
@@ -126,6 +133,7 @@ public class WriteXpiDataObject implements JarXpiDataObject {
     /** Getter for property fileName.
      * @return Value of property fileName.
      */
+    @Override
     public String getFileName() {
         return this.fileName;
     }
@@ -133,10 +141,12 @@ public class WriteXpiDataObject implements JarXpiDataObject {
     /** Setter for property fileName.
      * @param fileName New value of property fileName.
      */
+    @Override
     public void setFileName(String fileName) {
         this.fileName = fileName;
     }
 
+    @Override
     public File getRealFile() {
         if ((this.getFileName() != null) && (this.realFile == null)) {
             realFile = new File(this.getFileName());
@@ -186,10 +196,12 @@ public class WriteXpiDataObject implements JarXpiDataObject {
         return this.customs;
     }
 
+    @Override
     public boolean isUseExternalZIP() {
         return useExternalZIP;
     }
 
+    @Override
     public void setUseExternalZIP(boolean useExternalZIP) {
         this.useExternalZIP = useExternalZIP;
     }

@@ -115,8 +115,8 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
             // GUI builder fails to generate this in initComponents()
             setMaximum(true);
         } catch (PropertyVetoException e) {
-            fLogger.warning("The JInternalFrame with title " + getTitle()
-                            + " has vetoed its own maximization");
+            fLogger.log(Level.WARNING, "The JInternalFrame with title {0} has "
+                        + "vetoed its own maximization", getTitle());
         }
 
         if (null != ph) {
@@ -129,19 +129,11 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
                 obj[i - 1] = new DefaultMutableTreeNode(parent);
             }
             obj[0] = root;
-            try {
-                TreePath path = new TreePath(obj);
-                expandTreeAndSelectNode(tree, true, path);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+            TreePath path = new TreePath(obj);
+            expandTreeAndSelectNode(tree, true, path);
         } else {
-            try {
-                TreePath lsp = new TreePath(lastSelected.getPath());
-                expandTreeAndSelectNode(tree, true, lsp);
-            } catch (Exception ex1) {
-                ex1.printStackTrace();
-            }
+            TreePath lsp = new TreePath(lastSelected.getPath());
+            expandTreeAndSelectNode(tree, true, lsp);
         }
     }
 
@@ -215,6 +207,7 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
         fileValueLabel = new javax.swing.JLabel();
         exportToLabel = new javax.swing.JLabel();
         exportToField = new javax.swing.JTextField();
+        dontExportCheckBox = new javax.swing.JCheckBox();
         infoSeparator = new javax.swing.JSeparator();
         statsPanel = new javax.swing.JPanel();
         statsTitleLabel = new javax.swing.JLabel();
@@ -281,7 +274,7 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         staticInfoPanel.add(productValueLabel, gridBagConstraints);
 
-        pcLabel.setFont(new java.awt.Font("Dialog", 0, 12));
+        pcLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         pcLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         pcLabel.setText("Platform/region:");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -321,7 +314,7 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         staticInfoPanel.add(pathValueLabel, gridBagConstraints);
 
-        fileLabel.setFont(new java.awt.Font("Dialog", 0, 12));
+        fileLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         fileLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         fileLabel.setText("File name:");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -342,7 +335,7 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         staticInfoPanel.add(fileValueLabel, gridBagConstraints);
 
-        exportToLabel.setFont(new java.awt.Font("Dialog", 0, 12));
+        exportToLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         exportToLabel.setText("On Export SCM, export to:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -368,6 +361,23 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         staticInfoPanel.add(exportToField, gridBagConstraints);
+
+        dontExportCheckBox.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        dontExportCheckBox.setMnemonic('D');
+        dontExportCheckBox.setText("Do not export");
+        dontExportCheckBox.setToolTipText("Do not export this file or component");
+        dontExportCheckBox.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        dontExportCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dontExportCheckBoxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        staticInfoPanel.add(dontExportCheckBox, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -665,8 +675,8 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
           chosen = (DefaultMutableTreeNode) tp.getLastPathComponent();
           lastSelected = chosen;
 
-          fLogger.fine("Selected node " + chosen.toString());
-          fLogger.fine("Selected node path " + tp.toString());
+          fLogger.log(Level.FINE, "Selected node {0}", chosen.toString());
+          fLogger.log(Level.FINE, "Selected node path {0}", tp.toString());
 
           calculateButton.setEnabled(true);
 
@@ -733,6 +743,14 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
           pathValueLabel.setText(parentList[TreeNode.LEVEL_COMPONENT]);
           fileValueLabel.setText(parentList[TreeNode.LEVEL_FILE]);
 
+          if (ourObject instanceof GenericFile) {
+              dontExportCheckBox.setEnabled(true);
+              dontExportCheckBox.setSelected(((GenericFile) ourObject).isDontExport());
+          } else {
+              dontExportCheckBox.setSelected(false);
+              dontExportCheckBox.setEnabled(false);
+          }
+
           if (ourObject instanceof Component) {
               exportToField.setText(((Component) ourObject).getExportedToDir());
               exportToField.setEditable(true);
@@ -752,6 +770,10 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
           fuzzyPctLabel.setText(NULL_PCT);
       }
   }//GEN-LAST:event_treeValueChanged
+
+  private void dontExportCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dontExportCheckBoxActionPerformed
+      ((GenericFile) ourObject).setDontExport(dontExportCheckBox.isSelected());
+  }//GEN-LAST:event_dontExportCheckBoxActionPerformed
 
     /**
      * initialize a JTable with the current file. the
@@ -853,7 +875,7 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
      * Highlight row in table
      */
     private void selectTableRow(int num) {
-        fLogger.info("Num: " + num);
+        fLogger.log(Level.INFO, "Selected table row: {0}", num);
 
         if (num > 0) {
             table.scrollRectToVisible(
@@ -906,6 +928,7 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton calculateButton;
     private javax.swing.JScrollPane contentPane;
+    private javax.swing.JCheckBox dontExportCheckBox;
     private javax.swing.JTextField exportToField;
     private javax.swing.JLabel exportToLabel;
     private javax.swing.JLabel fileLabel;

@@ -37,6 +37,7 @@ public class WriteJarRunner extends MozTask {
     }
 
     /** This method is called to write the jar file */
+    @Override
     public void taskImplementation() throws MozException {
         try {
             ProductChildInputOutputDataObject jarData =
@@ -47,6 +48,7 @@ public class WriteJarRunner extends MozTask {
         }
     }
 
+    @Override
     public String getTitle() {
         return "Write Jar File";
     }
