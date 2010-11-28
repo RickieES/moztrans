@@ -113,13 +113,12 @@ public class CopyToAllInRedundantView extends AbstractAction {
                                 destTranslation.setText(sourceTransText);
                                 destTranslation.setStatus(Translation.STATUS_CHANGED);
                             } else {
-                                
-                                destTranslation = new Translation(l10n, dest, sourceTransText, Translation.STATUS_CHANGED);
+                                destTranslation = new Translation(l10n, dest,
+                                        sourceTransText, Translation.STATUS_CHANGED);
                                 dest.addChild(destTranslation);
                             }
                         }
                     } else {
-                        
                         done = true;
                     }
                     curSelectedIndex++;
