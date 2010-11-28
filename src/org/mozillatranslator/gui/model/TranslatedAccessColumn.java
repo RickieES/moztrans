@@ -21,12 +21,9 @@
  * Henrik Lynggaard Hansen (Initial Code)
  *
  */
-
 package org.mozillatranslator.gui.model;
 
-
 import javax.swing.*;
-
 import org.mozillatranslator.datamodel.*;
 
 /**
@@ -34,90 +31,78 @@ import org.mozillatranslator.datamodel.*;
  * @author  Henrik Lynggaard
  * @version 1.0
  */
-public class TranslatedAccessColumn implements ComplexColumn
-{
+public class TranslatedAccessColumn implements ComplexColumn {
+
     private static final Class STR_CLASS = "dummy".getClass();
-    
+
     /** Creates new OriginalTextColumn */
-    public TranslatedAccessColumn()
-    {
+    public TranslatedAccessColumn() {
     }
-    
-    public Class getColumnClass()
-    {
+
+    @Override
+    public Class getColumnClass() {
         return STR_CLASS;
     }
-    
-    public Object getValue(Phrase currentPhrase, String currentLocalization)
-    {
+
+    @Override
+    public Object getValue(Phrase currentPhrase, String currentLocalization) {
         String result = "";
         Phrase accessPhrase = currentPhrase.getAccessConnection();
-        if (accessPhrase != null)
-        {
+        if (accessPhrase != null) {
             Translation accessTranslation = (Translation) accessPhrase.getChildByName(currentLocalization);
-            if (accessTranslation != null)
-            {
+            if (accessTranslation != null) {
                 result = accessTranslation.getText();
             }
         }
         return result;
-        
     }
-    
-    public boolean isCellEditable(Phrase currentPhrase, String currentLocalization)
-    {
+
+    @Override
+    public boolean isCellEditable(Phrase currentPhrase, String currentLocalization) {
         boolean result = false;
         Phrase accessPhrase = currentPhrase.getAccessConnection();
-        if (accessPhrase != null)
-        {
+        if (accessPhrase != null) {
             result = true;
         }
         return result;
-        
     }
-    
-    public String getColumnName()
-    {
+
+    @Override
+    public String getColumnName() {
         return "Accesskey: Translated";
     }
-    
-    public void setValue(Phrase currentPhrase, Object value, String currentLocalization)
-    {
+
+    @Override
+    public void setValue(Phrase currentPhrase, Object value, String currentLocalization) {
         String strValue = (String) value;
         Phrase accessPhrase = currentPhrase.getAccessConnection();
-        
-        if (!strValue.equals(""))
-        {
+
+        if (!strValue.equals("")) {
             Translation accessTranslation = (Translation) accessPhrase.getChildByName(currentLocalization);
-            if (accessTranslation == null)
-            {
+            if (accessTranslation == null) {
                 accessTranslation = new Translation(currentLocalization, currentPhrase, strValue, Translation.STATUS_TRANSLATED);
                 accessPhrase.addChild(accessTranslation);
-            }
-            else
-            {
+            } else {
                 accessTranslation.setText(strValue);
                 accessTranslation.setStatus(Translation.STATUS_TRANSLATED);
             }
-        }
-        else
-        {
-          accessPhrase.removeChild(accessPhrase.getChildByName(currentLocalization));
+        } else {
+            accessPhrase.removeChild(accessPhrase.getChildByName(currentLocalization));
         }
     }
-    
-    public String toString()
-    {
+
+    @Override
+    public String toString() {
         return "Accesskey: Translated";
     }
-    
-    public void init(JTable table)
-    {
-        // non
+
+    @Override
+    public void init(JTable table) {
+        // Nothing to do
     }
-    
-    public int getPrefferedWidth()
-    {
+
+    @Override
+    public int getPrefferedWidth() {
         return 50;
     }
 }

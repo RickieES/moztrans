@@ -21,7 +21,6 @@
  * Henrik Lynggaard Hansen (Initial Code)
  *
  */
-
 package org.mozillatranslator.gui.model;
 
 import javax.swing.*;
@@ -39,10 +38,12 @@ public class TranslatedTextColumn implements ComplexColumn {
     public TranslatedTextColumn() {
     }
 
+    @Override
     public Class getColumnClass() {
         return STR_CLASS;
     }
 
+    @Override
     public Object getValue(Phrase currentPhrase, String currentLocalization) {
         boolean test = false;
         String result = "";
@@ -65,8 +66,8 @@ public class TranslatedTextColumn implements ComplexColumn {
                 result = "Use the Edit " + dlgType + " Dialog";
             }
         } else {
-            Translation currentTranslation =  (Translation) currentPhrase.
-                    getChildByName(currentLocalization);
+            Translation currentTranslation = (Translation)
+                    currentPhrase.getChildByName(currentLocalization);
 
             if (currentTranslation != null) {
                 result = currentTranslation.getText();
@@ -75,7 +76,9 @@ public class TranslatedTextColumn implements ComplexColumn {
         return result;
     }
 
-    public boolean isCellEditable(Phrase currentPhrase, String currentLocalization) {
+    @Override
+    public boolean isCellEditable(Phrase currentPhrase,
+            String currentLocalization) {
         boolean result;
         if (currentPhrase.getName().equals("MT_UknownFileType")) {
             result = false;
@@ -89,10 +92,12 @@ public class TranslatedTextColumn implements ComplexColumn {
         return result;
     }
 
+    @Override
     public String getColumnName() {
         return "Text: Translated";
     }
 
+    @Override
     public void setValue(Phrase currentPhrase, Object value,
             String currentLocalization) {
         Translation currentTranslation;
@@ -116,14 +121,17 @@ public class TranslatedTextColumn implements ComplexColumn {
         }
     }
 
+    @Override
     public String toString() {
         return "Text: Translated";
     }
 
+    @Override
     public void init(JTable table) {
-        // non
+        // Nothing to do
     }
 
+    @Override
     public int getPrefferedWidth() {
         return 200;
     }

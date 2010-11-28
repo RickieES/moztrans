@@ -21,125 +21,104 @@
  * Henrik Lynggaard Hansen (Initial Code)
  *
  */
-
 package org.mozillatranslator.gui.model;
 
 import javax.swing.*;
-
 import org.mozillatranslator.datamodel.*;
+
 /**
  *
  * @author  Henrik Lynggaard
  * @version 1.0
  */
-public class CurrentTextColumn implements ComplexColumn
-{
-    
+public class CurrentTextColumn implements ComplexColumn {
     private static final Class STR_CLASS = "dummy".getClass();
-    
+
     /** Creates new TranslatedTextColumn */
-    public CurrentTextColumn()
-    {
+    public CurrentTextColumn() {
     }
-    
-    public Class getColumnClass()
-    {
+
+    @Override
+    public Class getColumnClass() {
         return STR_CLASS;
     }
-    
-    public Object getValue(Phrase currentPhrase, String currentLocalization)
-    {
+
+    @Override
+    public Object getValue(Phrase currentPhrase, String currentLocalization) {
         String result = "";
-        if (currentPhrase.getName().equals("MT_UknownFileType"))
-        {
-            if (currentPhrase.getParent() instanceof BinaryFile)
-            {
+        if (currentPhrase.getName().equals("MT_UknownFileType")) {
+            if (currentPhrase.getParent() instanceof BinaryFile) {
                 result = "Binary files cannot be translated";
-            }
-            else
-            {
+            } else {
                 result = "Use the edit dialog";
             }
-        }
-        else
-        {
-            Translation currentTranslation =  (Translation) currentPhrase.getChildByName(currentLocalization);
-            if (currentTranslation != null)
-            {
+        } else {
+            Translation currentTranslation = (Translation)
+                    currentPhrase.getChildByName(currentLocalization);
+            if (currentTranslation != null) {
                 result = currentTranslation.getText();
-            }
-            else
-            {
+            } else {
                 result = currentPhrase.getText();
             }
         }
         return result;
     }
-    
-    public boolean isCellEditable(Phrase currentPhrase, String currentLocalization)
-    {
+
+    @Override
+    public boolean isCellEditable(Phrase currentPhrase,
+            String currentLocalization) {
         boolean result;
-        if (currentPhrase.getName().equals("MT_UknownFileType"))
-        {
+        if (currentPhrase.getName().equals("MT_UknownFileType")) {
             result = false;
-        }
-        else
-        {
-            
-            if (currentPhrase.isKeepOriginal())
-            {
+        } else {
+            if (currentPhrase.isKeepOriginal()) {
                 result = false;
-            }
-            else
-            {
+            } else {
                 result = true;
             }
         }
         return result;
     }
-    
-    public String getColumnName()
-    {
+
+    @Override
+    public String getColumnName() {
         return "Text: Current";
     }
-    
-    public void setValue(Phrase currentPhrase, Object value, String currentLocalization)
-    {
+
+    @Override
+    public void setValue(Phrase currentPhrase, Object value,
+            String currentLocalization) {
         Translation currentTranslation;
         String strValue = (String) value;
-        
-        if (!strValue.equals(""))
-        {
-            currentTranslation = (Translation) currentPhrase.getChildByName(currentLocalization);
-            if (currentTranslation == null)
-            {
-                currentTranslation = new Translation(currentLocalization, currentPhrase, strValue, Translation.STATUS_TRANSLATED);
+
+        if (!strValue.equals("")) {
+            currentTranslation = (Translation)
+                    currentPhrase.getChildByName(currentLocalization);
+            if (currentTranslation == null) {
+                currentTranslation = new Translation(currentLocalization,
+                        currentPhrase, strValue, Translation.STATUS_TRANSLATED);
                 currentPhrase.addChild(currentTranslation);
-            }
-            else
-            {
+            } else {
                 currentTranslation.setText(strValue);
                 currentTranslation.setStatus(Translation.STATUS_TRANSLATED);
             }
-        }
-        else
-        {
+        } else {
             currentPhrase.removeChild(currentPhrase.getChildByName(currentLocalization));
         }
     }
-    
-    public String toString()
-    {
+
+    @Override
+    public String toString() {
         return "Text: Current";
     }
-    
-    public void init(JTable table)
-    {
-        // non
+
+    @Override
+    public void init(JTable table) {
+        // Nothing to do
     }
-    
-    public int getPrefferedWidth()
-    {
+
+    @Override
+    public int getPrefferedWidth() {
         return 50;
     }
 }

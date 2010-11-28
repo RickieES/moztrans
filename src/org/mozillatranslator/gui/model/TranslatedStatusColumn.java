@@ -21,78 +21,75 @@
  * Henrik Lynggaard Hansen (Initial Code)
  *
  */
-
 package org.mozillatranslator.gui.model;
 
 import javax.swing.*;
-
 import org.mozillatranslator.datamodel.*;
+
 /**
  *
  * @author  Henrik Lynggaard
  * @version 1.0
  */
-public class TranslatedStatusColumn implements ComplexColumn
-{
-    
+public class TranslatedStatusColumn implements ComplexColumn {
     private static final Class STATUS_CLASS = (new StatusCell(-1, "")).getClass();
-    
+
     /** Creates new KeyColumn */
-    public TranslatedStatusColumn()
-    {
-        // do Noting
+    public TranslatedStatusColumn() {
+        // Do nothing
     }
-    
-    public Class getColumnClass()
-    {
+
+    @Override
+    public Class getColumnClass() {
         return STATUS_CLASS;
     }
-    
-    public Object getValue(Phrase currentPhrase, String currentLocalization)
-    {
+
+    @Override
+    public Object getValue(Phrase currentPhrase, String currentLocalization) {
         StatusCell result = StatusCell.getNoStatusCell();
-        Translation currentTranslation = (Translation) currentPhrase.getChildByName(currentLocalization);
-        if (currentTranslation != null)
-        {
+        Translation currentTranslation = (Translation)
+                currentPhrase.getChildByName(currentLocalization);
+        if (currentTranslation != null) {
             result = StatusCell.lookupStatusCell(currentTranslation.getStatus());
         }
         return result;
-        
     }
-    
-    public boolean isCellEditable(Phrase currentPhrase, String currentLocalization)
-    {
+
+    @Override
+    public boolean isCellEditable(Phrase currentPhrase,
+            String currentLocalization) {
         boolean result = false;
-        Translation currentTranslation =  (Translation) currentPhrase.getChildByName(currentLocalization);
-        if (currentTranslation != null)
-        {
+        Translation currentTranslation = (Translation)
+                currentPhrase.getChildByName(currentLocalization);
+        if (currentTranslation != null) {
             result = true;
         }
         return result;
     }
-    
-    public String getColumnName()
-    {
+
+    @Override
+    public String getColumnName() {
         return "Status";
     }
-    
-    public void setValue(Phrase currentPhrase, Object value, String currentLocalization)
-    {
+
+    @Override
+    public void setValue(Phrase currentPhrase, Object value,
+            String currentLocalization) {
         StatusCell cellValue = (StatusCell) value;
-        Translation currentTranslation =  (Translation) currentPhrase.getChildByName(currentLocalization);
-        if (currentTranslation != null)
-        {
+        Translation currentTranslation = (Translation)
+                currentPhrase.getChildByName(currentLocalization);
+        if (currentTranslation != null) {
             currentTranslation.setStatus(cellValue.getKey());
         }
     }
-    
-    public String toString()
-    {
+
+    @Override
+    public String toString() {
         return "Status";
     }
-    
-    public void init(JTable table)
-    {
+
+    @Override
+    public void init(JTable table) {
         //do stuff
     /*
         public static final int STATUS_NOTSEEN=0;
@@ -103,9 +100,9 @@ public class TranslatedStatusColumn implements ComplexColumn
         public static final int STATUS_PERFECT=5;
         public static final int STATUS_OTHER=6;
         public static final int STATUS_MIGRATED=7;
-     */
+         */
         JComboBox editCombo = new JComboBox();
-        
+
         editCombo.addItem(StatusCell.lookupStatusCell(Translation.STATUS_NOTSEEN));
         editCombo.addItem(StatusCell.lookupStatusCell(Translation.STATUS_CHANGED));
         editCombo.addItem(StatusCell.lookupStatusCell(Translation.STATUS_TRANSLATED));
@@ -115,12 +112,10 @@ public class TranslatedStatusColumn implements ComplexColumn
         editCombo.addItem(StatusCell.lookupStatusCell(Translation.STATUS_OTHER));
         editCombo.addItem(StatusCell.lookupStatusCell(Translation.STATUS_MIGRATED));
         table.setDefaultEditor(StatusCell.class, new DefaultCellEditor(editCombo));
-        
-        
     }
-    
-    public int getPrefferedWidth()
-    {
+
+    @Override
+    public int getPrefferedWidth() {
         return 50;
     }
 }
