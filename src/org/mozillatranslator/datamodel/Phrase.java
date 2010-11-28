@@ -72,7 +72,6 @@ public class Phrase extends MozTreeNode {
     private String localizationNote;
     private boolean keepOriginal;
     private boolean fuzzy;
-    private boolean unsupported;
     private int sort;
     private Phrase labelConnection;
     private Phrase accessConnection;
@@ -185,22 +184,6 @@ public class Phrase extends MozTreeNode {
         fuzzy = value;
         touch();
         ((MozFile) parent).setDirty();
-    }
-
-    /**
-     * Getter for unsupported value
-     * @return the value of unsupported property
-     */
-    public boolean isUnsupported() {
-        return unsupported;
-    }
-
-    /**
-     * Setter for unsupported property
-     * @param value new value for unsupported property
-     */
-    public void setUnsupported(final boolean value) {
-        unsupported = value;
     }
 
     /**
@@ -321,7 +304,7 @@ public class Phrase extends MozTreeNode {
     @Override public boolean deleteUntouched() {
         boolean result = false;
         if (!mark) {
-            fLogger.info("Found untouched " + name);
+            fLogger.log(Level.INFO, "Found untouched {0}", name);
             children.clear();
             result = true;
         }
