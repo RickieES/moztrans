@@ -44,6 +44,7 @@ product_count=<integer>
 <product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.license_contributor=<string>
 <product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.license_inspoint=<integer>
 <product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.md5=<string>
+<product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.dontexport=<boolean>
 
 # A DTD file with external entities
 <product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.name=<string>

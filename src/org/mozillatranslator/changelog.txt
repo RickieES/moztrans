@@ -1,4 +1,19 @@
 --------------------------------------------------------------------------
+Version 5.26
+--------------------------------------------------------------------------
+* Fix for bug 3097 (Provide a way to avoid exporting some specific files in
+  a product).
+
+* Fix for bug 3095 (Changes in Edit Phrase dialog consisting only in letter
+  case are not saved).
+
+* Suggestions are case insensitive now, so if "New" exists and have a
+  translation, when a new string appears with the text "new", the suggested
+  translation for "New" will be offered.
+
+* Some fixes for NullPointerExceptions.
+
+--------------------------------------------------------------------------
 Version 5.25
 --------------------------------------------------------------------------
 * New semi-automatic accesskeys assignment feature.
