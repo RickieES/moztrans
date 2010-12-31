@@ -84,11 +84,11 @@ public class TranslatedCommandColumn implements ComplexColumn {
                     commandPhrase.getChildByName(currentLocalization);
             if (commandTranslation == null) {
                 commandTranslation = new Translation(currentLocalization,
-                        currentPhrase, strValue, Translation.STATUS_TRANSLATED);
+                        currentPhrase, strValue, TrnsStatus.Translated);
                 commandPhrase.addChild(commandTranslation);
             } else {
                 commandTranslation.setText(strValue);
-                commandTranslation.setStatus(Translation.STATUS_TRANSLATED);
+                commandTranslation.setStatus(TrnsStatus.Translated);
             }
         } else {
             currentPhrase.removeChild(currentPhrase.getChildByName(currentLocalization));

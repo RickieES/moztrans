@@ -43,7 +43,7 @@ public class Translation extends MozTreeNode {
     private String text;
 
     /** Holds value of property status. */
-    private int status;
+    private TrnsStatus status;
 
     /** Holds value of property comment. */
     private String comment;
@@ -54,7 +54,7 @@ public class Translation extends MozTreeNode {
      * @param t translated text
      * @param s status
      */
-    public Translation(String n, TreeNode p, String t, int s) {
+    public Translation(String n, TreeNode p, String t, TrnsStatus s) {
         super(n, p, TreeNode.LEVEL_TRANSLATION);
         text = t;
         status = s;
@@ -82,14 +82,14 @@ public class Translation extends MozTreeNode {
     /** Getter for property status.
      * @return Value of property status.
      */
-    public int getStatus() {
+    public TrnsStatus getStatus() {
         return status;
     }
 
     /** Setter for property status.
      * @param status New value of property status.
      */
-    public void setStatus(final int status) {
+    public void setStatus(final TrnsStatus status) {
         this.status = status;
         touch(); // Update last modified time on changing text
         final Phrase curPhr = (Phrase) parent;

@@ -1,4 +1,4 @@
-# glossary file format 5.21
+# glossary file format 5.27
 
 # General values, not tied to any product
 glossary_version=<string>
@@ -72,7 +72,7 @@ product_count=<integer>
 # Translation related values (several translations may be bound to a single
 # key; each translation is identified (.name) by the ab-CD locale code)
 <product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.<phrase_number>.<translation_number>.name=<string>
-<product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.<phrase_number>.<translation_number>.status=<integer>
+<product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.<phrase_number>.<translation_number>.status=<string>
 <product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.<phrase_number>.<translation_number>.text=<string>
 <product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.<phrase_number>.<translation_number>.alteredTime=<long>
 <product_number>.P.<platform_number>.<component_number>.<component_number>.<file_number>.<phrase_number>.<translation_number>.comment=<string>
@@ -105,7 +105,7 @@ product_count=<integer>
 <product_number>.R.<component_number>.<component_number>.<file_number>.<phrase_number>.sort=<integer>
 <product_number>.R.<component_number>.<component_number>.<file_number>.<phrase_number>.L10n_note=<string>
 <product_number>.R.<component_number>.<component_number>.<file_number>.<phrase_number>.<translation_number>.name=<string>
-<product_number>.R.<component_number>.<component_number>.<file_number>.<phrase_number>.<translation_number>.status=<integer>
+<product_number>.R.<component_number>.<component_number>.<file_number>.<phrase_number>.<translation_number>.status=<string>
 <product_number>.R.<component_number>.<component_number>.<file_number>.<phrase_number>.<translation_number>.text=<string>
 <product_number>.R.<component_number>.<component_number>.<file_number>.<phrase_number>.<translation_number>.alteredTime=<long>
 <product_number>.R.<component_number>.<component_number>.<file_number>.<phrase_number>.<translation_number>.comment=<string>

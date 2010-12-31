@@ -30,6 +30,7 @@ import java.util.logging.*;
 import org.mozillatranslator.gui.dialog.*;
 import org.mozillatranslator.datamodel.Phrase;
 import org.mozillatranslator.datamodel.Translation;
+import org.mozillatranslator.datamodel.TrnsStatus;
 import org.mozillatranslator.filter.*;
 import org.mozillatranslator.kernel.*;
 
@@ -55,6 +56,7 @@ public class AutoTranslate extends AbstractAction {
     }
     
     // TODO Improve auto-translate key-bindings
+    @Override
     public void actionPerformed(ActionEvent evt) {
         List collectedList;
         List autoTranslatedList = new ArrayList();
@@ -103,11 +105,11 @@ public class AutoTranslate extends AbstractAction {
                             newAccesText = currentTranslation.getText().substring(0, 1);
                         }
                         Translation newAccessTranslation = new Translation(localeName,
-                                phrase, newAccesText, Translation.STATUS_TRANSLATED);
+                                phrase, newAccesText, TrnsStatus.Proposed);
                         accessPhrase.addChild(newAccessTranslation);
                     }
-                    fLogger.info("" + (i++) + "\tphrase: " + phrase.getText() +
-                            ", \ttranslation: " + translatedText);
+                    fLogger.log(Level.INFO, "{0}\tphrase: {1}, \ttranslation: {2}",
+                                new Object[]{i++, phrase.getText(), translatedText});
                     autoTranslatedList.add(phrase);
                 }
             }

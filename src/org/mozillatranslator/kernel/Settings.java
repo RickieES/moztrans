@@ -27,6 +27,7 @@ import java.awt.Font;
 import java.io.*;
 import java.util.Properties;
 import java.util.logging.*;
+import org.mozillatranslator.datamodel.TrnsStatus;
 
 /** This classs hold the application settings
  *
@@ -140,11 +141,15 @@ public class Settings {
     public static final String ADV_SEARCH_CASE_1 = "advanced.search.case.1";
     public static final String ADV_SEARCH_CASE_2 = "advanced.search.case.2";
     public static final String ADV_SEARCH_CASE_3 = "advanced.search.case.3";
+    // Auto-accesskeys assign
     public static final String AUTOAA_ONLY_FUZZIES = "autoassignakeys.only.fuzzies";
     public static final String AUTOAA_KEEP_EXISTING = "autoassignakeys.keep.existing";
     public static final String AUTOAA_HONOR_ORIGINAL = "autoassignakeys.honor.original";
     public static final String AUTOAA_CHAR_LIST = "autoassignakeys.character.list";
     public static final String AUTOAA_BAD_CHARS = "autoassignakeys.bad.characters";
+    // Translation Status colors
+    public static final String TRNS_STATUS_COLOR = "trnsstatus.color";
+
     private Properties current;
 
     /** Creates new Settings */
@@ -274,6 +279,12 @@ public class Settings {
         startup.setProperty(AUTOAA_CHAR_LIST,
                 "1234567890ABCDEFGHKLMNOPQRSTUVWXYZIJabcdefhkmnosuvwxyzijltrpgq");
         startup.setProperty(AUTOAA_BAD_CHARS, "fijltrpgq");
+
+        // Translation Status colors
+        for(TrnsStatus ts : TrnsStatus.values()) {
+            startup.setProperty(TRNS_STATUS_COLOR + "." + ts.toString().toLowerCase(),
+                    ts.colorAsRGBString());
+        }
 
         // create the real setting with default values
         current = new Properties(startup);

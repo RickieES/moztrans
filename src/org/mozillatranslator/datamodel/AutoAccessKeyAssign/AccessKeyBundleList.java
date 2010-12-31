@@ -28,6 +28,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import org.mozillatranslator.datamodel.Phrase;
 import org.mozillatranslator.datamodel.Translation;
+import org.mozillatranslator.datamodel.TrnsStatus;
 import org.mozillatranslator.kernel.Kernel;
 import org.mozillatranslator.kernel.Settings;
 
@@ -305,7 +306,7 @@ public class AccessKeyBundleList extends ArrayList<AccessKeyBundle> {
                 if (t == null) {
                     t = new Translation(this.locale, akb.getOriginal(),
                                         akb.getProposedValue(),
-                                        Translation.STATUS_TRANSLATED);
+                                        TrnsStatus.Translated);
                     akb.getOriginal().setKeepOriginal(false);
                     akb.getOriginal().addChild(t);
                 }

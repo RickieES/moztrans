@@ -87,11 +87,11 @@ public class CurrentAccessColumn implements ComplexColumn {
                     accessPhrase.getChildByName(currentLocalization);
             if (accessTranslation == null) {
                 accessTranslation = new Translation(currentLocalization,
-                        currentPhrase, strValue, Translation.STATUS_TRANSLATED);
+                        currentPhrase, strValue, TrnsStatus.Translated);
                 accessPhrase.addChild(accessTranslation);
             } else {
                 accessTranslation.setText(strValue);
-                accessTranslation.setStatus(Translation.STATUS_TRANSLATED);
+                accessTranslation.setStatus(TrnsStatus.Translated);
             }
         } else {
             currentPhrase.removeChild(currentPhrase.getChildByName(

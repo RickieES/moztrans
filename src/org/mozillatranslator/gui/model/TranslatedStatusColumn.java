@@ -32,7 +32,7 @@ import org.mozillatranslator.datamodel.*;
  * @version 1.0
  */
 public class TranslatedStatusColumn implements ComplexColumn {
-    private static final Class STATUS_CLASS = (new StatusCell(-1, "")).getClass();
+    private static final Class STATUS_CLASS = TrnsStatus.class;
 
     /** Creates new KeyColumn */
     public TranslatedStatusColumn() {
@@ -46,11 +46,11 @@ public class TranslatedStatusColumn implements ComplexColumn {
 
     @Override
     public Object getValue(Phrase currentPhrase, String currentLocalization) {
-        StatusCell result = StatusCell.getNoStatusCell();
+        TrnsStatus result = null;
         Translation currentTranslation = (Translation)
                 currentPhrase.getChildByName(currentLocalization);
         if (currentTranslation != null) {
-            result = StatusCell.lookupStatusCell(currentTranslation.getStatus());
+            result = currentTranslation.getStatus();
         }
         return result;
     }
@@ -75,11 +75,10 @@ public class TranslatedStatusColumn implements ComplexColumn {
     @Override
     public void setValue(Phrase currentPhrase, Object value,
             String currentLocalization) {
-        StatusCell cellValue = (StatusCell) value;
         Translation currentTranslation = (Translation)
                 currentPhrase.getChildByName(currentLocalization);
         if (currentTranslation != null) {
-            currentTranslation.setStatus(cellValue.getKey());
+            currentTranslation.setStatus((TrnsStatus) value);
         }
     }
 
@@ -90,28 +89,12 @@ public class TranslatedStatusColumn implements ComplexColumn {
 
     @Override
     public void init(JTable table) {
-        //do stuff
-    /*
-        public static final int STATUS_NOTSEEN=0;
-        public static final int STATUS_CHANGED    = 1;
-        public static final int STATUS_TRANSLATED = 2;
-        public static final int STATUS_ERROR=3;
-        public static final int STATUS_ACCEPTED=4;
-        public static final int STATUS_PERFECT=5;
-        public static final int STATUS_OTHER=6;
-        public static final int STATUS_MIGRATED=7;
-         */
         JComboBox editCombo = new JComboBox();
 
-        editCombo.addItem(StatusCell.lookupStatusCell(Translation.STATUS_NOTSEEN));
-        editCombo.addItem(StatusCell.lookupStatusCell(Translation.STATUS_CHANGED));
-        editCombo.addItem(StatusCell.lookupStatusCell(Translation.STATUS_TRANSLATED));
-        editCombo.addItem(StatusCell.lookupStatusCell(Translation.STATUS_ERROR));
-        editCombo.addItem(StatusCell.lookupStatusCell(Translation.STATUS_ACCEPTED));
-        editCombo.addItem(StatusCell.lookupStatusCell(Translation.STATUS_PERFECT));
-        editCombo.addItem(StatusCell.lookupStatusCell(Translation.STATUS_OTHER));
-        editCombo.addItem(StatusCell.lookupStatusCell(Translation.STATUS_MIGRATED));
-        table.setDefaultEditor(StatusCell.class, new DefaultCellEditor(editCombo));
+        for(TrnsStatus ts : TrnsStatus.values()) {
+            editCombo.addItem(ts);
+        }
+        table.setDefaultEditor(TrnsStatus.class, new DefaultCellEditor(editCombo));
     }
 
     @Override

@@ -25,7 +25,9 @@ package org.mozillatranslator.action;
 
 import java.awt.event.*;
 import javax.swing.*;
-import org.mozillatranslator.datamodel.*;
+import org.mozillatranslator.datamodel.Phrase;
+import org.mozillatranslator.datamodel.Translation;
+import org.mozillatranslator.datamodel.TrnsStatus;
 import org.mozillatranslator.gui.*;
 import org.mozillatranslator.kernel.*;
 
@@ -111,10 +113,10 @@ public class CopyToAllInRedundantView extends AbstractAction {
                             
                             if (destTranslation != null) {
                                 destTranslation.setText(sourceTransText);
-                                destTranslation.setStatus(Translation.STATUS_CHANGED);
+                                destTranslation.setStatus(TrnsStatus.Copied);
                             } else {
                                 destTranslation = new Translation(l10n, dest,
-                                        sourceTransText, Translation.STATUS_CHANGED);
+                                        sourceTransText, TrnsStatus.Copied);
                                 dest.addChild(destTranslation);
                             }
                         }

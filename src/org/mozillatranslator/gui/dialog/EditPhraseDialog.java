@@ -40,10 +40,10 @@ import org.mozillatranslator.datamodel.Phrase;
 import org.mozillatranslator.datamodel.PhraseList;
 import org.mozillatranslator.datamodel.Translation;
 import org.mozillatranslator.datamodel.TreeNode;
+import org.mozillatranslator.datamodel.TrnsStatus;
 import org.mozillatranslator.gui.MozFrame;
 import org.mozillatranslator.gui.SuggestionsKeyAdapter;
 import org.mozillatranslator.gui.ThreeDotKeyAdapter;
-import org.mozillatranslator.gui.model.StatusCell;
 import org.mozillatranslator.kernel.Kernel;
 import org.mozillatranslator.kernel.Settings;
 import org.mozillatranslator.util.GuiTools;
@@ -64,14 +64,9 @@ public class EditPhraseDialog extends javax.swing.JDialog {
         
         pl = new PhraseList(null);
         initComponents();
-        advTransstatusCombo.addItem(StatusCell.lookupStatusCell(Translation.STATUS_NOTSEEN));
-        advTransstatusCombo.addItem(StatusCell.lookupStatusCell(Translation.STATUS_CHANGED));
-        advTransstatusCombo.addItem(StatusCell.lookupStatusCell(Translation.STATUS_TRANSLATED));
-        advTransstatusCombo.addItem(StatusCell.lookupStatusCell(Translation.STATUS_ERROR));
-        advTransstatusCombo.addItem(StatusCell.lookupStatusCell(Translation.STATUS_ACCEPTED));
-        advTransstatusCombo.addItem(StatusCell.lookupStatusCell(Translation.STATUS_PERFECT));
-        advTransstatusCombo.addItem(StatusCell.lookupStatusCell(Translation.STATUS_OTHER));
-        advTransstatusCombo.addItem(StatusCell.lookupStatusCell(Translation.STATUS_MIGRATED));
+        for(TrnsStatus ts : TrnsStatus.values()) {
+            advTransstatusCombo.addItem(ts);
+        }
 
         originalArea.setLineWrap(true);
         originalArea.setWrapStyleWord(true);
@@ -710,7 +705,12 @@ public class EditPhraseDialog extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         advTransPanel.add(advTransStatusLabel, gridBagConstraints);
 
-        advTransstatusCombo.setFont(new java.awt.Font("Dialog", 0, 12));
+        advTransstatusCombo.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        advTransstatusCombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                advTransstatusComboActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
@@ -894,12 +894,13 @@ public class EditPhraseDialog extends javax.swing.JDialog {
         currentTranslation = (Translation) currentPhrase.getChildByName(l10n);
         String translation = translatedArea.getText();
         String comment = advTransCommentField.getText();
-        StatusCell cell = (StatusCell) advTransstatusCombo.getSelectedItem();
-        int status = cell.getKey();
+        TrnsStatus status = (TrnsStatus) advTransstatusCombo.getSelectedItem();
 
+        // If Keep Original status has changed, update value in the Phrase object
         if (currentPhrase.isKeepOriginal() != keepCheck.isSelected()) {
             currentPhrase.setKeepOriginal(keepCheck.isSelected());
         }
+
         currentPhrase.setFuzzy(false);
 
         if (translation.equals("")) {
@@ -908,12 +909,21 @@ public class EditPhraseDialog extends javax.swing.JDialog {
             }
         } else {
             if (currentTranslation == null) {
-                currentTranslation = new Translation(l10n,currentPhrase, translation, status);
+                currentTranslation = new Translation(l10n,currentPhrase,
+                        translation, (status != TrnsStatus.Untranslated) ?
+                                     status : TrnsStatus.Translated);
                 currentTranslation.setComment(comment);
                 currentPhrase.addChild(currentTranslation);
             } else {
                 if (!currentTranslation.getText().equals(translation)) {
                     currentTranslation.setText(translation);
+                    
+                    // If the user has added/edited the translation and has not
+                    // explicitly set the translation status, let's set it to
+                    // Translated
+                    if (currentTranslation.getStatus() != status) {
+                        status = TrnsStatus.Translated;
+                    }
                 }
 
                 if ((currentTranslation.getComment() != null)
@@ -939,11 +949,11 @@ public class EditPhraseDialog extends javax.swing.JDialog {
                 if (accessTranslation == null) {
                     accessTranslation = new Translation(l10n,accessConnection,
                                                         translation,
-                                                        Translation.STATUS_CHANGED);
+                                                        TrnsStatus.Translated);
                     accessConnection.addChild(accessTranslation);
                 } else {
                     accessTranslation.setText(translation);
-                    accessTranslation.setStatus(Translation.STATUS_CHANGED);
+                    accessTranslation.setStatus(TrnsStatus.Translated);
                 }
             }
         }
@@ -960,11 +970,11 @@ public class EditPhraseDialog extends javax.swing.JDialog {
                 if (commandTranslation == null) {
                     commandTranslation = new Translation(l10n,commandConnection,
                                                          translation,
-                                                         Translation.STATUS_CHANGED);
+                                                         TrnsStatus.Translated);
                     commandConnection.addChild(commandTranslation);
                 } else {
                     commandTranslation.setText(translation);
-                    commandTranslation.setStatus(Translation.STATUS_CHANGED);
+                    commandTranslation.setStatus(TrnsStatus.Translated);
                 }
             }
         }
@@ -1003,6 +1013,11 @@ private void suggestionButtonActionPerformed(java.awt.event.ActionEvent evt) {//
     suggestionDialog.pack();
     suggestionDialog.setVisible(true);
 }//GEN-LAST:event_suggestionButtonActionPerformed
+
+private void advTransstatusComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_advTransstatusComboActionPerformed
+    TrnsStatus t = (TrnsStatus) advTransstatusCombo.getSelectedItem();
+    advTransstatusCombo.setToolTipText(t.description());
+}//GEN-LAST:event_advTransstatusComboActionPerformed
 
     /**
      * Shows the EditPhrase dialog
@@ -1118,8 +1133,7 @@ private void suggestionButtonActionPerformed(java.awt.event.ActionEvent evt) {//
         if (currentTranslation != null) {
             translatedArea.setText(currentTranslation.getText());
             advTransCommentField.setText(currentTranslation.getComment());
-            advTransstatusCombo.setSelectedItem(StatusCell.lookupStatusCell(
-                    currentTranslation.getStatus()));
+            advTransstatusCombo.setSelectedItem(currentTranslation.getStatus());
         } else {
             translatedArea.setText("");
             advTransCommentField.setText("");

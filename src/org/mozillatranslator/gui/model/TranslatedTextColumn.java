@@ -109,11 +109,11 @@ public class TranslatedTextColumn implements ComplexColumn {
 
             if (currentTranslation == null) {
                 currentTranslation = new Translation(currentLocalization,
-                        currentPhrase, strValue, Translation.STATUS_TRANSLATED);
+                        currentPhrase, strValue, TrnsStatus.Translated);
                 currentPhrase.addChild(currentTranslation);
             } else {
                 currentTranslation.setText(strValue);
-                currentTranslation.setStatus(Translation.STATUS_TRANSLATED);
+                currentTranslation.setStatus(TrnsStatus.Translated);
             }
         } else {
             currentPhrase.removeChild(currentPhrase.getChildByName(

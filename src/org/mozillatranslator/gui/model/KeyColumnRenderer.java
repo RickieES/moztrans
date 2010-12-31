@@ -24,9 +24,14 @@
 
 package org.mozillatranslator.gui.model;
 
+import java.awt.Color;
 import java.awt.Font;
+import java.util.StringTokenizer;
 import javax.swing.table.DefaultTableCellRenderer;
 import org.mozillatranslator.datamodel.Phrase;
+import org.mozillatranslator.datamodel.Translation;
+import org.mozillatranslator.kernel.Kernel;
+import org.mozillatranslator.kernel.Settings;
 
 /** This renderer allows us to "mark" the Key column in different ways based on
  * the Phrase showed. This means that KeyColumn.getValue returns the whole
@@ -43,6 +48,7 @@ public class KeyColumnRenderer extends DefaultTableCellRenderer {
     @Override
     public void setValue(Object value) {
         Phrase currentPhrase = (Phrase) value;
+        StringTokenizer st;
         
         if (currentPhrase.getLocalizationNote() != null) {
             String regularFontName = getFont().getFamily();
@@ -50,7 +56,33 @@ public class KeyColumnRenderer extends DefaultTableCellRenderer {
             
             this.setFont(new Font(regularFontName, Font.BOLD, regularFontSize));
         }
-        
+
+        if (currentPhrase.isKeepOriginal()) {
+            st = new StringTokenizer(Kernel.settings.getString(Settings.TRNS_STATUS_COLOR
+                    +".translated"),",");
+            this.setBackground(new Color(Integer.parseInt(st.nextToken()),
+                                         Integer.parseInt(st.nextToken()),
+                                         Integer.parseInt(st.nextToken())));
+            this.setToolTipText("This phrase is set to Keep Original");
+        } else {
+            Translation t = (Translation) currentPhrase.getChildByName("es-ES");
+            if (t == null) {
+                st = new StringTokenizer(Kernel.settings.getString(Settings.TRNS_STATUS_COLOR
+                        + ".untranslated"),",");
+                this.setBackground(new Color(Integer.parseInt(st.nextToken()),
+                                             Integer.parseInt(st.nextToken()),
+                                             Integer.parseInt(st.nextToken())));
+                this.setToolTipText("Translation status of this phrase is Untranslated");
+            } else {
+                st = new StringTokenizer(Kernel.settings.getString(Settings.TRNS_STATUS_COLOR
+                        + "." + t.getStatus().toString().toLowerCase()),",");
+                this.setBackground(new Color(Integer.parseInt(st.nextToken()),
+                                             Integer.parseInt(st.nextToken()),
+                                             Integer.parseInt(st.nextToken())));
+                this.setToolTipText("Translation status of this phrase is "
+                                    + t.getStatus());
+            }
+        }
         setText(currentPhrase.getName());
     }
 }

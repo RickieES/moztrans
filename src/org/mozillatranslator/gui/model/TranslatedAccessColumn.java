@@ -73,18 +73,20 @@ public class TranslatedAccessColumn implements ComplexColumn {
     }
 
     @Override
-    public void setValue(Phrase currentPhrase, Object value, String currentLocalization) {
+    public void setValue(Phrase currentPhrase, Object value,
+            String currentLocalization) {
         String strValue = (String) value;
         Phrase accessPhrase = currentPhrase.getAccessConnection();
 
         if (!strValue.equals("")) {
             Translation accessTranslation = (Translation) accessPhrase.getChildByName(currentLocalization);
             if (accessTranslation == null) {
-                accessTranslation = new Translation(currentLocalization, currentPhrase, strValue, Translation.STATUS_TRANSLATED);
+                accessTranslation = new Translation(currentLocalization,
+                        currentPhrase, strValue, TrnsStatus.Translated);
                 accessPhrase.addChild(accessTranslation);
             } else {
                 accessTranslation.setText(strValue);
-                accessTranslation.setStatus(Translation.STATUS_TRANSLATED);
+                accessTranslation.setStatus(TrnsStatus.Translated);
             }
         } else {
             accessPhrase.removeChild(accessPhrase.getChildByName(currentLocalization));

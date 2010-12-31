@@ -54,7 +54,7 @@ public class ComplexTableModel extends AbstractTableModel {
         init(p, c, l);
     }
 
-    public void init(List p, List c, String l) {
+    public final void init(List p, List c, String l) {
         phrases = p;
         columns = c;
         currentLocalization = l;

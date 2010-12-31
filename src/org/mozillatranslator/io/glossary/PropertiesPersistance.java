@@ -877,6 +877,7 @@ public class PropertiesPersistance implements GlossaryAccess {
         Phrase labelPhrase;
         ExternalEntity currentEntity;
         ArrayList entitiesList = null;
+        TrnsStatus t;
 
         boolean keep;
         boolean fuzzy;
@@ -1011,7 +1012,6 @@ public class PropertiesPersistance implements GlossaryAccess {
             } catch (NullPointerException e) {
                 System.err.println("Error while trying to access to object created after: "
                         + key + " in file " + currentFile + " with the text " + text);
-                e.printStackTrace();
             }
 
             translationMax = Integer.parseInt(model.getProperty("" + phrasePrefix + COUNT));
@@ -1019,14 +1019,15 @@ public class PropertiesPersistance implements GlossaryAccess {
                 translationPrefix = phrasePrefix + "." + translationCount;
 
                 name = model.getProperty(translationPrefix + NAME);
+
                 try {
-                    status = Integer.parseInt(model.getProperty(translationPrefix
-                            + TRANSLATION_STATUS));
-                } catch (NumberFormatException ex) {
-                    System.err.println("Error while trying to access to object created after: "
-                            + key + " in file " + currentFile + " with the text " + text);
-                    ex.printStackTrace();
-                    status = Translation.STATUS_NOTSEEN;
+                    t = TrnsStatus.valueOf(model.getProperty(translationPrefix
+                                + TRANSLATION_STATUS));
+                } catch (IllegalArgumentException e) {
+                    t = (text.trim().length() == 0) ?
+                            TrnsStatus.Untranslated :
+                            (currentPhrase.isFuzzy()) ? TrnsStatus.Modified :
+                                                        TrnsStatus.Translated;
                 }
                 text = model.getProperty(translationPrefix + TRANSLATION_TEXT);
                 comment = model.getProperty(translationPrefix + TRANSLATION_COMMENT);
@@ -1035,7 +1036,8 @@ public class PropertiesPersistance implements GlossaryAccess {
 
                 currentTranslation = (Translation) currentPhrase.getChildByName(name);
                 if (currentTranslation == null) {
-                    currentTranslation = new Translation(name, currentPhrase, text, status);
+                    currentTranslation = new Translation(name, currentPhrase,
+                            text, t);
                     currentPhrase.addChild(currentTranslation);
                 }
 

@@ -63,6 +63,7 @@ public class MigrateProductTraverse extends EmptyTraverseCommand {
      * @param currentNode The source product child
      * @return true if a match is found in the destination, otherwise false
      **/
+    @Override
     public boolean action(ProductChild currentNode) {
         destProductChild = (destProduct != null) ? (ProductChild)
                 destProduct.getChildByName(currentNode.getName()) : null;
@@ -77,6 +78,7 @@ public class MigrateProductTraverse extends EmptyTraverseCommand {
      * @param currentNode The current component
      * @return true if a match is found in the destination, otherwise false
      **/
+    @Override
     public boolean action(Component currentNode) {
         Component newLevel = null;
         
@@ -111,6 +113,7 @@ public class MigrateProductTraverse extends EmptyTraverseCommand {
      * @param currentNode the current file
      * @return true if a match is found in the destination, otherwise false
      **/
+    @Override
     public boolean action(GenericFile currentNode) {
         Component parentOrigComp = (Component) currentNode.getParent();
         Component curDestComp = (Component) componentStack.peek();
@@ -135,6 +138,7 @@ public class MigrateProductTraverse extends EmptyTraverseCommand {
      * @param currentNode The currentPhrase
      * @return true if a match is found in the destination, otherwise false
      **/
+    @Override
     public boolean action(Phrase currentNode) {
         Translation sourceTranslation, destTranslation;
         
@@ -150,7 +154,8 @@ public class MigrateProductTraverse extends EmptyTraverseCommand {
                 
                 if (destTranslation == null) {
                     destTranslation = new Translation(l10n, destPhrase,
-                            sourceTranslation.getText(), Translation.STATUS_MIGRATED);
+                            sourceTranslation.getText(),
+                            sourceTranslation.getStatus());
                     destPhrase.addChild(destTranslation);
                 }
             }
@@ -163,6 +168,7 @@ public class MigrateProductTraverse extends EmptyTraverseCommand {
      *
      * @param currentNode The current Component
      **/
+    @Override
     public void postop(Component currentNode) {
         Component thisLevel = (componentStack.empty()) ? null : (Component) componentStack.peek();
         
@@ -176,6 +182,7 @@ public class MigrateProductTraverse extends EmptyTraverseCommand {
      *
      * @param currentNode The current file
      **/
+    @Override
     public void postop(GenericFile currentNode) {
         currentNode.decreaseReferenceCount();
         if (destFile != null) {

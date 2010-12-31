@@ -80,6 +80,7 @@ public abstract class FileAccessAdapter implements FileAccess {
      *
      * @param dataObject The dataObject passed to the subclass methods.
      **/
+    @Override
     public void save(ImportExportDataObject dataObject) {
         Phrase currentPhrase;
         Translation currentTranslation;
@@ -117,7 +118,7 @@ public abstract class FileAccessAdapter implements FileAccess {
             // file access (like DTDAccess or PropertiesAccess)
             endWrite(dataObject);
         } catch (MozIOException e) {
-            fLogger.severe("Unable to write file " + e.getMessage());
+            fLogger.log(Level.SEVERE, "Unable to write file {0}", e.getMessage());
         }
     }
 
@@ -163,6 +164,7 @@ public abstract class FileAccessAdapter implements FileAccess {
      *
      * @param   dataObject  the dataObject passed to the subclass methods
      **/
+    @Override
     public void load(ImportExportDataObject dataObject) {
         String key = null;
         String value = null;
@@ -216,14 +218,14 @@ public abstract class FileAccessAdapter implements FileAccess {
                     if (commentMap != null) {
                         l10nNote = (String) commentMap.get(key);
                         if (l10nNote != null) {
-                            fLogger.info("Comment found for " + key);
+                            fLogger.log(Level.INFO, "Comment found for {0}", key);
                             currentPhrase.setLocalizationNote(l10nNote);
                         }
                     }
 
                     currentPhrase.setSort(sortIndex++);
-                    fLogger.fine("Set Phrase " + currentPhrase + " to sort" +
-                            (sortIndex - 1));
+                    fLogger.log(Level.FINE, "Set Phrase {0} to sort{1}",
+                            new Object[]{currentPhrase, sortIndex - 1});
                     currentPhrase.setMark();
                 } else {
                     if (currentPhrase != null) {
@@ -233,7 +235,7 @@ public abstract class FileAccessAdapter implements FileAccess {
                         if (!value.equals(currentPhrase.getText())) {
                             if (currentTranslation == null) {
                                 currentTranslation = new Translation(dataObject.getL10n(),
-                                        currentPhrase, value, Translation.STATUS_CHANGED);
+                                        currentPhrase, value, TrnsStatus.Untranslated);
                                 currentPhrase.addChild(currentTranslation);
                                 dataObject.getChangeList().add(currentPhrase);
                             } else {
@@ -251,8 +253,7 @@ public abstract class FileAccessAdapter implements FileAccess {
             // file access (like DTDAccess or PropertiesAccess)
             endRead(dataObject);
         } catch (MozIOException e) {
-            fLogger.severe("Unable to read file: " + e.getMessage());
-            e.printStackTrace();
+            fLogger.log(Level.SEVERE, "Unable to read file: {0}", e.getMessage());
         }
     }
 
@@ -265,11 +266,6 @@ public abstract class FileAccessAdapter implements FileAccess {
      * @param   currentFile     the current file
      **/
     private void findConnections(Phrase currentPhrase, GenericFile currentFile) {
-        Phrase accessPhrase;
-        Phrase commandPhrase;
-        Phrase labelPhrase;
-        String key = currentPhrase.getName();
-
         if (currentPhrase.isLabel()) {
             currentPhrase.linkLabel2Keys(true);
         } else if (currentPhrase.isAccesskey()) {
@@ -332,6 +328,7 @@ public abstract class FileAccessAdapter implements FileAccess {
             MozIOException;
 
     class FileAccessAdaptorComparator implements java.util.Comparator {
+        @Override
         public int compare(Object o1, Object o2) {
             Phrase p1 = (Phrase) o1;
             Phrase p2 = (Phrase) o2;
