@@ -40,9 +40,9 @@ public enum TrnsStatus {
             + "match with the best possible coincidence", new Color(244, 220, 102)),
     Proposed ("en-US string that has been auto-translated based on a 100% match "
             + "with the most repeated translation among two or more",
-            new Color(244, 232, 148)),
+            new Color(224, 255, 153)),
     Copied ("en-US string that has been auto-translated based on a 100% match "
-            + "with only one translation", new Color(244, 244, 196)),
+            + "with only one translation", new Color(51, 255, 51)),
     Translated ("en-US string with Keep Original set or manually translated",
             Color.WHITE);
 
