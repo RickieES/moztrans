@@ -892,9 +892,12 @@ public class EditPhraseDialog extends javax.swing.JDialog {
     private void onApply() {
         Translation currentTranslation;
         currentTranslation = (Translation) currentPhrase.getChildByName(l10n);
-        String translation = translatedArea.getText();
+        String translation;
         String comment = advTransCommentField.getText();
         TrnsStatus status = (TrnsStatus) advTransstatusCombo.getSelectedItem();
+
+        // We change any real newline for corresponding escape code
+        translation = translatedArea.getText().replace("\n", "\\\n");
 
         // If Keep Original status has changed, update value in the Phrase object
         if (currentPhrase.isKeepOriginal() != keepCheck.isSelected()) {
