@@ -103,8 +103,7 @@ public class PropertiesAccess extends FileAccessAdapter {
         if (isIniFile && key.startsWith("section.")) {
             line = key.substring(key.indexOf('[')) + "\n";
         } else {
-            // Just in case, we replace any newline with the corresponding escape code
-            line = key + ((isIniFile) ? "=" : " = ") + value.replace("\n", "\\\n") + "\n";
+            line = key + ((isIniFile) ? "=" : " = ") + value + "\n";
         }
         
         try {
