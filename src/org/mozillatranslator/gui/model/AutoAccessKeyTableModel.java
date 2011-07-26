@@ -131,14 +131,14 @@ public class AutoAccessKeyTableModel extends AbstractTableModel {
     @Override
     public void setValueAt(Object value, int row, int col) {
         switch (col) {
-            case 3: data.get(row).setFuzzy(new Boolean(value.toString()));
+            case 3: data.get(row).setFuzzy(Boolean.valueOf(value.toString()));
                     break;
             case 5: try {
                         data.get(row).setProposedValue(value.toString().substring(0, 1));
                     } catch (NullPointerException e) {
                         data.get(row).setProposedValue("");
                     }
-break;
+                    break;
             default:
         }
         fireTableCellUpdated(row, col);
