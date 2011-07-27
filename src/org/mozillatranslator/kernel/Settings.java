@@ -102,6 +102,7 @@ public class Settings {
     public static final String QA_PAIRED_CHARS_LIST = "qa.paired_chars_list";
     // Suggestions related preferences
     public static final String USE_SUGGESTIONS = "suggestions.enabled";
+    public static final String SUGGESTIONS_MATCH_VALUE = "suggestions.match.value";
     // GUI parameters
     public static final String GUI_IMPORT_FILE_CHOOSER_PATH = "gui.filechooser.import.lastpath";
     public static final String GUI_EXPORT_FILE_CHOOSER_PATH = "gui.filechooser.export.lastpath";
@@ -181,6 +182,7 @@ public class Settings {
 
         // Suggestions preferences
         startup.setProperty(USE_SUGGESTIONS, "true");
+        startup.setProperty(SUGGESTIONS_MATCH_VALUE, "80");
 
         // Do we want to replace en-US with ab-CD on exporting?
         startup.setProperty(EXPORT_REPLACE_ENUS, "false");

@@ -28,15 +28,23 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ListModel;
 import javax.swing.event.ListDataListener;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.TableModel;
 
 /**
  * A list of phrases, used for a basic suggestions feature
  * @author rpalomares
  */
-public class PhraseList extends ArrayList<Phrase> implements ListModel {
-    private int cycleIndex = 0;
+public class PhraseList extends ArrayList<Phrase> implements ListModel,
+        TableModel {
+    private static final String[] columnNames = {"Match %",
+                                                 "Suggestion",
+                                                 "en-US value"};
+    private static final int[] columnWidths = {20, 200, 150};
+    private int cycleIndex = -1;
     private String l10n;
     private List<ListDataListener> ldls = new ArrayList<ListDataListener>();
+    private int[] matchPercentage;
     
     /**
      * Especial constructor for this class
@@ -77,9 +85,9 @@ public class PhraseList extends ArrayList<Phrase> implements ListModel {
         if (this.size() > 0) {
             // The list could have been reduced since the last time we cycle
             // on it, so we make sure cycleIndex is not outside the list bounds
+            cycleIndex++;
             cycleIndex = (cycleIndex >= this.size()) ? 0 : cycleIndex;
             p = this.get(cycleIndex);
-            cycleIndex++;
             cycleIndex = (cycleIndex >= this.size()) ? 0 : cycleIndex;
         }
         return p;
@@ -92,6 +100,16 @@ public class PhraseList extends ArrayList<Phrase> implements ListModel {
     public int getCurrentIndex() {
         return cycleIndex;
     }
+
+    /**
+     * Sets the current value of the cycle index for suggestions
+     * @param cycleIndex the value of the cycle index to be set
+     */
+    public void setCycleIndex(int cycleIndex) {
+        this.cycleIndex = cycleIndex;
+    }
+
+
     
     /**
      * Returns the first element in the list
@@ -130,5 +148,131 @@ public class PhraseList extends ArrayList<Phrase> implements ListModel {
     @Override
     public void removeListDataListener(ListDataListener l) {
         this.ldls.remove(l);
+    }
+
+    public void calculateMatchPercentage(Phrase p) {
+        this.matchPercentage = new int[this.getSize()];
+        int referenceLength = p.getText().length();
+        int levDistance;
+
+        for(int i = 0; i < this.matchPercentage.length; i++) {
+            levDistance = TranslationSuggestions.getLevenshteinDistance(p.getText(),
+                            this.get(i).getText());
+            this.matchPercentage[i] = ((referenceLength - levDistance) * 100 / referenceLength);
+        }
+        this.sortOnMatchPercentageValue();
+    }
+
+    public void setMatchPercentage(int index, int value) {
+        this.matchPercentage[index] = value;
+    }
+
+    public int getMatchPercentage(int index) {
+        return this.matchPercentage[index];
+    }
+
+    public int getCurrentMatchPercentage() {
+        return getMatchPercentage(this.cycleIndex);
+    }
+
+    public void sortOnMatchPercentageValue() {
+        // We use the selection algorithm, since most of the time we will be
+        // dealing with tiny lists with less than 10 elements
+        for(int i = 0; i < this.matchPercentage.length - 1; i++) {
+            int max = this.matchPercentage[i];
+            int pos = i;
+            for(int j = i; j < this.matchPercentage.length; j++) {
+                if (max < this.matchPercentage[j]) {
+                    max = this.matchPercentage[j];
+                    pos = j;
+                }
+            }
+            // Exchange items, not only in the matchPercentage array, but
+            // the corresponding Phrase objects, too
+            int tempValue = this.matchPercentage[i];
+            this.matchPercentage[i] = this.matchPercentage[pos];
+            this.matchPercentage[pos] = tempValue;
+            Phrase tempPhrase = this.get(i);
+            this.set(i, this.get(pos));
+            this.set(pos, tempPhrase);
+        }
+   }
+
+    @Override
+    public int getRowCount() {
+        return this.size();
+    }
+
+    @Override
+    public int getColumnCount() {
+        return columnNames.length;
+    }
+
+    @Override
+    public String getColumnName(int columnIndex) {
+        if ((columnIndex >=0) && (columnIndex <= columnNames.length)) {
+            return columnNames[columnIndex];
+        } else {
+            return "";
+        }
+    }
+
+    @Override
+    public Class<?> getColumnClass(int columnIndex) {
+        return getValueAt(0, columnIndex).getClass();
+    }
+
+    @Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return false;
+    }
+
+    @Override
+    public Object getValueAt(int rowIndex, int columnIndex) {
+        try {
+            Phrase item = this.get(rowIndex);
+            switch (columnIndex) {
+                case 0: // Match percentage
+                    return this.getMatchPercentage(rowIndex);
+                case 1: // Suggestion value
+                    if (item.getChildByName(l10n) != null) {
+                        return ((Translation) item.getChildByName(l10n)).getText();
+                    } else {
+                        return item.getText() + " (Keep Original)";
+                    }
+                case 2: // Original en-US value
+                    return item.getText();
+                default:
+                    return "";
+            }
+        } catch (IndexOutOfBoundsException e) {
+            return "";
+        }
+    }
+
+    /**
+     * Returns the preferred column widths
+     * @param index the column index whose preferred width we want to know
+     * @return the preferred index for the column[idx], or 50 for unknown columns
+     */
+    public int getColumnDefaultWidth(int index) {
+        if ((index >=0) && (index <= columnWidths.length)) {
+            return columnWidths[index];
+        } else {
+            return 50;
+        }
+    }
+
+    @Override
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void addTableModelListener(TableModelListener l) {
+    }
+
+    @Override
+    public void removeTableModelListener(TableModelListener l) {
     }
 }

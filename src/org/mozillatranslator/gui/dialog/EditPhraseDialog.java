@@ -19,6 +19,7 @@
  *
  * Contributor(s):
  * Henrik Lynggaard Hansen (Initial Code)
+ * Ricardo Palomares
  *
  */
 
@@ -35,7 +36,9 @@ import javax.swing.event.UndoableEditEvent;
 import java.awt.event.ActionEvent;
 import javax.swing.undo.CannotUndoException;
 import javax.swing.KeyStroke;
+import javax.swing.table.TableColumn;
 import javax.swing.undo.CannotRedoException;
+import org.mozillatranslator.datamodel.GenericFile;
 import org.mozillatranslator.datamodel.Phrase;
 import org.mozillatranslator.datamodel.PhraseList;
 import org.mozillatranslator.datamodel.Translation;
@@ -61,7 +64,7 @@ public class EditPhraseDialog extends javax.swing.JDialog {
         f = new Font(Kernel.settings.getString(Settings.FONT_EDITPHRASE_NAME),
                      Kernel.settings.getInteger(Settings.FONT_EDITPHRASE_STYLE),
                      Kernel.settings.getInteger(Settings.FONT_EDITPHRASE_SIZE));
-        
+
         pl = new PhraseList(null);
         initComponents();
         for(TrnsStatus ts : TrnsStatus.values()) {
@@ -78,7 +81,7 @@ public class EditPhraseDialog extends javax.swing.JDialog {
 
         getRootPane().setDefaultButton(closeButton);
         GuiTools.placeFrameAtCenter(this);
-        
+
         tdka = new ThreeDotKeyAdapter();
         SuggestionsKeyAdapter sgka = new SuggestionsKeyAdapter();
         translatedArea.addKeyListener(tdka);
@@ -97,7 +100,7 @@ public class EditPhraseDialog extends javax.swing.JDialog {
         suggestionDialog = new javax.swing.JDialog();
         suggDescLabel = new javax.swing.JLabel();
         suggScrollPane = new javax.swing.JScrollPane();
-        suggList = new javax.swing.JList();
+        suggTable = new javax.swing.JTable();
         suggButtonPanel = new javax.swing.JPanel();
         suggOkButton = new javax.swing.JButton();
         suggCancelButton = new javax.swing.JButton();
@@ -126,6 +129,7 @@ public class EditPhraseDialog extends javax.swing.JDialog {
         translatedArea = new javax.swing.JTextArea();
         translatedLabel = new javax.swing.JLabel();
         suggestionButton = new javax.swing.JButton();
+        emptyLabel = new javax.swing.JLabel();
         advancedPanel = new javax.swing.JPanel();
         advInfoPanel = new javax.swing.JPanel();
         advInfoProductLabel = new javax.swing.JLabel();
@@ -163,13 +167,17 @@ public class EditPhraseDialog extends javax.swing.JDialog {
 
         suggestionDialog.setTitle("List of suggestions");
         suggestionDialog.setModal(true);
-        suggestionDialog.getContentPane().setLayout(new java.awt.BorderLayout(1, 1));
 
         suggDescLabel.setText("Select entry and click OK, or click Cancel to exit");
-        suggestionDialog.getContentPane().add(suggDescLabel, java.awt.BorderLayout.NORTH);
+        suggestionDialog.getContentPane().add(suggDescLabel, java.awt.BorderLayout.PAGE_START);
 
-        suggList.setModel(pl);
-        suggScrollPane.setViewportView(suggList);
+        suggScrollPane.setMinimumSize(new java.awt.Dimension(300, 60));
+        suggScrollPane.setPreferredSize(new java.awt.Dimension(452, 102));
+
+        suggTable.setAutoCreateRowSorter(true);
+        suggTable.setModel(pl);
+        suggTable.setAutoscrolls(false);
+        suggScrollPane.setViewportView(suggTable);
 
         suggestionDialog.getContentPane().add(suggScrollPane, java.awt.BorderLayout.CENTER);
 
@@ -195,7 +203,7 @@ public class EditPhraseDialog extends javax.swing.JDialog {
         });
         suggButtonPanel.add(suggCancelButton);
 
-        suggestionDialog.getContentPane().add(suggButtonPanel, java.awt.BorderLayout.SOUTH);
+        suggestionDialog.getContentPane().add(suggButtonPanel, java.awt.BorderLayout.PAGE_END);
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -371,7 +379,7 @@ public class EditPhraseDialog extends javax.swing.JDialog {
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.gridheight = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 1.0;
@@ -391,7 +399,8 @@ public class EditPhraseDialog extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         translatedPanel.add(translatedLabel, gridBagConstraints);
 
-        suggestionButton.setText("No sug.");
+        suggestionButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/mozillatranslator/resource/dialog-information.png"))); // NOI18N
+        suggestionButton.setText("<html><center>No sug.<br>40%</center></html>");
         suggestionButton.setToolTipText("Click to see the list of available suggestions");
         suggestionButton.setEnabled(false);
         suggestionButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -405,8 +414,18 @@ public class EditPhraseDialog extends javax.swing.JDialog {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weighty = 0.5;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         translatedPanel.add(suggestionButton, gridBagConstraints);
+
+        emptyLabel.setText(" ");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        translatedPanel.add(emptyLabel, gridBagConstraints);
 
         lowersplitPanel.add(translatedPanel, java.awt.BorderLayout.CENTER);
 
@@ -705,7 +724,7 @@ public class EditPhraseDialog extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         advTransPanel.add(advTransStatusLabel, gridBagConstraints);
 
-        advTransstatusCombo.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        advTransstatusCombo.setFont(new java.awt.Font("Dialog", 0, 12));
         advTransstatusCombo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 advTransstatusComboActionPerformed(evt);
@@ -764,7 +783,7 @@ public class EditPhraseDialog extends javax.swing.JDialog {
     public void setFontForOriginal(Font f) {
         originalArea.setFont(f);
     }
-    
+
     /**
      * Sets the font for Translated textarea
      * @param f The font to set
@@ -772,7 +791,7 @@ public class EditPhraseDialog extends javax.swing.JDialog {
     public void setFontForTranslated(Font f) {
         translatedArea.setFont(f);
     }
-    
+
     /**
      * Performs an action on [Alt]+[s] keystroke consisting of
      * getting the next Phrase in the suggestions list and (by calling
@@ -786,11 +805,8 @@ public class EditPhraseDialog extends javax.swing.JDialog {
                 setNextSuggestion(p);
             }
         }
-        int s = pl.size();
-        int p = (pl.getCurrentIndex() == 0) ? s : pl.getCurrentIndex();
-        this.suggestionButton.setText(p + "/" + s);
     }
-    
+
     /**
      * Replaces translatedArea text and KeepOriginal flag with
      * appropiate values based on the Phrase passed as a parameter
@@ -805,6 +821,20 @@ public class EditPhraseDialog extends javax.swing.JDialog {
             translatedArea.setText("");
         }
         this.keepCheck.setSelected(p.isKeepOriginal());
+
+        if (pl.getCurrentMatchPercentage() > 99) {
+            suggestionButton.setIcon(this.suggCopiedIcon);
+        } else if (pl.getCurrentMatchPercentage() >
+                   Kernel.settings.getInteger(Settings.SUGGESTIONS_MATCH_VALUE)) {
+            suggestionButton.setIcon(this.suggProposIcon);
+        } else {
+            suggestionButton.setIcon(this.suggApproxIcon);
+        }
+        int s = pl.size();
+        int pos = pl.getCurrentIndex() + 1;
+        this.suggestionButton.setText("<html><center>" + pos + "/" + s + "<br>" +
+                            pl.getCurrentMatchPercentage() + "%</center></html>");
+        this.repaint();
     }
 
     /**
@@ -840,7 +870,7 @@ public class EditPhraseDialog extends javax.swing.JDialog {
             nextButton.setEnabled(false);
         }
         loadPhrase();
-        
+
         translatedArea.requestFocusInWindow();
     }//GEN-LAST:event_nextButtonPressed
 
@@ -896,8 +926,12 @@ public class EditPhraseDialog extends javax.swing.JDialog {
         String comment = advTransCommentField.getText();
         TrnsStatus status = (TrnsStatus) advTransstatusCombo.getSelectedItem();
 
-        // We change any real newline for corresponding escape code
-        translation = translatedArea.getText().replace("\n", "\\\n");
+        if (((GenericFile) currentPhrase.getParent()).getTypeName().equals("Properties")) {
+            // We change any real newline for corresponding escape code
+            translation = translatedArea.getText().replaceAll("([^\\\\])\\n", "$1\\\\\n");
+        } else {
+            translation = translatedArea.getText();
+        }
 
         // If Keep Original status has changed, update value in the Phrase object
         if (currentPhrase.isKeepOriginal() != keepCheck.isSelected()) {
@@ -920,7 +954,7 @@ public class EditPhraseDialog extends javax.swing.JDialog {
             } else {
                 if (!currentTranslation.getText().equals(translation)) {
                     currentTranslation.setText(translation);
-                    
+
                     // If the user has added/edited the translation and has not
                     // explicitly set the translation status, let's set it to
                     // Translated
@@ -996,22 +1030,21 @@ public class EditPhraseDialog extends javax.swing.JDialog {
         translatedArea.requestFocusInWindow();
     }//GEN-LAST:event_closeDialog
 
-private void suggCancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_suggCancelButtonActionPerformed
-    suggestionDialog.setVisible(false);
-}//GEN-LAST:event_suggCancelButtonActionPerformed
-
-private void suggOkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_suggOkButtonActionPerformed
-    int i = this.suggList.getSelectedIndex();
-    if (i != -1) {
-        Phrase p = pl.get(i);
-        setNextSuggestion(p);
-    }
-    suggestionDialog.setVisible(false);
-}//GEN-LAST:event_suggOkButtonActionPerformed
-
 private void suggestionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_suggestionButtonActionPerformed
+    /*
     suggestionDialog.getRootPane().setDefaultButton(suggOkButton);
-    GuiTools.placeFrameAtCenter(suggestionDialog);           
+    GuiTools.placeFrameAtCenter(suggestionDialog);
+    suggestionDialog.repaint();
+    suggestionDialog.pack();
+    suggestionDialog.setVisible(true);
+    */
+    suggTable.setModel(pl);
+    for(int i = 0; i < pl.getColumnCount(); i++) {
+        TableColumn col = suggTable.getColumnModel().getColumn(i);
+        col.setPreferredWidth(pl.getColumnDefaultWidth(i));
+    }
+    suggestionDialog.getRootPane().setDefaultButton(suggOkButton);
+    GuiTools.placeFrameAtCenter(suggestionDialog);
     suggestionDialog.repaint();
     suggestionDialog.pack();
     suggestionDialog.setVisible(true);
@@ -1021,6 +1054,20 @@ private void advTransstatusComboActionPerformed(java.awt.event.ActionEvent evt) 
     TrnsStatus t = (TrnsStatus) advTransstatusCombo.getSelectedItem();
     advTransstatusCombo.setToolTipText(t.description());
 }//GEN-LAST:event_advTransstatusComboActionPerformed
+
+private void suggOkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_suggOkButtonActionPerformed
+    int i = this.suggTable.getSelectedRow();
+    if (i != -1) {
+        Phrase p = pl.get(i);
+        pl.setCycleIndex(i);
+        setNextSuggestion(p);
+    }
+    suggestionDialog.setVisible(false);
+}//GEN-LAST:event_suggOkButtonActionPerformed
+
+private void suggCancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_suggCancelButtonActionPerformed
+    suggestionDialog.setVisible(false);
+}//GEN-LAST:event_suggCancelButtonActionPerformed
 
     /**
      * Shows the EditPhrase dialog
@@ -1049,7 +1096,7 @@ private void advTransstatusComboActionPerformed(java.awt.event.ActionEvent evt) 
         } else {
             nextButton.setEnabled(false);
         }
-        
+
         if (!Kernel.settings.getBoolean(Settings.USE_SUGGESTIONS)) {
             suggestionButton.setEnabled(false);
         }
@@ -1069,7 +1116,7 @@ private void advTransstatusComboActionPerformed(java.awt.event.ActionEvent evt) 
         currentPhrase.fillParentArray(parentList);
 
         currentTranslation = (Translation) currentPhrase.getChildByName(l10n);
-        
+
         // Include phrase name in dialog title
         setTitle("Edit phrase - " + currentPhrase.getName());
 
@@ -1130,9 +1177,9 @@ private void advTransstatusComboActionPerformed(java.awt.event.ActionEvent evt) 
         keepCheck.setSelected(currentPhrase.isKeepOriginal());
         originalArea.setText(currentPhrase.getText());
         showingOriginal = true;
-        
+
         switchONButton.setEnabled((currentPhrase.getLocalizationNote() != null));
-        
+
         if (currentTranslation != null) {
             translatedArea.setText(currentTranslation.getText());
             advTransCommentField.setText(currentTranslation.getComment());
@@ -1149,18 +1196,18 @@ private void advTransstatusComboActionPerformed(java.awt.event.ActionEvent evt) 
         } else {
             qaresultTextArea.setText(currentPhrase.getFilterResult());
         }
-        
+
         if (Kernel.settings.getBoolean(Settings.USE_SUGGESTIONS)) {
             pl = Kernel.ts.suggestionsForPhrase(currentPhrase, this.l10n, true);
-            
+
             if ((pl != null) && (pl.size() > 0)) {
-                suggList.setModel(pl);
                 suggestionButton.setIcon(bulbIcon);
-                suggestionButton.setText("0/" + pl.size());
+                suggestionButton.setText("<html><center>0/" + pl.size() + "<br>" +
+                                         "0%</center></html>");
                 suggestionButton.setEnabled(true);
             } else {
                 suggestionButton.setIcon(null);
-                suggestionButton.setText("0/0");
+                suggestionButton.setText("<html><center>0/0<br>0%</center></html>");
                 suggestionButton.setEnabled(false);
             }
         }
@@ -1253,6 +1300,7 @@ private void advTransstatusComboActionPerformed(java.awt.event.ActionEvent evt) 
     private javax.swing.JButton closeButton;
     private javax.swing.JPanel commandPanel;
     private javax.swing.JButton copyButton;
+    private javax.swing.JLabel emptyLabel;
     private javax.swing.JCheckBox keepCheck;
     private javax.swing.JPanel lowersplitPanel;
     private javax.swing.JButton nextButton;
@@ -1270,9 +1318,9 @@ private void advTransstatusComboActionPerformed(java.awt.event.ActionEvent evt) 
     private javax.swing.JPanel suggButtonPanel;
     private javax.swing.JButton suggCancelButton;
     private javax.swing.JLabel suggDescLabel;
-    private javax.swing.JList suggList;
     private javax.swing.JButton suggOkButton;
     private javax.swing.JScrollPane suggScrollPane;
+    private javax.swing.JTable suggTable;
     private javax.swing.JButton suggestionButton;
     private javax.swing.JDialog suggestionDialog;
     private javax.swing.JButton switchONButton;
@@ -1296,4 +1344,7 @@ private void advTransstatusComboActionPerformed(java.awt.event.ActionEvent evt) 
     private Font f;
     private PhraseList pl;
     private javax.swing.Icon bulbIcon = new javax.swing.ImageIcon(getClass().getResource("/org/mozillatranslator/resource/dialog-information.png"));
+    private javax.swing.Icon suggCopiedIcon = new javax.swing.ImageIcon(getClass().getResource("/org/mozillatranslator/resource/sugg-copied.png"));
+    private javax.swing.Icon suggApproxIcon = new javax.swing.ImageIcon(getClass().getResource("/org/mozillatranslator/resource/sugg-approximated.png"));
+    private javax.swing.Icon suggProposIcon = new javax.swing.ImageIcon(getClass().getResource("/org/mozillatranslator/resource/sugg-proposed.png"));
 }

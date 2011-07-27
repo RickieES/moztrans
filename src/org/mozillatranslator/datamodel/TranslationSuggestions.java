@@ -18,6 +18,7 @@
  * All Rights Reserved.
  *
  * Contributor(s):
+ * Michael Gilleland and Chas Emerick (public domain Levenshtein Distance algorithm)
  * Ricardo Palomares (Initial Code)
  *
  */
@@ -29,6 +30,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.beans.PropertyChangeListener;
 import java.util.Collections;
+import org.mozillatranslator.kernel.Kernel;
+import org.mozillatranslator.kernel.Settings;
 
 /**
  * This class keeps track of Phrases in an indexed way to be able to provide
@@ -37,7 +40,6 @@ import java.util.Collections;
  */
 public class TranslationSuggestions implements PropertyChangeListener {
     private HashMap<Character, PhraseList> initialEntries;
-    
     /**
      * Constructor for TranslationSuggestions
      */
@@ -73,7 +75,7 @@ public class TranslationSuggestions implements PropertyChangeListener {
             addToIndexedList(origin, newInitial);
         }
     }
-    
+
     private void addToIndexedList(Phrase p, char c) {
         PhraseList pl = this.initialEntries.get(c);
         
@@ -116,6 +118,8 @@ public class TranslationSuggestions implements PropertyChangeListener {
         char c;
         int idx;
         boolean include;
+        boolean onlyExactMatches;
+        Phrase pInList;
         
         // Get the index letter
         if ((p.getText() != null) && (p.getText().length() > 0)) {
@@ -126,20 +130,43 @@ public class TranslationSuggestions implements PropertyChangeListener {
         
         // Get the list for the index letter
         PhraseList pl = this.initialEntries.get(c);
+        onlyExactMatches = (Kernel.settings.getInteger(Settings.SUGGESTIONS_MATCH_VALUE) == 100);
+        idx = onlyExactMatches ? pl.indexOfThisPhrase(p, true) : 0;
         
-        // If the list isn't empty and the phrase is in the list        
-        if ((pl != null) && (pl.indexOfThisPhrase(p, true)) != -1) {
-            // Get the index of the first phrase with the same original text
-            idx = pl.indexOfThisPhrase(p, true);
+        // If the list isn't empty and (the phrase is in the list, or we don't
+        // want exact matches)
+        if ((pl != null) && (idx != -1)) {
+            // Create the list of suggestions to return
             suggestions = new PhraseList(l10n);
             
-            while ((idx < pl.size())
-                   && (pl.get(idx).getText().equalsIgnoreCase(p.getText()))) {
-                
-                Phrase pInList = pl.get(idx);
+            while (idx < pl.size()) {
+
+                if (onlyExactMatches) {
+                    // If the phrase matches, case-insensitive
+                    if (pl.get(idx).getText().equalsIgnoreCase(p.getText())) {
+                        // Process the phrase
+                        pInList = pl.get(idx);
+                    } else {
+                        // Provide a null phrase to avoid processing it,
+                        pInList = null;
+                        // and force exitting the while loop since the list is
+                        // alphabetically sorted and we are not going to find
+                        // any other match
+                        idx = pl.size();
+                    }
+                } else {
+                    // If the phrase approximates enough, process it
+                    if (isCandidate(p.getText(), pl.get(idx).getText())) {
+                        pInList = pl.get(idx);
+                    } else {
+                        // otherwise, ignore it and keep iterating (hence no
+                        // idx = pl.size() needed)
+                        pInList = null;
+                    }
+                }
                 
                 // If the current phrase is not p or we want to keep p in the list
-                if (!(excludeOwn && (pInList == p))) {
+                if ((pInList != null) && !(excludeOwn && (pInList == p))) {
                     // We don't want to include phrases without Translation
                     // children (unless Keep Original is set), nor with
                     // Translations without text in the passed L10n
@@ -154,7 +181,99 @@ public class TranslationSuggestions implements PropertyChangeListener {
                 idx++;
             }
         }
-        
+        suggestions.calculateMatchPercentage(p);
         return suggestions;
+    }
+    
+    private boolean isCandidate(String s, String c) {
+        int maxDistance = s.length() - (s.length() *
+                          Kernel.settings.getInteger(Settings.SUGGESTIONS_MATCH_VALUE) / 100);
+        int stringDistance = Math.max(s.length(), c.length()) - Math.min(s.length(), c.length());
+        boolean result = (stringDistance <= maxDistance);
+
+        if (result) {
+            result = (maxDistance >= getLevenshteinDistance(s, c));
+        }
+        return result;
+    }
+
+    /**
+     *
+     * Levenshtein distance algorithm
+     * Placed in the public domain by Michael Gilleland and Chas Emerick
+     *
+     * http://www.merriampark.com/ld.htm
+     * http://www.merriampark.com/ldjava.htm
+     *
+     * @param s First string to compare
+     * @param t Second string to compare
+     * @return the distance between s and t
+     */
+    public static int getLevenshteinDistance(String s, String t) {
+        if (s == null || t == null) {
+            throw new IllegalArgumentException("Strings must not be null");
+        }
+
+        /*
+        The difference between this impl. and the standard one is that, rather
+        than creating and retaining a matrix of size s.length()+1 by t.length()+1,
+        we maintain two single-dimensional arrays of length s.length()+1.  The first, d,
+        is the 'current working' distance array that maintains the newest distance cost
+        counts as we iterate through the characters of String s.  Each time we increment
+        the index of String t we are comparing, d is copied to p, the second int[].  Doing so
+        allows us to retain the previous cost counts as required by the algorithm (taking
+        the minimum of the cost count to the left, up one, and diagonally up and to the left
+        of the current cost count being calculated).  (Note that the arrays aren't really
+        copied anymore, just switched...this is clearly much better than cloning an array
+        or doing a System.arraycopy() each time  through the outer loop.)
+
+        Effectively, the difference between the two implementations is this one does not
+        cause an out of memory condition when calculating the LD over two very large strings.
+         */
+
+        int n = s.length(); // length of s
+        int m = t.length(); // length of t
+
+        if (n == 0) {
+            return m;
+        } else if (m == 0) {
+            return n;
+        }
+
+        int p[] = new int[n + 1]; //'previous' cost array, horizontally
+        int d[] = new int[n + 1]; // cost array, horizontally
+        int _d[]; //placeholder to assist in swapping p and d
+
+        // indexes into strings s and t
+        int i; // iterates through s
+        int j; // iterates through t
+
+        char t_j; // jth character of t
+
+        int cost; // cost
+
+        for (i = 0; i <= n; i++) {
+            p[i] = i;
+        }
+
+        for (j = 1; j <= m; j++) {
+            t_j = t.charAt(j - 1);
+            d[0] = j;
+
+            for (i = 1; i <= n; i++) {
+                cost = s.charAt(i - 1) == t_j ? 0 : 1;
+                // minimum of cell to the left+1, to the top+1, diagonally left and up +cost
+                d[i] = Math.min(Math.min(d[i - 1] + 1, p[i] + 1), p[i - 1] + cost);
+            }
+
+            // copy current distance counts to 'previous row' distance counts
+            _d = p;
+            p = d;
+            d = _d;
+        }
+
+        // our last action in the above loop was to switch d and p, so p now
+        // actually has the most recent cost counts
+        return p[n];
     }
 }
