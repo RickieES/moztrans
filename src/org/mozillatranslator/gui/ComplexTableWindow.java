@@ -46,8 +46,8 @@ import org.mozillatranslator.kernel.Settings;
  * @author  Henrik Lynggaard Hansen
  * @version 4.0
  */
-public class ComplexTableWindow extends JInternalFrame implements InternalFrameListener, MozFrame {
-
+public class ComplexTableWindow extends JInternalFrame implements
+        InternalFrameListener, MozFrame {
     private JTable table;
     private JScrollPane scroll;
     private ComplexTableModel model;
@@ -104,6 +104,7 @@ public class ComplexTableWindow extends JInternalFrame implements InternalFrameL
         setVisible(true);
     }
 
+    @Override
     public Phrase getSelectedPhrase() {
         Phrase result = null;
         int rowIndex;
@@ -114,6 +115,7 @@ public class ComplexTableWindow extends JInternalFrame implements InternalFrameL
         return result;
     }
 
+    @Override
     public ArrayList getSelectedPhrases() {
         ArrayList internalPhraseList = null;
         int[] idxList;
@@ -128,25 +130,31 @@ public class ComplexTableWindow extends JInternalFrame implements InternalFrameL
         return internalPhraseList;
     }
 
+    @Override
     public JTable getTable() {
         return table;
     }
 
+    @Override
     public boolean hasTreeStructure() {
         return false;
     }
 
+    @Override
     public TreePath getTreeSelection() throws HasNoTreeException {
         throw new HasNoTreeException();
     }
 
+    @Override
     public String getLocalization() {
         return l10n;
     }
 
+    @Override
     public void internalFrameActivated(InternalFrameEvent e) {
     }
 
+    @Override
     public void internalFrameClosed(InternalFrameEvent e) {
         List fileList = new ArrayList();
 
@@ -167,41 +175,51 @@ public class ComplexTableWindow extends JInternalFrame implements InternalFrameL
         }
     }
 
+    @Override
     public void internalFrameClosing(InternalFrameEvent e) {
     }
 
+    @Override
     public void internalFrameDeactivated(
             javax.swing.event.InternalFrameEvent internalFrameEvent) {
     }
 
+    @Override
     public void internalFrameDeiconified(
             javax.swing.event.InternalFrameEvent internalFrameEvent) {
     }
 
+    @Override
     public void internalFrameIconified(
             javax.swing.event.InternalFrameEvent internalFrameEvent) {
     }
 
+    @Override
     public void internalFrameOpened(
             javax.swing.event.InternalFrameEvent internalFrameEvent) {
     }
 
+    @Override
     public int getMaxIndex() {
         return table.getRowCount();
     }
 
+    @Override
     public int getSelectionIndex() {
         return table.getSelectedRow();
     }
 
+    @Override
     public Phrase getPhraseByIndex(int index) {
         return (Phrase) sorter.getRow(index);
     }
 
+    @Override
     public void tableRowsChanged(int first, int last) {
         sorter.fireTableRowsUpdated(first, last);
     }
 
+    @Override
     public void tableDataChanged() {
         sorter.fireTableDataChanged();
     }
