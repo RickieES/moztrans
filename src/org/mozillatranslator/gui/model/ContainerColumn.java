@@ -24,63 +24,63 @@
 
 package org.mozillatranslator.gui.model;
 
-import javax.swing.*;
-import org.mozillatranslator.datamodel.*;
+import javax.swing.JTable;
+import org.mozillatranslator.datamodel.Phrase;
+import org.mozillatranslator.datamodel.TreeNode;
+
 /**
- *
  * @author  Henrik Lynggaard
  * @version 1.0
  */
-public class ContainerColumn implements ComplexColumn
-{
-    
+public class ContainerColumn implements ComplexColumn {
     private static final Class STR_CLASS = "dummy".getClass();
-    private static String[] parentList =
-    {"", "", "", "", "", "", "", "", "", ""};
+    private static String[] parentList = {"", "", "", "", "", "", "", "", "", ""};
+
     /** Creates new KeyColumn */
-    public ContainerColumn()
-    {
-        // do Noting
+    public ContainerColumn() {
+        // Nothing to do
     }
     
+    @Override
     public Class getColumnClass()
     {
         return STR_CLASS;
     }
     
-    public Object getValue(Phrase currentPhrase, String currentLocalization)
-    {
+    @Override
+    public Object getValue(Phrase currentPhrase, String currentLocalization) {
         parentList[TreeNode.LEVEL_PRODUCTCHILD] = "";
         currentPhrase.fillParentArray(parentList);
         return parentList[TreeNode.LEVEL_PRODUCTCHILD];
     }
     
-    public boolean isCellEditable(Phrase currentPhrase, String currentLocalization)
-    {
+    @Override
+    public boolean isCellEditable(Phrase currentPhrase, String currentLocalization) {
         return false;
     }
     
-    public String getColumnName()
-    {
+    @Override
+    public String getColumnName() {
         return "P or R";
     }
     
-    public void setValue(Phrase currentPhrase, Object value, String currentLocalization)
-    {
-        // non editable
+    @Override
+    public void setValue(Phrase currentPhrase, Object value, String currentLocalization) {
+        // Container column is not editable
     }
     
-    public String toString()
-    {
-        return "Platform or Region";
+    @Override
+    public String toString() {
+        return getColumnName();
     }
     
-    public void init(JTable table)
-    {
+    @Override
+    public void init(JTable table) {
+        // Nothing to do
     }
     
-    public int getPrefferedWidth()
-    {
+    @Override
+    public int getPreferredWidth() {
         return 50;
     }
 }

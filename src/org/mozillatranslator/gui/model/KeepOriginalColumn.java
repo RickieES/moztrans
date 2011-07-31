@@ -24,11 +24,10 @@
 
 package org.mozillatranslator.gui.model;
 
-import javax.swing.*;
+import javax.swing.JTable;
+import org.mozillatranslator.datamodel.Phrase;
 
-import org.mozillatranslator.datamodel.*;
 /**
- *
  * @author  Henrik Lynggaard
  * @version 1.0
  */
@@ -36,47 +35,47 @@ public class KeepOriginalColumn implements ComplexColumn {
     private static final Class BOOL_CLASS = Boolean.TRUE.getClass();
     
     /** Creates new KeyColumn */
-    public KeepOriginalColumn()
-    {
-        // do Noting
+    public KeepOriginalColumn() {
+        // Nothing to do
     }
     
-    public Class getColumnClass()
-    {
+    @Override
+    public Class getColumnClass() {
         return BOOL_CLASS;
     }
     
-    public Object getValue(Phrase currentPhrase, String currentLocalization)
-    {
+    @Override
+    public Object getValue(Phrase currentPhrase, String currentLocalization) {
         return Boolean.valueOf(currentPhrase.isKeepOriginal());
     }
     
-    public boolean isCellEditable(Phrase currentPhrase, String currentLocalization)
-    {
+    @Override
+    public boolean isCellEditable(Phrase currentPhrase, String currentLocalization) {
         return true;
     }
     
-    public String getColumnName()
-    {
+    @Override
+    public String getColumnName() {
         return "Keep";
     }
     
-    public void setValue(Phrase currentPhrase, Object value, String currentLocalization)
-    {
+    @Override
+    public void setValue(Phrase currentPhrase, Object value, String currentLocalization) {
         Boolean boolValue = (Boolean) value;
         currentPhrase.setKeepOriginal(boolValue.booleanValue());
     }
     
-    public String toString()
-    {
-        return "Keep original";
+    @Override
+    public String toString() {
+        return getColumnName();
     }
     
-    public void init(JTable table)
-    {
+    @Override
+    public void init(JTable table) {
     }
-    public int getPrefferedWidth()
-    {
+
+    @Override
+    public int getPreferredWidth() {
         return 50;
     }
 }

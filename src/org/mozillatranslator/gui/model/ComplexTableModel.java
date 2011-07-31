@@ -85,7 +85,7 @@ public class ComplexTableModel extends AbstractTableModel {
             ComplexColumn currentColumn = (ComplexColumn) it.next();
             column = new TableColumn(i++);
             column.setHeaderValue(currentColumn.getColumnName());
-            column.setPreferredWidth(currentColumn.getPrefferedWidth());
+            column.setPreferredWidth(currentColumn.getPreferredWidth());
             //        column.setMinWidth(30);
 
             if (currentColumn instanceof TranslatedTextColumn) {

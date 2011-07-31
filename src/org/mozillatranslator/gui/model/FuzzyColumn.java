@@ -24,61 +24,59 @@
 
 package org.mozillatranslator.gui.model;
 
-import javax.swing.*;
+import javax.swing.JTable;
+import org.mozillatranslator.datamodel.Phrase;
 
-import org.mozillatranslator.datamodel.*;
 /**
- *
  * @author  Serhiy Brytskyy
  * @version 1.0
  */
-public class FuzzyColumn implements ComplexColumn
-{
-    
+public class FuzzyColumn implements ComplexColumn {
     private static final Class BOOL_CLASS = Boolean.TRUE.getClass();
     
     /** Creates new KeyColumn */
-    public FuzzyColumn()
-    {
-        // do Noting
+    public FuzzyColumn() {
+        // Nothing to do
     }
-    
-    public Class getColumnClass()
-    {
+
+    @Override
+    public Class getColumnClass() {
         return BOOL_CLASS;
     }
     
-    public Object getValue(Phrase currentPhrase, String currentLocalization)
-    {
+    @Override
+    public Object getValue(Phrase currentPhrase, String currentLocalization) {
         return Boolean.valueOf(currentPhrase.isFuzzy());
     }
     
-    public boolean isCellEditable(Phrase currentPhrase, String currentLocalization)
-    {
+    @Override
+    public boolean isCellEditable(Phrase currentPhrase, String currentLocalization) {
         return true;
     }
     
+    @Override
     public String getColumnName() {
         return "Fuzzy";
     }
     
-    public void setValue(Phrase currentPhrase, Object value, String currentLocalization)
-    {
+    @Override
+    public void setValue(Phrase currentPhrase, Object value, String currentLocalization) {
         Boolean boolValue = (Boolean) value;
         currentPhrase.setFuzzy(boolValue.booleanValue());
     }
     
-    public String toString()
-    {
-        return "Fuzzy";
+    @Override
+    public String toString() {
+        return getColumnName();
     }
     
-    public void init(JTable table)
-    {
-        //non
+    @Override
+    public void init(JTable table) {
+        // Nothing to do
     }
-    public int getPrefferedWidth()
-    {
+
+    @Override
+    public int getPreferredWidth() {
         return 50;
     }
 }

@@ -27,7 +27,6 @@ package org.mozillatranslator.gui.model;
 import javax.swing.JTable;
 import org.mozillatranslator.datamodel.Phrase;
 
-
 /** This class displays aggregated results from filters
  *  (org.mozillatranslator.filter) and other methods
  *
@@ -37,34 +36,43 @@ import org.mozillatranslator.datamodel.Phrase;
 public class FilterResultColumn implements ComplexColumn {
     private static final Class STR_CLASS = "dummy".getClass();
 
+    @Override
     public void init(JTable table) {
+        // Nothing to do
     }
 
+    @Override
     public String getColumnName() {
         return "Result comment";
     }
     
+    @Override
     public String toString() {
         return getColumnName();
     }
 
+    @Override
     public Class getColumnClass() {
         return STR_CLASS;
     }
 
+    @Override
     public boolean isCellEditable(Phrase currentPhrase, String currentLocalization) {
         return false;
     }
 
+    @Override
     public Object getValue(Phrase currentPhrase, String currentLocalization) {
         return currentPhrase.getFilterResult();
     }
 
+    @Override
     public void setValue(Phrase currentPhrase, Object value, String currentLocalization) {
         // This column doesn't allow editing
     }
 
-    public int getPrefferedWidth() {
+    @Override
+    public int getPreferredWidth() {
         return 200;
     }
 }

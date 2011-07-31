@@ -23,11 +23,12 @@
  */
 package org.mozillatranslator.gui.model;
 
-import javax.swing.*;
-import org.mozillatranslator.datamodel.*;
+import javax.swing.JTable;
+import org.mozillatranslator.datamodel.Phrase;
+import org.mozillatranslator.datamodel.Translation;
+import org.mozillatranslator.datamodel.TrnsStatus;
 
 /**
- *
  * @author  Henrik Lynggaard
  * @version 1.0
  */
@@ -98,16 +99,16 @@ public class CurrentCommandColumn implements ComplexColumn {
 
     @Override
     public String toString() {
-        return "Commandkey: Current";
+        return getColumnName();
     }
 
     @Override
     public void init(JTable table) {
-        // non
+        // Nothing to do
     }
 
     @Override
-    public int getPrefferedWidth() {
+    public int getPreferredWidth() {
         return 50;
     }
 }

@@ -24,59 +24,58 @@
 
 package org.mozillatranslator.gui.model;
 
-import javax.swing.*;
-import org.mozillatranslator.datamodel.*;
+import javax.swing.JTable;
+import org.mozillatranslator.datamodel.Phrase;
+
 /**
- *
  * @author  Henrik Lynggaard
  * @version 1.0
  */
-public class ComponentColumn implements ComplexColumn
-{
-    
+public class ComponentColumn implements ComplexColumn {
     private static final Class STR_CLASS = "dummy".getClass();
+
     /** Creates new KeyColumn */
-    public ComponentColumn()
-    {
-        // do Noting
+    public ComponentColumn() {
+        // Nothing to do
     }
     
-    public Class getColumnClass()
-    {
+    @Override
+    public Class getColumnClass() {
         return STR_CLASS;
     }
     
-    public Object getValue(Phrase currentPhrase, String currentLocalization)
-    {
+    @Override
+    public Object getValue(Phrase currentPhrase, String currentLocalization) {
         return currentPhrase.getComponentPath();
     }
     
-    public boolean isCellEditable(Phrase currentPhrase, String currentLocalization)
-    {
+    @Override
+    public boolean isCellEditable(Phrase currentPhrase, String currentLocalization) {
         return false;
     }
     
-    public String getColumnName()
-    {
+    @Override
+    public String getColumnName() {
         return "Component";
     }
     
-    public void setValue(Phrase currentPhrase, Object value, String currentLocalization)
-    {
-        // non editable
+    @Override
+    public void setValue(Phrase currentPhrase, Object value, String currentLocalization) {
+        // Component is not editable
     }
     
-    public String toString()
-    {
-        return "Component";
+    @Override
+    public String toString() {
+        return getColumnName();
     }
     
-    public void init(JTable table)
-    {
+    @Override
+    public void init(JTable table) {
+        // Nothing to do
     }
     
-    public int getPrefferedWidth()
-    {
+    @Override
+    public int getPreferredWidth() {
         return 50;
     }
 }

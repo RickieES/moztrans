@@ -28,13 +28,11 @@ import org.mozillatranslator.kernel.*;
 import java.util.logging.*;
 
 /**
- *
  * @author  Henrik Lynggaard
  * @version 1.0
  */
 public class ComplexColumnFactory {
-
-    private static List columnList;
+    private static List<ComplexColumn> columnList;
 
     public static void init() {
         int count;
@@ -42,21 +40,25 @@ public class ComplexColumnFactory {
         String currentPreference;
         ComplexColumn currentColumn;
 
-        columnList = new ArrayList();
+        columnList = new ArrayList<ComplexColumn>();
         count = Kernel.settings.getInteger(Settings.COLUMN_COUNT);
         for (int i = 0; i < count; i++) {
             try {
-                currentPreference = Settings.COLUMN_CLASS_PREFIX + i + Settings.COLUMN_CLASS_SUFFIX;
+                currentPreference = Settings.COLUMN_CLASS_PREFIX + i
+                                    + Settings.COLUMN_CLASS_SUFFIX;
                 currentClass = Kernel.settings.getString(currentPreference);
                 currentColumn = (ComplexColumn) Class.forName(currentClass).
                         newInstance();
                 columnList.add(currentColumn);
             } catch (InstantiationException ex) {
-                Logger.getLogger(ComplexColumnFactory.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ComplexColumnFactory.class.getName()).log(Level.SEVERE,
+                                    null, ex);
             } catch (IllegalAccessException ex) {
-                Logger.getLogger(ComplexColumnFactory.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ComplexColumnFactory.class.getName()).log(Level.SEVERE,
+                                    null, ex);
             } catch (ClassNotFoundException ex) {
-                Logger.getLogger(ComplexColumnFactory.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ComplexColumnFactory.class.getName()).log(Level.SEVERE,
+                                    null, ex);
             }
         }
     }

@@ -19,33 +19,66 @@
  *
  * Contributor(s):
  * Henrik Lynggaard Hansen (Initial Code)
- *
+ * Ricardo Palomares (Documentation of interface methods)
  */
 
 package org.mozillatranslator.gui.model;
 
-import javax.swing.*;
-import org.mozillatranslator.datamodel.*;
+import javax.swing.JTable;
+import org.mozillatranslator.datamodel.Phrase;
 
 /**
- *
  * @author  Henrik Lynggaard
  * @version 1.0
  */
 public interface ComplexColumn {
+    /**
+     * Hook for columns that need initialization before being added to a JTable
+     * @param table the table to which the column will be added
+     */
     public void init(JTable table);
-    
+
+    /**
+     * Column header text
+     * @return the text to be displayed as column header
+     */
     public String getColumnName();
-    
+
+    /**
+     * Returns the class type of the column contents
+     * @return the class type of the column contents
+     */
     public Class getColumnClass();
-    
+
+    /**
+     * Reports if a specific cell of this column is editable
+     * @param currentPhrase the current Phrase of the row
+     * @param currentLocalization the locale code (ie., the child of the Phrase)
+     * @return true if the cell can be edited
+     */
     public boolean isCellEditable(Phrase currentPhrase,
             String currentLocalization);
-    
+
+    /**
+     * Returns the current value of the cell for the column and row
+     * @param currentPhrase the Phrase object of the current row
+     * @param currentLocalization the child of the Phrase
+     * @return the value of the cell
+     */
     public Object getValue(Phrase currentPhrase, String currentLocalization);
-    
+
+    /**
+     * Sets the current value of the cell for the column and row
+     * @param currentPhrase the Phrase object of the current row
+     * @param value the value to be set
+     * @param currentLocalization the child of the Phrase
+     */
     public void setValue(Phrase currentPhrase, Object value,
             String currentLocalization);
-    
-    public int getPrefferedWidth();
+
+    /**
+     * Returns the preferred width for the column
+     * @return the preferred width for the column
+     */
+    public int getPreferredWidth();
 }

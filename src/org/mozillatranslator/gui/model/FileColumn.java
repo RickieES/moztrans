@@ -24,60 +24,58 @@
 
 package org.mozillatranslator.gui.model;
 
-import javax.swing.*;
-import org.mozillatranslator.datamodel.*;
+import javax.swing.JTable;
+import org.mozillatranslator.datamodel.Phrase;
+
 /**
- *
  * @author  Henrik Lynggaard
  * @version 1.0
  */
-public class FileColumn implements ComplexColumn
-{
-    
+public class FileColumn implements ComplexColumn {
     private static final Class STR_CLASS = "dummy".getClass();
+
     /** Creates new KeyColumn */
-    public FileColumn()
-    {
-        // do Noting
+    public FileColumn() {
+        // Nothing to do
     }
     
-    public Class getColumnClass()
-    {
+    @Override
+    public Class getColumnClass() {
         return STR_CLASS;
     }
     
-    public Object getValue(Phrase currentPhrase, String currentLocalization)
-    {
+    @Override
+    public Object getValue(Phrase currentPhrase, String currentLocalization) {
         return currentPhrase.getParent().getName();
     }
     
-    public boolean isCellEditable(Phrase currentPhrase, String currentLocalization)
-    {
+    @Override
+    public boolean isCellEditable(Phrase currentPhrase, String currentLocalization) {
         return false;
     }
     
-    public String getColumnName()
-    {
+    @Override
+    public String getColumnName() {
         return "File";
     }
     
-    public void setValue(Phrase currentPhrase, Object value, String currentLocalization)
-    {
-        // non editable
+    @Override
+    public void setValue(Phrase currentPhrase, Object value, String currentLocalization) {
+        // File column is not editable
     }
     
-    public String toString()
-    {
-        return "File";
+    @Override
+    public String toString() {
+        return getColumnName();
     }
     
-    public void init(JTable table)
-    {
+    @Override
+    public void init(JTable table) {
+        // Nothing to do
     }
     
-    public int getPrefferedWidth()
-    {
+    @Override
+    public int getPreferredWidth() {
         return 50;
     }
-    
 }

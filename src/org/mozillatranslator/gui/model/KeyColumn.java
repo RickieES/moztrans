@@ -24,11 +24,10 @@
 
 package org.mozillatranslator.gui.model;
 
-import javax.swing.*;
-import org.mozillatranslator.datamodel.*;
+import javax.swing.JTable;
+import org.mozillatranslator.datamodel.Phrase;
 
 /**
- *
  * @author  Henrik Lynggaard
  * @version 1.0
  */
@@ -40,35 +39,43 @@ public class KeyColumn implements ComplexColumn {
         // Do nothing
     }
     
+    @Override
     public Class getColumnClass() {
         return STR_CLASS;
     }
     
+    @Override
     public Object getValue(Phrase currentPhrase, String currentLocalization) {
         return currentPhrase;
     }
     
+    @Override
     public boolean isCellEditable(Phrase currentPhrase, String currentLocalization) {
         return false;
     }
     
+    @Override
     public String getColumnName() {
         return "Key";
     }
     
+    @Override
     public void setValue(Phrase currentPhrase, Object value,
             String currentLocalization) {
-        // Not editable
+        // Key column is not editable
     }
     
+    @Override
     public String toString() {
-        return "Key";
+        return getColumnName();
     }
     
+    @Override
     public void init(JTable table) {
     }
     
-    public int getPrefferedWidth() {
+    @Override
+    public int getPreferredWidth() {
         return 100;
     }
 }

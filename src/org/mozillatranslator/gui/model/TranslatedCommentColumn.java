@@ -32,96 +32,76 @@ import org.mozillatranslator.datamodel.*;
  * @author  Henrik Lynggaard
  * @version 1.0
  */
-public class TranslatedCommentColumn implements ComplexColumn
-{
-    
+public class TranslatedCommentColumn implements ComplexColumn {
     private static final Class STR_CLASS = "dummy".getClass();
     
     /** Creates new TranslatedTextColumn */
-    public TranslatedCommentColumn()
-    {
+    public TranslatedCommentColumn() {
+        // Do nothing
     }
     
-    public Class getColumnClass()
-    {
+    @Override
+    public Class getColumnClass() {
         return STR_CLASS;
     }
     
-    public Object getValue(Phrase currentPhrase, String currentLocalization)
-    {
+    @Override
+    public Object getValue(Phrase currentPhrase, String currentLocalization) {
         String result = "";
-        if (currentPhrase.getName().equals("MT_UknownFileType"))
-        {
-            if (currentPhrase.getParent() instanceof BinaryFile)
-            {
+        if (currentPhrase.getName().equals("MT_UknownFileType")) {
+            if (currentPhrase.getParent() instanceof BinaryFile) {
                 result = "Binary files cannot be translated";
-            }
-            else
-            {
+            } else {
                 result = "Use the edit dialog";
             }
-        }
-        else
-        {
+        } else {
             Translation currentTranslation =  (Translation) currentPhrase.getChildByName(currentLocalization);
-            if (currentTranslation != null)
-            {
+            if (currentTranslation != null) {
                 result = currentTranslation.getComment();
             }
         }
-        
         return result;
     }
     
-    public boolean isCellEditable(Phrase currentPhrase, String currentLocalization)
-    {
+    @Override
+    public boolean isCellEditable(Phrase currentPhrase, String currentLocalization) {
         boolean result;
-        Translation currentTranslation =  (Translation) currentPhrase.getChildByName(currentLocalization);
-        if (currentPhrase.getName().equals("MT_UknownFileType"))
-        {
+
+        Translation currentTranslation = (Translation) currentPhrase.getChildByName(currentLocalization);
+        if (currentPhrase.getName().equals("MT_UknownFileType")) {
             result = false;
-        }
-        else
-        {
-            if (currentTranslation != null)
-            {
-                result = true;
-            }
-            else
-            {
-                result = false;
-            }
+        } else {
+            result = (currentTranslation != null);
         }
         return result;
     }
     
-    public String getColumnName()
-    {
+    @Override
+    public String getColumnName() {
         return "Comment";
     }
     
-    public void setValue(Phrase currentPhrase, Object value, String currentLocalization)
-    {
+    @Override
+    public void setValue(Phrase currentPhrase, Object value, String currentLocalization) {
         String strValue = (String) value;
         Translation currentTranslation =  (Translation) currentPhrase.getChildByName(currentLocalization);
-        if (currentTranslation != null)
-        {
+        if (currentTranslation != null) {
             currentTranslation.setComment(strValue);
         }
     }
     
-    public String toString()
-    {
-        return "Comment";
+    @Override
+    public String toString() {
+        return getColumnName();
     }
     
-    public void init(JTable table)
-    {
-        // non
+    @Override
+    public void init(JTable table) {
+        // Nothing to do
     }
     
-    public int getPrefferedWidth()
-    {
+    @Override
+    public int getPreferredWidth() {
         return 50;
     }
 }

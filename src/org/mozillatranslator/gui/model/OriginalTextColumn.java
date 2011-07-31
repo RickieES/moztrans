@@ -24,79 +24,69 @@
 
 package org.mozillatranslator.gui.model;
 
-
-import javax.swing.*;
-
-import org.mozillatranslator.datamodel.*;
+import javax.swing.JTable;
+import org.mozillatranslator.datamodel.BinaryFile;
+import org.mozillatranslator.datamodel.Phrase;
 
 /**
- *
  * @author  Henrik Lynggaard
  * @version 1.0
  */
-public class OriginalTextColumn implements ComplexColumn
-{
+public class OriginalTextColumn implements ComplexColumn {
     private static final Class STR_CLASS = "dummy".getClass();
 
     /** Creates new OriginalTextColumn */
-    public OriginalTextColumn()
-    {
-
+    public OriginalTextColumn() {
+        // Nothing to do
     }
 
-    public Class getColumnClass()
-    {
+    @Override
+    public Class getColumnClass() {
         return STR_CLASS;
     }
 
-    public Object getValue(Phrase currentPhrase, String currentLocalization)
-    {
+    @Override
+    public Object getValue(Phrase currentPhrase, String currentLocalization) {
         String result = "";
-        if (currentPhrase.getName().equals("MT_UknownFileType"))
-        {
-            if (currentPhrase.getParent() instanceof BinaryFile)
-            {
+        if (currentPhrase.getName().equals("MT_UknownFileType")) {
+            if (currentPhrase.getParent() instanceof BinaryFile) {
                 result = "Binary files cannot be translated";
-            }
-            else
-            {
+            } else {
                 result = "Use the edit dialog";
             }
-        }
-        else
-        {
+        } else {
             result = currentPhrase.getText();
         }
         return result;
     }
 
-    public boolean isCellEditable(Phrase currentPhrase, String currentLocalization)
-    {
+    @Override
+    public boolean isCellEditable(Phrase currentPhrase, String currentLocalization) {
         return false;
     }
 
-    public String getColumnName()
-    {
+    @Override
+    public String getColumnName() {
         return "Text: Original";
     }
 
-    public void setValue(Phrase currentPhrase, Object value, String currentLocalization)
-    {
-        // non editable
+    @Override
+    public void setValue(Phrase currentPhrase, Object value, String currentLocalization) {
+        // Original text is not editable
     }
 
-    public String toString()
-    {
-        return "Text: Original";
+    @Override
+    public String toString() {
+        return getColumnName();
     }
 
-    public void init(JTable table)
-    {
-        // non
+    @Override
+    public void init(JTable table) {
+        // Nothing to do
     }
 
-    public int getPrefferedWidth()
-    {
+    @Override
+    public int getPreferredWidth() {
         return 200;
     }
 }

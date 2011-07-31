@@ -23,8 +23,12 @@
  */
 package org.mozillatranslator.gui.model;
 
-import javax.swing.*;
-import org.mozillatranslator.datamodel.*;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JComboBox;
+import javax.swing.JTable;
+import org.mozillatranslator.datamodel.Phrase;
+import org.mozillatranslator.datamodel.Translation;
+import org.mozillatranslator.datamodel.TrnsStatus;
 
 /**
  *
@@ -84,7 +88,7 @@ public class TranslatedStatusColumn implements ComplexColumn {
 
     @Override
     public String toString() {
-        return "Status";
+        return getColumnName();
     }
 
     @Override
@@ -98,7 +102,7 @@ public class TranslatedStatusColumn implements ComplexColumn {
     }
 
     @Override
-    public int getPrefferedWidth() {
+    public int getPreferredWidth() {
         return 50;
     }
 }

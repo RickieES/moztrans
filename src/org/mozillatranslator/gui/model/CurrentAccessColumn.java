@@ -23,16 +23,16 @@
  */
 package org.mozillatranslator.gui.model;
 
-import javax.swing.*;
-import org.mozillatranslator.datamodel.*;
+import javax.swing.JTable;
+import org.mozillatranslator.datamodel.Phrase;
+import org.mozillatranslator.datamodel.Translation;
+import org.mozillatranslator.datamodel.TrnsStatus;
 
 /**
- *
  * @author  Henrik Lynggaard
  * @version 1.0
  */
 public class CurrentAccessColumn implements ComplexColumn {
-
     private static final Class STR_CLASS = "dummy".getClass();
 
     /** Creates new OriginalTextColumn */
@@ -101,7 +101,7 @@ public class CurrentAccessColumn implements ComplexColumn {
 
     @Override
     public String toString() {
-        return "Accesskey: Current";
+        return getColumnName();
     }
 
     @Override
@@ -110,7 +110,7 @@ public class CurrentAccessColumn implements ComplexColumn {
     }
 
     @Override
-    public int getPrefferedWidth() {
+    public int getPreferredWidth() {
         return 50;
     }
 }
