@@ -180,8 +180,8 @@ public class TranslationSuggestions implements PropertyChangeListener {
                 }
                 idx++;
             }
+            suggestions.calculateMatchPercentage(p);
         }
-        suggestions.calculateMatchPercentage(p);
         return suggestions;
     }
     
