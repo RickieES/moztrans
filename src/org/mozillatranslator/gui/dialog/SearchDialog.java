@@ -23,9 +23,10 @@
  */
 package org.mozillatranslator.gui.dialog;
 
-import org.mozillatranslator.kernel.*;
-import org.mozillatranslator.util.*;
-import org.mozillatranslator.filter.*;
+import org.mozillatranslator.filter.Search;
+import org.mozillatranslator.kernel.Kernel;
+import org.mozillatranslator.kernel.Settings;
+import org.mozillatranslator.util.GuiTools;
 
 /**
  *
@@ -124,7 +125,7 @@ public class SearchDialog extends MozDialog {
         gridBagConstraints.insets = new java.awt.Insets(3, 3, 3, 3);
         infoPanel.add(whereLabel, gridBagConstraints);
 
-        whereCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Key", "Original Text", "Translated text", "Comment" }));
+        whereCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Key", "Original Text", "Translated text", "Comment", "Translation Status" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
@@ -257,7 +258,7 @@ public class SearchDialog extends MozDialog {
         initComponents();
         JDialogHelper.setupOKCancelHotkeys(this, okButton, cancelButton);
         GuiTools.placeFrameAtCenter(this);        
-    }    
+    }
 
     /**
      * Loads the preferences into the UI
@@ -270,8 +271,7 @@ public class SearchDialog extends MozDialog {
         searchField.setText(Kernel.settings.getString(Settings.STATE_SEARCH_STRING));
         caseCheck.setSelected(Kernel.settings.getBoolean(Settings.STATE_SEARCH_CASE));        
         koasTranslatedCheck.setSelected(Kernel.settings.getBoolean(Settings.STATE_SEARCH_KO_AS_TRANSLATED));
-    }    
-
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel buttonPanel;
@@ -289,5 +289,4 @@ public class SearchDialog extends MozDialog {
     private javax.swing.JComboBox whereCombo;
     private javax.swing.JLabel whereLabel;
     // End of variables declaration//GEN-END:variables
-
 }

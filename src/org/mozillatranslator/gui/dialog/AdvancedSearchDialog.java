@@ -91,6 +91,7 @@ public class AdvancedSearchDialog extends javax.swing.JDialog {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         getContentPane().add(enableLabel, gridBagConstraints);
 
         fieldLabel.setText("Field");
@@ -123,7 +124,7 @@ public class AdvancedSearchDialog extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         getContentPane().add(textLabel, gridBagConstraints);
 
-        caseLabel.setText("Case Sentitive");
+        caseLabel.setText("Case Sensitive");
         caseLabel.setMaximumSize(new java.awt.Dimension(100, 15));
         caseLabel.setMinimumSize(new java.awt.Dimension(84, 15));
         caseLabel.setPreferredSize(new java.awt.Dimension(100, 15));
@@ -143,13 +144,15 @@ public class AdvancedSearchDialog extends javax.swing.JDialog {
         gridBagConstraints.gridy = 1;
         getContentPane().add(firstEnable, gridBagConstraints);
 
-        firstField.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Key", "Original Text", "Translated text", "Comment" }));
+        firstField.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Key", "Original Text", "Translated text", "Comment", "Translation Status" }));
         firstField.setMinimumSize(new java.awt.Dimension(122, 24));
-        firstField.setPreferredSize(new java.awt.Dimension(122, 24));
+        firstField.setPreferredSize(new java.awt.Dimension(140, 24));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(1, 1, 1, 1);
         getContentPane().add(firstField, gridBagConstraints);
 
         firstRule.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Is", "Is not", "Contains", "Does not contain", "Starts with", "Ends with" }));
@@ -158,7 +161,9 @@ public class AdvancedSearchDialog extends javax.swing.JDialog {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(1, 1, 1, 1);
         getContentPane().add(firstRule, gridBagConstraints);
 
         firstText.setColumns(15);
@@ -174,6 +179,7 @@ public class AdvancedSearchDialog extends javax.swing.JDialog {
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(1, 1, 1, 1);
         getContentPane().add(firstText, gridBagConstraints);
 
         firstCase.setMaximumSize(new java.awt.Dimension(46, 23));
@@ -194,13 +200,15 @@ public class AdvancedSearchDialog extends javax.swing.JDialog {
         gridBagConstraints.gridy = 2;
         getContentPane().add(secondEnable, gridBagConstraints);
 
-        secondField.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Key", "Original Text", "Translated text", "Comment" }));
+        secondField.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Key", "Original Text", "Translated text", "Comment", "Translation Status" }));
         secondField.setMinimumSize(new java.awt.Dimension(122, 24));
-        secondField.setPreferredSize(new java.awt.Dimension(122, 24));
+        secondField.setPreferredSize(new java.awt.Dimension(140, 24));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(1, 1, 1, 1);
         getContentPane().add(secondField, gridBagConstraints);
 
         secondRule.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Is", "Is not", "Contains", "Does not contain", "Starts with", "Ends with" }));
@@ -209,7 +217,9 @@ public class AdvancedSearchDialog extends javax.swing.JDialog {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(1, 1, 1, 1);
         getContentPane().add(secondRule, gridBagConstraints);
 
         secondText.setColumns(15);
@@ -225,6 +235,7 @@ public class AdvancedSearchDialog extends javax.swing.JDialog {
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(1, 1, 1, 1);
         getContentPane().add(secondText, gridBagConstraints);
 
         secondCase.setMaximumSize(new java.awt.Dimension(46, 23));
@@ -245,13 +256,15 @@ public class AdvancedSearchDialog extends javax.swing.JDialog {
         gridBagConstraints.gridy = 3;
         getContentPane().add(thirdEnable, gridBagConstraints);
 
-        thirdField.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Key", "Original Text", "Translated text", "Comment" }));
+        thirdField.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Key", "Original Text", "Translated text", "Comment", "Translation Status" }));
         thirdField.setMinimumSize(new java.awt.Dimension(122, 24));
-        thirdField.setPreferredSize(new java.awt.Dimension(122, 24));
+        thirdField.setPreferredSize(new java.awt.Dimension(140, 24));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(1, 1, 1, 1);
         getContentPane().add(thirdField, gridBagConstraints);
 
         thirdRule.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Is", "Is not", "Contains", "Does not contain", "Starts with", "Ends with" }));
@@ -260,7 +273,9 @@ public class AdvancedSearchDialog extends javax.swing.JDialog {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(1, 1, 1, 1);
         getContentPane().add(thirdRule, gridBagConstraints);
 
         thirdText.setColumns(15);
@@ -276,6 +291,7 @@ public class AdvancedSearchDialog extends javax.swing.JDialog {
         gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(1, 1, 1, 1);
         getContentPane().add(thirdText, gridBagConstraints);
 
         thirdCase.setMaximumSize(new java.awt.Dimension(46, 23));

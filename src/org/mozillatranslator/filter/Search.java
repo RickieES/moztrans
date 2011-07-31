@@ -26,7 +26,6 @@ package org.mozillatranslator.filter;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import java.util.regex.PatternSyntaxException;
 import org.mozillatranslator.datamodel.*;
 import org.mozillatranslator.kernel.Kernel;
@@ -40,6 +39,7 @@ public class Search implements Filter {
     public static final int FIELD_ORG_TEXT = 1;
     public static final int FIELD_TRANS_TEXT = 2;
     public static final int FIELD_COMMENT = 3;
+    public static final int FIELD_TRNS_STATUS = 4;
     public static final int RULE_IS = 0;
     public static final int RULE_IS_NOT = 1;
     public static final int RULE_CONTAINS = 2;
@@ -114,6 +114,11 @@ public class Search implements Filter {
             case FIELD_COMMENT:
                 if (currentTranslation != null) {
                     compareText = currentTranslation.getComment();
+                }
+                break;
+            case FIELD_TRNS_STATUS:
+                if (currentTranslation != null) {
+                    compareText = currentTranslation.getStatus().toString();
                 }
                 break;
         }

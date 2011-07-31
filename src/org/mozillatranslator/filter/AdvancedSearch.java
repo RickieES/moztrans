@@ -89,6 +89,7 @@ public class AdvancedSearch implements Filter {
         s3 = new Search(ln, r3, f3, v3, cc3, false);
     }
 
+    @Override
     public boolean check(Phrase ph) {
         boolean result = false;
         if (all) {

@@ -24,24 +24,19 @@
 
 package org.mozillatranslator.filter;
 
-import java.util.*;
-import org.mozillatranslator.datamodel.*;
-import org.mozillatranslator.kernel.*;
+import java.util.List;
+import org.mozillatranslator.datamodel.Phrase;
+import org.mozillatranslator.datamodel.TreeNode;
+import org.mozillatranslator.kernel.Kernel;
+
 /**
- *
  * @author  Henrik Lynggaard
  * @version 1.0
  */
-public class FilterRunner
-{
-    
-    public static List filterDatamodel(Filter filt)
-    {
-        
+public class FilterRunner {
+    public static List<Phrase> filterDatamodel(Filter filt) {
         FilterTraverse com = new FilterTraverse(filt);
         Kernel.datamodel.traverse(com, TreeNode.LEVEL_PHRASE);
-        
         return com.getResultList();
     }
-    
 }

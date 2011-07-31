@@ -22,11 +22,9 @@
  *
  */
 
-
 package org.mozillatranslator.filter;
 
 import java.util.*;
-
 import org.mozillatranslator.kernel.*;
 import org.mozillatranslator.datamodel.*;
 
@@ -34,47 +32,41 @@ import org.mozillatranslator.datamodel.*;
  *
  * @author  henrik
  */
-public class FilterTraverse extends EmptyTraverseCommand
-{
+public class FilterTraverse extends EmptyTraverseCommand {
     private Filter currentFilter;
-    private GenericFile currentFile;
+    // private GenericFile currentFile;
     private boolean currentFileDirty;
-    private List resultList;
-    
+    private List<Phrase> resultList;
     
     /** Creates a new instance of FilterTraverse */
-    public FilterTraverse(Filter currentFilter)
-    {
+    public FilterTraverse(Filter currentFilter) {
         this.currentFilter = currentFilter;
-        resultList = new ArrayList();
+        resultList = new ArrayList<Phrase>();
     }
     
-    public boolean action(GenericFile currentNode)
-    {
+    @Override
+    public boolean action(GenericFile currentNode) {
         currentNode.increaseReferenceCount();
         currentFileDirty = false;
         return true;
     }
     
-    public boolean action(Phrase currentNode)
-    {
-        if (currentFilter.check(currentNode))
-        {
+    @Override
+    public boolean action(Phrase currentNode) {
+        if (currentFilter.check(currentNode)) {
             resultList.add(currentNode);
             currentFileDirty = true;
         }
         return true;
     }
     
-    public List getResultList()
-    {
+    public List<Phrase> getResultList() {
         return resultList;
     }
     
-    public void postop(GenericFile currentNode)
-    {
-        if (!currentFileDirty)
-        {
+    @Override
+    public void postop(GenericFile currentNode) {
+        if (!currentFileDirty) {
             currentNode.decreaseReferenceCount();
         }
     }

@@ -23,13 +23,17 @@
  */
 package org.mozillatranslator.action;
 
-import java.awt.event.*;
-import javax.swing.*;
-import java.util.*;
-import org.mozillatranslator.gui.dialog.*;
-import org.mozillatranslator.gui.*;
-import org.mozillatranslator.filter.*;
-import org.mozillatranslator.kernel.*;
+import java.awt.event.ActionEvent;
+import java.util.Collections;
+import java.util.List;
+import javax.swing.AbstractAction;
+import org.mozillatranslator.datamodel.Phrase;
+import org.mozillatranslator.filter.FilterRunner;
+import org.mozillatranslator.filter.Search;
+import org.mozillatranslator.gui.ComplexTableWindow;
+import org.mozillatranslator.gui.dialog.SearchDialog;
+import org.mozillatranslator.gui.dialog.ShowWhatDialog;
+import org.mozillatranslator.kernel.Kernel;
 
 /** Search action tying the UI to search and the actual search operation
  * @author Henrik Lynggaard
@@ -45,11 +49,11 @@ public class SearchAction extends AbstractAction {
     /** Called when the action is triggered
      * @param evt The action event
      */
+    @Override
     public void actionPerformed(ActionEvent evt) {
-        List collectedList;
+        List<Phrase> collectedList;
 
         SearchDialog sd = new SearchDialog();
-
         if (sd.showDialog()) {
             Search search = (Search) sd.getDataObject();
             ShowWhatDialog swd = new ShowWhatDialog();
