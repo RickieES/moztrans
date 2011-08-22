@@ -62,11 +62,12 @@ public class Phrase extends MozTreeNode {
     private String filterResult;
 
     /*
-     * Calling fillParentArray() to get the component column for a
+     * Calling fillParentArray() to get the component and product columns for a
      * given Phrase in a ComplexTableWindow is too expensive and a Phrase
      * never changes its parent, so we save the value in componentPath,
      * calculating it at Phrase creation time
      */
+    private Product productParent;
     private String componentPath;
 
     private String localizationNote;
@@ -94,6 +95,7 @@ public class Phrase extends MozTreeNode {
 
         this.fillParentArray(parentList);
         componentPath = parentList[TreeNode.LEVEL_COMPONENT];
+        productParent = (Product) Kernel.datamodel.getChildByName(parentList[TreeNode.LEVEL_PRODUCT]);
         
         if (Kernel.settings.getBoolean(Settings.USE_SUGGESTIONS)) {
             pcs = new PropertyChangeSupport(this);
@@ -141,6 +143,10 @@ public class Phrase extends MozTreeNode {
      */
     public void setComponentPath(final String componentPath) {
         this.componentPath = componentPath;
+    }
+
+    public Product getProductParent() {
+        return productParent;
     }
 
     /**
@@ -688,7 +694,7 @@ public class Phrase extends MozTreeNode {
      * Actually, only "text" property will notify of changes at this moment
      * @param listener an object implementing PropertyChangeListener
      */
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
+    public final void addPropertyChangeListener(PropertyChangeListener listener) {
         if (Kernel.settings.getBoolean(Settings.USE_SUGGESTIONS)) {
             this.pcs.addPropertyChangeListener(listener);
         }

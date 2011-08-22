@@ -78,7 +78,7 @@ public class ComplexTableSorter extends ComplexTableMap {
      * @param model the ComplexTableModel instance
      */
     @Override
-    public void setModel(ComplexTableModel model) {
+    public final void setModel(ComplexTableModel model) {
         super.setModel(model);
         reallocateIndexes();
 
@@ -216,6 +216,7 @@ public class ComplexTableSorter extends ComplexTableMap {
         }
     }
 
+    @Override
     public void tableChanged(TableModelEvent e) {
         //System.out.println("Sorter: tableChanged");
         reallocateIndexes();
@@ -236,14 +237,39 @@ public class ComplexTableSorter extends ComplexTableMap {
         }
     }
 
+    public void sortByColumn(int column) {
+        sortByColumn(column, true);
+    }
+
+    public void sortByColumn(int column, boolean ascending) {
+        this.ascending = ascending;
+        this.sortingColumn = column;
+        columnType = model.getColumnClass(sortingColumn);
+        sort(this);
+        super.tableChanged(new TableModelEvent(this));
+    }
+
     public void sort(Object sender) {
         checkModel();
         
         compares = 0;
-        n2sort();
-        // qsort(0, indexes.length-1);
-        //shuttlesort((int[]) indexes.clone(), indexes, 0, indexes.length);
-        //System.out.println("Compares: "+compares);
+        // This is where data comes from
+        TableModel data = model;
+
+        // Create an array with comparable nodes with indexes to the model
+        int rowCount = model.getRowCount();
+        ComparableIndexedObject elements[] = new ComparableIndexedObject[rowCount];
+        for(int row = 0; row < rowCount; row++) {
+            elements[row] = new ComparableIndexedObject(row, (Comparable)data.getValueAt(row, sortingColumn));
+        }
+
+        // Do the sort
+        Arrays.sort(elements);
+
+        // Copy new index sequence to the indexes array
+        for(int row = 0; row < rowCount; row++) {
+            indexes[ascending ? row : rowCount - row - 1] = elements[row].getIndex();
+        }
         sorted = true;
     }
 
@@ -317,6 +343,7 @@ public class ComplexTableSorter extends ComplexTableMap {
     // The mapping only affects the contents of the data rows.
     // Pass all requests to these rows through the mapping array: "indexes".
 
+    @Override
     public Object getValueAt(int aRow, int aColumn) {
         checkModel();
         return model.getValueAt(indexes[aRow], aColumn);
@@ -328,22 +355,11 @@ public class ComplexTableSorter extends ComplexTableMap {
     }
 
 
+    @Override
     public void setValueAt(Object aValue, int aRow, int aColumn) {
         checkModel();
         model.setValueAt(aValue, indexes[aRow], aColumn);
         // JTable.setSelectionRow(aRow);
-    }
-
-    public void sortByColumn(int column) {
-        sortByColumn(column, true);
-    }
-
-    public void sortByColumn(int column, boolean ascending) {
-        this.ascending = ascending;
-        this.sortingColumn = column;
-        columnType = model.getColumnClass(sortingColumn);
-        sort(this);
-        super.tableChanged(new TableModelEvent(this));
     }
 
     // There is no-where else to put this.
@@ -355,6 +371,7 @@ public class ComplexTableSorter extends ComplexTableMap {
 
         tableView.setColumnSelectionAllowed(false);
         MouseAdapter listMouseListener = new MouseAdapter() {
+            @Override
             public void mouseClicked(MouseEvent e) {
                 TableColumnModel columnModel = tableView.getColumnModel();
                 int viewColumn = columnModel.getColumnIndexAtX(e.getX());
@@ -363,7 +380,7 @@ public class ComplexTableSorter extends ComplexTableMap {
                 if (e.getClickCount() == 1 && column != -1) {
                     //System.out.println("Sorting ...");
                     int shiftPressed = e.getModifiers() & InputEvent.SHIFT_MASK;
-                    boolean ascending = !(shiftPressed == 0);
+                    boolean ascending = (shiftPressed == 0);
 
                     DefaultTableColumnModel newColumnModel = new DefaultTableColumnModel();
 
@@ -378,9 +395,9 @@ public class ComplexTableSorter extends ComplexTableMap {
                         String s = (String) columnHeaders.get(i);
                         if (i == column) {
                             if (ascending) {
-                                col.setHeaderValue("v " + s);
-                            } else {
                                 col.setHeaderValue("^ " + s);
+                            } else {
+                                col.setHeaderValue("v " + s);
                             }
                         } else {
                             col.setHeaderValue(s);

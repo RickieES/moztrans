@@ -49,9 +49,7 @@ public class ProductColumn implements ComplexColumn {
     
     @Override
     public Object getValue(Phrase currentPhrase, String currentLocalization) {
-        parentList[TreeNode.LEVEL_PRODUCT] = "";
-        currentPhrase.fillParentArray(parentList);
-        return parentList[TreeNode.LEVEL_PRODUCT];
+        return currentPhrase.getProductParent().toString();
     }
     
     @Override
