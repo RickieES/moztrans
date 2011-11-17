@@ -27,9 +27,7 @@ package org.mozillatranslator.runner;
 
 import java.io.*;
 import java.util.*;
-import javax.swing.*;
 import org.mozillatranslator.datamodel.*;
-import org.mozillatranslator.io.*;
 import org.mozillatranslator.io.common.*;
 import org.mozillatranslator.kernel.*;
 import org.mozillatranslator.gui.dialog.*;
@@ -76,6 +74,7 @@ public class ImportFromCvsRunner extends Thread {
     /**
      * This is the main method
      **/
+    @Override
     public void run() {
         CvsTransfer cvsInstance = new CvsTransfer(this.prod, this.importDir);
         
