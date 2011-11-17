@@ -140,7 +140,7 @@ public class DataModel extends AbstractListModel implements Serializable {
         while (productIterator.hasNext()) {
 
             Product currentProduct = (Product) productIterator.next();
-            Kernel.appLog.log(Level.INFO, "build" + currentProduct.getName());
+            Kernel.appLog.log(Level.INFO, "build{0}", currentProduct.getName());
             DefaultMutableTreeNode currentNode = new DefaultMutableTreeNode(currentProduct);
 
             myself.add(currentNode);
@@ -178,14 +178,12 @@ public class DataModel extends AbstractListModel implements Serializable {
      * @param maxLevel The maximum depth level to dig into the tree
      */
     public void traverse(TraverseCommand command, int maxLevel) {
-
         command.action(this);
         if (maxLevel > TreeNode.LEVEL_MODEL) {
             Iterator productIterator = products.iterator();
 
             while (productIterator.hasNext()) {
                 Product currentProduct = (Product) productIterator.next();
-
                 currentProduct.traverse(command, maxLevel);
             }
         }
