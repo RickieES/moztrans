@@ -63,9 +63,11 @@ public class UpdateProduct extends javax.swing.JDialog {
         switch (typeAction) {
             case TYPE_IMPORT_ORIGINAL:
             case TYPE_IMPORT_TRANSLATION:
+                exportOnlyModifiedCheckBox.setVisible(false);
                 cvsPathLabel.setText("SCM Import Path");
                 break;
             case TYPE_EXPORT_TRANSLATION:
+                exportOnlyModifiedCheckBox.setVisible(true);
                 cvsPathLabel.setText("SCM Export Path");
                 break;
         }
@@ -89,6 +91,7 @@ public class UpdateProduct extends javax.swing.JDialog {
         cvsPathLabel = new javax.swing.JLabel();
         cvsPathField = new javax.swing.JTextField();
         cvsPathButton = new javax.swing.JButton();
+        exportOnlyModifiedCheckBox = new javax.swing.JCheckBox();
         buttonPanel = new javax.swing.JPanel();
         okButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
@@ -114,7 +117,7 @@ public class UpdateProduct extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         infoPanel.add(productLabel, gridBagConstraints);
 
-        productCombo.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        productCombo.setFont(new java.awt.Font("Dialog", 0, 12));
         productCombo.setMinimumSize(new java.awt.Dimension(120, 27));
         productCombo.setPreferredSize(new java.awt.Dimension(150, 27));
         productCombo.addActionListener(new java.awt.event.ActionListener() {
@@ -161,13 +164,24 @@ public class UpdateProduct extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         infoPanel.add(cvsPathButton, gridBagConstraints);
 
+        exportOnlyModifiedCheckBox.setText("Export only modified files");
+        exportOnlyModifiedCheckBox.setToolTipText("Export only files modified since last export");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
+        infoPanel.add(exportOnlyModifiedCheckBox, gridBagConstraints);
+
         getContentPane().add(infoPanel, java.awt.BorderLayout.CENTER);
 
         okButton.setFont(new java.awt.Font("Dialog", 0, 12));
         okButton.setText("OK");
-        okButton.setMaximumSize(new java.awt.Dimension(72, 25));
-        okButton.setMinimumSize(new java.awt.Dimension(72, 25));
-        okButton.setPreferredSize(new java.awt.Dimension(72, 25));
+        okButton.setMaximumSize(new java.awt.Dimension(72, 27));
+        okButton.setMinimumSize(new java.awt.Dimension(72, 27));
+        okButton.setPreferredSize(new java.awt.Dimension(72, 27));
         okButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 okButtonPressed(evt);
@@ -178,6 +192,9 @@ public class UpdateProduct extends javax.swing.JDialog {
         cancelButton.setFont(new java.awt.Font("Dialog", 0, 12));
         cancelButton.setText("Cancel");
         cancelButton.setDefaultCapable(false);
+        cancelButton.setMaximumSize(new java.awt.Dimension(72, 27));
+        cancelButton.setMinimumSize(new java.awt.Dimension(72, 27));
+        cancelButton.setPreferredSize(new java.awt.Dimension(72, 27));
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButtonPressed(evt);
@@ -291,8 +308,10 @@ public class UpdateProduct extends javax.swing.JDialog {
      */
     public Product showDialog() {
         Product result = null;
+        Settings set = Kernel.settings;
         
         productComboActionPerformed(null);
+        exportOnlyModifiedCheckBox.setSelected(set.getBoolean(Settings.EXPORT_ONLY_MODIFIED));
         setVisible(true);
         if (okay) {
             result = (Product) productCombo.getSelectedItem();
@@ -308,6 +327,14 @@ public class UpdateProduct extends javax.swing.JDialog {
     public String getCVSImportPath() {
         return cvsPathField.getText();
     }
+
+    /**
+     * Returns the value of the Export Only Modified files flag
+     * @return true if the user has chosen to export just modified files
+     */
+    public boolean exportOnlyModified() {
+        return exportOnlyModifiedCheckBox.isSelected();
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel buttonPanel;
@@ -315,6 +342,7 @@ public class UpdateProduct extends javax.swing.JDialog {
     private javax.swing.JButton cvsPathButton;
     private javax.swing.JTextField cvsPathField;
     private javax.swing.JLabel cvsPathLabel;
+    private javax.swing.JCheckBox exportOnlyModifiedCheckBox;
     private javax.swing.JPanel infoPanel;
     private javax.swing.JButton okButton;
     private javax.swing.JComboBox productCombo;
