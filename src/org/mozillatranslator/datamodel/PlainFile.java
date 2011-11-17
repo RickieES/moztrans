@@ -37,6 +37,7 @@ public class PlainFile extends MozFile {
         super(n, p);
     }
     
+    @Override
     public void load(ImportExportDataObject dataObject) {
         super.load(dataObject);
         
@@ -50,6 +51,7 @@ public class PlainFile extends MozFile {
         }
     }
     
+    @Override
     public void save(ImportExportDataObject dataObject) {
         super.save(dataObject);
         
@@ -63,6 +65,7 @@ public class PlainFile extends MozFile {
         }
     }
     
+    @Override
     public String getTypeName() {
         return "Plain text";
     }
