@@ -53,6 +53,7 @@ public class RelinkAction extends AbstractAction {
         Kernel.datamodel.traverse(new ClearResultComment(), TreeNode.LEVEL_PHRASE);
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
         List collectedList;
 
