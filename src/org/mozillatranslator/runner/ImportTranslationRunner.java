@@ -42,6 +42,7 @@ public class ImportTranslationRunner extends MozTask {
 
     /** The main method
      */
+    @Override
     public void taskImplementation() throws MozException {
         ImportTranslationDataObject dao = (ImportTranslationDataObject) dataObject;
         Kernel.startTimeBatch();
@@ -67,6 +68,7 @@ public class ImportTranslationRunner extends MozTask {
         Kernel.endTimeBatch();
     }
 
+    @Override
     public String getTitle() {
         return "Import translation";
     }
