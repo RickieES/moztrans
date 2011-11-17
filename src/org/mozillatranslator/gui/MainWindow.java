@@ -116,6 +116,7 @@ public class MainWindow extends javax.swing.JFrame {
         // Advanced menu
         aMenuItem = addMenuItem(advancedMenu, new MigrateProductAction(), null);
         aMenuItem = addMenuItem(advancedMenu, new AssignLicenseAction(),null);
+        aMenuItem = addMenuItem(advancedMenu, new ResetLastModifiedTimeAction(), null);
 
         // Help menu
         aMenuItem = addMenuItem(helpMenu, new AboutAction(), null);
