@@ -42,6 +42,7 @@ public class BinaryFile extends MozFile {
         licenseFile = null;
     }
     
+    @Override
     public void load(ImportExportDataObject dataObject) {
         super.load(dataObject);
         
@@ -55,6 +56,7 @@ public class BinaryFile extends MozFile {
         }
     }
     
+    @Override
     public void save(ImportExportDataObject dataObject) {
         super.save(dataObject);
         
@@ -97,6 +99,7 @@ public class BinaryFile extends MozFile {
         this.translatedContent = translatedContent;
     }
     
+    @Override
     public String getTypeName() {
         return "Binary";
     }
