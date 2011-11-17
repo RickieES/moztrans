@@ -43,8 +43,8 @@ public class ClearResultComment extends EmptyTraverseCommand {
      * @param currentNode   the phrase whose Result Comment is to be cleared
      * @return true if the action has completed sucessfully
      */
-    public boolean action(Phrase currentNode)
-    {
+    @Override
+    public boolean action(Phrase currentNode) {
         currentNode.setFilterResult("");
         return true;        
     }
