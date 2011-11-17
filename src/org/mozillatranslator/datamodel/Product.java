@@ -104,7 +104,6 @@ public class Product extends MozTreeNode {
         children.addAll(platforms);
         children.add(regional);
         children.add(custom);
-        //childSize = children.size();
         touch(); // Update last modified time when re-creating the children list
     }
     
