@@ -21,33 +21,27 @@
  * Henrik Lynggaard Hansen (Initial Code)
  *
  */
-
-
 package org.mozillatranslator.kernel;
 
-
 import org.mozillatranslator.datamodel.*;
+
 /** this is a emtpy implementation of the traverse interface
  * @author henrik */
-public class EmptyTraverseCommand implements TraverseCommand
-{
-    
+public class EmptyTraverseCommand implements TraverseCommand {
+
     /** Creates a new instance of EmptyTraverseCommand */
-    public EmptyTraverseCommand()
-    {
+    public EmptyTraverseCommand() {
     }
-    
-    
+
     /** This emtpy implementation just returns true
      * @param currentNode The current node passed by the traverse
-     * @return true */    
-    public boolean action(TreeNode currentNode)
-    {
+     * @return true */
+    @Override
+    public boolean action(TreeNode currentNode) {
         boolean result = true;
         int level = currentNode.getLevel();
-        
-        switch (level)
-        {
+
+        switch (level) {
             case TreeNode.LEVEL_MODEL:
                 result = action((DataModel) currentNode);
                 break;
@@ -72,73 +66,70 @@ public class EmptyTraverseCommand implements TraverseCommand
         }
         return result;
     }
-    
+
     /** This emtpy implementation just returns true
      * @param currentNode The current node passed by the traverse
-     * @return true */    
-    public boolean action(ProductChild currentNode)
-    {
+     * @return true */
+    @Override
+    public boolean action(ProductChild currentNode) {
         return true;
-    }
-    
-    /** This emtpy implementation just returns true
-     * @param currentNode The current node passed by the traverse
-     * @return true */    
-    public boolean action(DataModel currentNode)
-    {
-        return true;        
-    }
-    
-    /** This emtpy implementation just returns true
-     * @param currentNode The current node passed by the traverse
-     * @return true */    
-    public boolean action(Product currentNode)
-    {
-        return true;        
     }
 
-    
     /** This emtpy implementation just returns true
      * @param currentNode The current node passed by the traverse
-     * @return true */    
-    public boolean action(GenericFile currentNode)
-    {
-        return true;        
-    }
-    
-    /** This emtpy implementation just returns true
-     * @param currentNode The current node passed by the traverse
-     * @return true */    
-    public boolean action(Translation currentNode)
-    {
+     * @return true */
+    @Override
+    public boolean action(DataModel currentNode) {
         return true;
     }
-    
-    /** This emtpy implementation just returns true
-     * @return true
-     * @param currentNode The current node passed by the traverse */    
-    public boolean action(Phrase currentNode)
-    {
-        return true;        
-    }
-    
+
     /** This emtpy implementation just returns true
      * @param currentNode The current node passed by the traverse
-     * @return true */    
-    public boolean action(Component currentNode)
-    {
-        return true;        
+     * @return true */
+    @Override
+    public boolean action(Product currentNode) {
+        return true;
     }
-    
-    
+
+    /** This emtpy implementation just returns true
+     * @param currentNode The current node passed by the traverse
+     * @return true */
+    @Override
+    public boolean action(GenericFile currentNode) {
+        return true;
+    }
+
+    /** This emtpy implementation just returns true
+     * @param currentNode The current node passed by the traverse
+     * @return true */
+    @Override
+    public boolean action(Translation currentNode) {
+        return true;
+    }
+
+    /** This emtpy implementation just returns true
+     * @return true
+     * @param currentNode The current node passed by the traverse */
+    @Override
+    public boolean action(Phrase currentNode) {
+        return true;
+    }
+
+    /** This emtpy implementation just returns true
+     * @param currentNode The current node passed by the traverse
+     * @return true */
+    @Override
+    public boolean action(Component currentNode) {
+        return true;
+    }
+
     /** This empty implementation does nothing
-     * @param currentNode The current node passed by the traverse */    
-    public void postop(TreeNode currentNode)
-    {
+     * @param currentNode The current node passed by the traverse */
+    @Override
+    public void postop(TreeNode currentNode) {
         int level = currentNode.getLevel();
-        
-        switch (level)
-        {
+
+        switch (level) {
             case TreeNode.LEVEL_MODEL:
                 postop((DataModel) currentNode);
                 break;
@@ -162,48 +153,46 @@ public class EmptyTraverseCommand implements TraverseCommand
                 break;
         }
     }
-    
+
     /** This empty implementation does nothing
-     * @param currentNode The current node passed by the traverse */    
-    public void postop(ProductChild currentNode)
-    {
-    }
-    
-    /** This empty implementation does nothing
-     * @param currentNode The current node passed by the traverse */    
-    public void postop(DataModel currentNode)
-    {
-    }
-    
-    /** This empty implementation does nothing
-     * @param currentNode The current node passed by the traverse */    
-    public void postop(Product currentNode)
-    {
+     * @param currentNode The current node passed by the traverse */
+    @Override
+    public void postop(ProductChild currentNode) {
     }
 
-    
     /** This empty implementation does nothing
-     * @param currentNode The current node passed by the traverse */    
-    public void postop(GenericFile currentNode)
-    {
+     * @param currentNode The current node passed by the traverse */
+    @Override
+    public void postop(DataModel currentNode) {
     }
-    
+
     /** This empty implementation does nothing
-     * @param currentNode The current node passed by the traverse */    
-    public void postop(Translation currentNode)
-    {
+     * @param currentNode The current node passed by the traverse */
+    @Override
+    public void postop(Product currentNode) {
     }
-    
+
     /** This empty implementation does nothing
-     * @param currentNode The current node passed by the traverse */    
-    public void postop(Phrase currentNode)
-    {
+     * @param currentNode The current node passed by the traverse */
+    @Override
+    public void postop(GenericFile currentNode) {
     }
-    
+
     /** This empty implementation does nothing
-     * @param currentNode The current node passed by the traverse */    
-    public void postop(Component currentNode)
-    {
-    }    
-    
+     * @param currentNode The current node passed by the traverse */
+    @Override
+    public void postop(Translation currentNode) {
+    }
+
+    /** This empty implementation does nothing
+     * @param currentNode The current node passed by the traverse */
+    @Override
+    public void postop(Phrase currentNode) {
+    }
+
+    /** This empty implementation does nothing
+     * @param currentNode The current node passed by the traverse */
+    @Override
+    public void postop(Component currentNode) {
+    }
 }
