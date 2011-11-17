@@ -53,6 +53,7 @@ public class Platform extends MozTreeNode implements ProductChild {
         touch(); // Update last modified time when changing the JAR file
     }
 
+    @Override
     public String getJarFile() {
         return jarFile;
     }
@@ -62,6 +63,7 @@ public class Platform extends MozTreeNode implements ProductChild {
         touch(); // Update last modified time on changing the type of this platform
     }
 
+    @Override
     public int getType() {
         return type;
     }
@@ -70,6 +72,7 @@ public class Platform extends MozTreeNode implements ProductChild {
         return (type == TYPE_NEUTRAL);
     }
 
+    @Override
     public String getTypeName() {
         String result = "";
         switch (type) {
@@ -107,6 +110,7 @@ public class Platform extends MozTreeNode implements ProductChild {
         return result;
     }
 
+    @Override
     public void load(ProductChildInputOutputDataObject dataObject) throws IOException {
         dataObject.setProductChild(this);
         switch (dataObject.getFormat()) {
@@ -116,6 +120,7 @@ public class Platform extends MozTreeNode implements ProductChild {
         }
     }
 
+    @Override
     public void save(ProductChildInputOutputDataObject dataObject) throws IOException {
         dataObject.setProductChild(this);
         switch (dataObject.getFormat()) {
@@ -125,6 +130,7 @@ public class Platform extends MozTreeNode implements ProductChild {
         }
     }
 
+    @Override
     public String getJarInXpiFile(String l10n) {
         String result = l10n;
         switch (this.type) {
@@ -140,6 +146,7 @@ public class Platform extends MozTreeNode implements ProductChild {
         return result;
     }
 
+    @Override
     public String getLocaleDisplay(String l10n) {
         return l10n;
     }
