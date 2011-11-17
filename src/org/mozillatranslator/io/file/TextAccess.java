@@ -25,6 +25,7 @@
 package org.mozillatranslator.io.file;
 
 import java.nio.charset.Charset;
+import java.util.logging.Level;
 import org.mozillatranslator.io.common.*;
 import java.io.*;
 import org.mozillatranslator.kernel.*;
@@ -35,7 +36,7 @@ import org.mozillatranslator.kernel.*;
  * @version 1.0
  */
 public class TextAccess extends FileAccessAdapter {
-    private final static String UNKNOWN_FILETYPE = "MT_UknownFileType";
+    private final static String UNKNOWN_FILETYPE_DEFAULT_KEY = "MT_UknownFileType";
     private String value;
     private boolean justStarted;
     
@@ -43,16 +44,20 @@ public class TextAccess extends FileAccessAdapter {
     public TextAccess() {
     }
     
+    @Override
     public void beginWrite(ImportExportDataObject dataObject) throws MozIOException {
-        Kernel.appLog.info("Starting to write textfile " + dataObject.getNode().getName());
+        Kernel.appLog.log(Level.INFO, "Starting to write textfile {0}",
+                            dataObject.getNode().getName());
     }
     
+    @Override
     public void writeLine(String key, String writeValue) throws MozIOException {
-        if (key.equals(UNKNOWN_FILETYPE)) {
+        if (key.equals(UNKNOWN_FILETYPE_DEFAULT_KEY)) {
             this.value = writeValue;
         }
     }
     
+    @Override
     public void endWrite(ImportExportDataObject dataObject) throws MozIOException {
         String fileCharSet;
         
@@ -69,6 +74,7 @@ public class TextAccess extends FileAccessAdapter {
         }
     }
     
+    @Override
     public void beginRead(ImportExportDataObject dataObject) throws MozIOException {
         String fileCharSet;
         StringBuffer rawBuild;
@@ -110,20 +116,24 @@ public class TextAccess extends FileAccessAdapter {
         }
     }
     
+    @Override
     public boolean hasMore() throws MozIOException {
         boolean result = justStarted;
         justStarted = false;
         return result;
     }
     
+    @Override
     public String getKey() throws MozIOException {
-        return UNKNOWN_FILETYPE;
+        return UNKNOWN_FILETYPE_DEFAULT_KEY;
     }
     
+    @Override
     public String getValue() throws MozIOException {
         return value;
     }
     
+    @Override
     public void endRead(ImportExportDataObject dataObject) throws MozIOException {
         value = null;
     }
