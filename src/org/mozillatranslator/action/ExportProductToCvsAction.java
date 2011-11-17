@@ -61,7 +61,8 @@ public class ExportProductToCvsAction extends AbstractAction {
             if (l10n != null) {
                 Kernel.settings.setString(Settings.GUI_EXPORT_FILE_CHOOSER_PATH, "");
                 File selectedDir = new File(up.getCVSImportPath());
-                ExportToCvsRunner runner = new ExportToCvsRunner(prod, selectedDir, l10n);
+                ExportToCvsRunner runner = new ExportToCvsRunner(prod, selectedDir,
+                        l10n, up.exportOnlyModified());
                 runner.start();
             }
         }

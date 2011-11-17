@@ -26,39 +26,36 @@
 package org.mozillatranslator.runner;
 
 import java.io.*;
-import java.util.*;
-import javax.swing.*;
 import org.mozillatranslator.datamodel.*;
-import org.mozillatranslator.io.*;
 import org.mozillatranslator.io.common.*;
-import org.mozillatranslator.kernel.*;
-import org.mozillatranslator.gui.dialog.*;
-import org.mozillatranslator.gui.*;
 
 /** This runner will update a product
  * @author Henrik Lynggaard
  * @version 1.0
  */
 public class ExportToCvsRunner extends Thread {
-    
-    /** the product to update
-     */
     private Product prod;
     private File importDir;
     private String l10n;
+    private boolean exportOnlyModified;
+
     /** Creates new UpdateProductRunner
      * @param p The product to update
      */
-    public ExportToCvsRunner(Product p, File id, String l10n) {
+    public ExportToCvsRunner(Product p, File id, String l10n,
+                             boolean exportOnlyModified) {
         this.prod = p;
         this.importDir = id;
         this.l10n = l10n;
+        this.exportOnlyModified = exportOnlyModified;
     }
     
     /** This is the main method
      */
+    @Override
     public void run() {
-        CvsTransfer cvsInstance = new CvsTransfer(this.prod, this.importDir);
-        cvsInstance.saveProduct(this.l10n);
+        CvsTransfer cvsInstance = new CvsTransfer(this.prod, this.importDir,
+                                                  this.l10n);
+        cvsInstance.saveProduct(this.exportOnlyModified);
     }
 }

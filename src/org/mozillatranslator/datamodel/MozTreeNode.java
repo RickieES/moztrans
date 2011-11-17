@@ -74,7 +74,6 @@ public abstract class MozTreeNode extends AbstractListModel implements TreeNode 
         treeLevel = level;
         children = new ArrayList(1);
         mark = false;
-        touch(); // Update last modified time when creating the node
     }
 
     /**
@@ -84,7 +83,6 @@ public abstract class MozTreeNode extends AbstractListModel implements TreeNode 
     @Override
     public void setName(String n) {
         name = n;
-        touch(); // Update last modified time when changing this node name
     }
 
     /**
@@ -132,7 +130,6 @@ public abstract class MozTreeNode extends AbstractListModel implements TreeNode 
     @Override
     public void addChild(TreeNode child) {
         children.add(child);
-
     }
 
     /**
@@ -144,6 +141,7 @@ public abstract class MozTreeNode extends AbstractListModel implements TreeNode 
         if (children.contains(child)) {
             children.remove(child);
             child.setParent(null);
+            touch(); // Update last modified time when a child is deleted
         }
     }
 
@@ -165,6 +163,7 @@ public abstract class MozTreeNode extends AbstractListModel implements TreeNode 
         while (children.size() > 0) {
             children.remove(0);
         }
+        touch(); // Update last modified time when removing all children
     }
 
     /**
@@ -489,6 +488,7 @@ public abstract class MozTreeNode extends AbstractListModel implements TreeNode 
                 if (currentChild.deleteUntouched()) {
                     fLogger.log(Level.INFO, "Removing child {0}", currentChild.getName());
                     childIterator.remove();
+                    this.touch();
                 }
             }
         }
@@ -520,7 +520,6 @@ public abstract class MozTreeNode extends AbstractListModel implements TreeNode 
     @Override
     public void setParent(TreeNode value) {
         parent = value;
-        touch();
     }
 
     /**
@@ -539,7 +538,7 @@ public abstract class MozTreeNode extends AbstractListModel implements TreeNode 
      * time is returned)
      */
     @Override
-    public void touch() {
+    public final void touch() {
         setAlteredTime(Kernel.getCurrentTime());
     }
 

@@ -168,7 +168,6 @@ public class Phrase extends MozTreeNode {
     public void setKeepOriginal(final boolean value) {
         keepOriginal = value;
         touch(); // Updates last modified time on changing Keep Original value
-        ((MozFile) parent).setDirty();
     }
 
     /**
@@ -188,8 +187,6 @@ public class Phrase extends MozTreeNode {
      */
     public void setFuzzy(final boolean value) {
         fuzzy = value;
-        touch();
-        ((MozFile) parent).setDirty();
     }
 
     /**
@@ -229,7 +226,6 @@ public class Phrase extends MozTreeNode {
      */
     public void setAccessConnection(final Phrase value) {
         accessConnection = value;
-        ((MozFile) parent).setDirty();
     }
 
     /**
@@ -252,7 +248,6 @@ public class Phrase extends MozTreeNode {
      */
     public void setCommandConnection(final Phrase value) {
         commandConnection = value;
-        ((MozFile) parent).setDirty();
     }
 
     /**
@@ -277,7 +272,6 @@ public class Phrase extends MozTreeNode {
      */
     public void setLabelConnection(final Phrase labelConnection) {
         this.labelConnection = labelConnection;
-        ((MozFile) parent).setDirty();
     }
 
     /**
@@ -286,7 +280,6 @@ public class Phrase extends MozTreeNode {
      */
     @Override public void addChild(final TreeNode child) {
         children.add(child);
-        ((MozFile) parent).setDirty();
     }
 
     /**
@@ -297,7 +290,6 @@ public class Phrase extends MozTreeNode {
         if (children.contains(child)) {
             children.remove(child);
             child.setParent(null);
-            ((MozFile) parent).setDirty();
         }
     }
 

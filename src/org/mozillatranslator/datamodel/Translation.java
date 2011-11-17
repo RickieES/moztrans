@@ -75,8 +75,6 @@ public class Translation extends MozTreeNode {
     public void setText(final String text) {
         this.text = text;
         touch(); // Update last modified time on changing text
-        final Phrase curPhr = (Phrase) parent;
-        ((MozFile) curPhr.parent).setDirty();
     }
 
     /** Getter for property status.
@@ -91,9 +89,6 @@ public class Translation extends MozTreeNode {
      */
     public void setStatus(final TrnsStatus status) {
         this.status = status;
-        touch(); // Update last modified time on changing text
-        final Phrase curPhr = (Phrase) parent;
-        ((MozFile) curPhr.parent).setDirty();
     }
 
     /** Getter for property comment.
@@ -108,9 +103,6 @@ public class Translation extends MozTreeNode {
      */
     public void setComment(final String comment) {
         this.comment = comment;
-        touch(); // Update last modified time on changing text
-        final Phrase curPhr = (Phrase) parent;
-        ((MozFile) curPhr.parent).setDirty();
     }
 
     /**

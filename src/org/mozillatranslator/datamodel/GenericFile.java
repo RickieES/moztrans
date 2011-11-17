@@ -52,6 +52,25 @@ public interface GenericFile extends TreeNode {
 
     public boolean isDontExport();
 
+    /**
+     * Checks if any of the children Phrase or grandchildren Translation objects
+     * has a newer alteredTime value than the file itself (meaning it needs to
+     * be exported)
+     * @param onlyPhrases if true, it checks just Phrases
+     * @return true if a children or grandchildren is newer than the file itself
+     */
+    public boolean isModified(boolean onlyPhrases);
+
+    /**
+     * Checks if any of the children Phrase or grandchildren Translation objects
+     * has a newer alteredTime value than the reference time, meaning it needs
+     * to be exported
+     * @param onlyPhrases if true, it checks just Phrases
+     * @param referenceTime the time to which compare the nodes
+     * @return true if a children or grandchildren is newer than the file itself
+     */
+    public boolean isModified(boolean onlyPhrases, long referenceTime);
+
     public void save(ImportExportDataObject dataObject);
 
     public void load(ImportExportDataObject dataObject);

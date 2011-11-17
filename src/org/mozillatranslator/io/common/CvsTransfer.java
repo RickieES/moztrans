@@ -33,21 +33,20 @@ import java.util.*;
 import java.util.logging.*;
 import org.mozillatranslator.kernel.*;
 import org.mozillatranslator.datamodel.*;
-import org.mozillatranslator.io.*;
 
 /**
  *
  * @author  henrik
  */
 public class CvsTransfer {
-    private ImportExportDataObject dao = new ImportExportDataObject();
     private String l10n;
+    private boolean exportOnlyModified;
+    private long productAlteredTime;
     private Product prod;
     private File imexDir;
     private Settings set = Kernel.settings;
     private static final Logger fLogger = Logger.
             getLogger(CvsTransfer.class.getPackage().getName());
-    
     
     /**
      * Default constructor
@@ -57,12 +56,23 @@ public class CvsTransfer {
     
     /**
      * Constructor normally used
+     * @param prod    the Product object that will be updated
+     * @param imexDir the import/export directory
+     * @param l10n    the locale to work with, or en-US for original string
+     */
+    public CvsTransfer(Product prod, File imexDir, String l10n) {
+        this.prod = prod;
+        this.imexDir = imexDir;
+        this.l10n = l10n;
+    }
+
+    /**
+     * Constructor used for import Original
      * @param prod the Product object that will be updated
      * @param imexDir Import/Export directory
      */
     public CvsTransfer(Product prod, File imexDir) {
-        this.prod = prod;
-        this.imexDir = imexDir;
+        this(prod, imexDir, Kernel.ORIGINAL_L10N);
     }
     
     /************************************************************************
@@ -70,27 +80,32 @@ public class CvsTransfer {
      ************************************************************************/
     
     /**
-     * Saves a product in a suitable form for commiting it to CVS
-     *
-     * @param l10n          the l10n to save
+     * Saves a product in a suitable form for commiting it to a VCS
+     * @param exportOnlyModified true if only modified noded should be exported
      **/
-    public void saveProduct(String l10n) {
+    public void saveProduct(boolean exportOnlyModified) {
         ProductChild neutral;
         
-        this.l10n = l10n;
+        this.exportOnlyModified = exportOnlyModified;
+        this.productAlteredTime = this.prod.getAlteredTime();
+
         neutral = this.prod.getChildByType(ProductChild.TYPE_NEUTRAL);
         Iterator componentIterator = neutral.iterator();
         saveComponent(componentIterator, this.imexDir.getAbsolutePath());
+
+        Kernel.startTimeBatch();
+        this.prod.traverse(new ResetLastModifiedTimeTraverse(Kernel.getCurrentTime()),
+                           TreeNode.LEVEL_TRANSLATION);
+        Kernel.endTimeBatch();
     }
     
     /**
      * Saves a component, iterating recursively through its component children
      *
      * @author Ricardo
-     *
-     * @param thisLevel     a level's iterator to process its children
-     * @param parentPath    the path where the children will be saved (or
-     *                      created, if they are components/dirs)
+     * @param thisLevel         a level's iterator to process its children
+     * @param parentPath        the path where the children will be saved (or
+     *                          created, if they are components/dirs)
      **/
     private void saveComponent(Iterator thisLevel, String parentPath) {
         MozTreeNode currentNode;
@@ -100,39 +115,31 @@ public class CvsTransfer {
         while (thisLevel.hasNext()) {
             // Let's get it
             currentNode = (MozTreeNode) thisLevel.next();
-            
-            // If it's a component, we have to recurse over it
-            if (currentNode instanceof Component) {
-                String altExportDir = ((Component) currentNode).getExportedToDir();
-                
-                // If we have an alternative export dir for this component,
-                if (altExportDir != null) {
-                    // let's use the alternative
-                    altExportDir = altExportDir.replace(
-                            Component.ALTEXPORTDIR_LOCALE_PATTERN, this.l10n);
-                    subDirFile = new File(this.imexDir, altExportDir);
-                
-                    // If it is NOT named "MT_default", we should create the
-                    // subdirectory before processing currentNode children
-                } else if (!currentNode.getName().equalsIgnoreCase(
-                           StructureAccess.DEFAULT_SUBCOMPONENT)) {
-                    // If user preference is to replace "en-US" directories name
-                    // wit "ab-CD" name, let's take it into account
-                    if (set.getBoolean(Settings.EXPORT_REPLACE_ENUS) &&
-                            !this.l10n.equals(Kernel.ORIGINAL_L10N) &&
-                            currentNode.getName().equals(Kernel.ORIGINAL_L10N)) {
-                        subDirFile = new File(parentPath, this.l10n);
-                    } else {
-                        subDirFile = new File(parentPath, currentNode.getName());
-                    }
+
+            // If it's a file, save it
+            if (!(currentNode instanceof Component)) {
+                saveFile((MozFile) currentNode, parentPath);
+            } else {
+                // If it's a component, we have to recurse over it
+
+                String exportDir = ((Component) currentNode).getExportedToDir();
+                if (exportDir != null) {
+                    // This node has to be exported to a specific dir
+                    exportDir = exportDir.replace(Component.ALTEXPORTDIR_LOCALE_PATTERN,
+                                                  this.l10n);
                 } else {
-                    subDirFile = new File(parentPath);
+                    // General substitution: if user preference is to replace
+                    // "en-US" with L10N value, the current node name is "en-US"
+                    // and we're not importing original en-US strings, we
+                    // replace "en-US" for "ab-CD"
+                    exportDir = (set.getBoolean(Settings.EXPORT_REPLACE_ENUS) &&
+                                 currentNode.getName().equals(Kernel.ORIGINAL_L10N) &&
+                                 !this.l10n.equals(Kernel.ORIGINAL_L10N)) ?
+                                     this.l10n : currentNode.getName();
                 }
-                
+                subDirFile = new File(parentPath, exportDir);
                 Iterator nextLevel = currentNode.iterator();
                 saveComponent(nextLevel, subDirFile.getPath());
-            } else {
-                saveFile((MozFile) currentNode, parentPath);
             }
         }
     }
@@ -150,10 +157,19 @@ public class CvsTransfer {
         File thisFile;
         File subDirFile;
         ImportExportDataObject data;
+        boolean exportThisFile;
 
-        if (!currentFile.isDontExport()) {
+        // We want to export this file if it is not marked NOT to be exported
+        // AND (the user preference is to export all files, including those not
+        // modified, OR the file has been modified)
+        exportThisFile = (!currentFile.isDontExport()) &&
+                         ((!this.exportOnlyModified) ||
+                          (currentFile.isModified(false, this.productAlteredTime)));
+
+        // Has the user marked this file as "Don't export"?
+        if (exportThisFile) {
             // If user preference is to replace "en-US" directories name
-            // wit "ab-CD" name, let's take it into account
+            // with "ab-CD" name, let's take it into account
             if (set.getBoolean(Settings.EXPORT_REPLACE_ENUS) &&
                     !this.l10n.equals(Kernel.ORIGINAL_L10N) &&
                     (parentPath.indexOf(Kernel.ORIGINAL_L10N) > -1)) {
@@ -178,16 +194,16 @@ public class CvsTransfer {
 
             try {
                 if (data.getFileContent() != null && data.getFileContent().length > 0) {
-                    fLogger.log(Level.INFO, "Should be {0}",
+                    fLogger.log(Level.INFO, "Exporting file {0}",
                             thisFile.getCanonicalPath());
                     FileUtils.saveWithLicence(thisFile.getCanonicalPath(),
                             data.getFileContent(), currentFile);
                 } else {
-                    fLogger.log(Level.INFO, "Empty file: {0} not written",
+                    fLogger.log(Level.INFO, "Empty file {0} not written",
                             thisFile.getCanonicalPath());
                 }
             } catch (IOException e) {
-                fLogger.log(Level.WARNING, "Error during file export: {0}",
+                fLogger.log(Level.WARNING, "Error exporting file {0}",
                         e.getMessage());
             }
             currentFile.decreaseReferenceCount();
@@ -211,6 +227,7 @@ public class CvsTransfer {
         ProductChild neutral = prod.getChildByType(ProductChild.TYPE_NEUTRAL);
         
         this.l10n = Kernel.ORIGINAL_L10N;
+        Kernel.startTimeBatch();
         
         // We'll use MozTreeNode.mark to mark the nodes present in the import
         // so we can delete later the obsolete nodes
@@ -218,10 +235,10 @@ public class CvsTransfer {
         neutral.setMark();
         
         componentDirs = imexDir.listFiles();
-        
         loadComponent(componentDirs, (MozTreeNode) neutral, changeList);
         
         neutral.deleteUntouched();
+        Kernel.endTimeBatch();
         return changeList;
     }
     
@@ -299,7 +316,7 @@ public class CvsTransfer {
                     currentComponent = null;
                 }
                 
-                // If the component doesn't exists and we're not importing a
+                // If the component doesn't exist and we're not importing a
                 // translation, we must create the component and associate it
                 // to its parent
                 if (currentComponent == null) {
@@ -313,8 +330,8 @@ public class CvsTransfer {
                 }
                 
                 if (loadingOriginal) {
-                    // This component exists in the directory structure, so we mark
-                    // it because it won't need to be deleted
+                    // This component exists in the directory structure, so we
+                    // mark it because it won't need to be deleted
                     currentComponent.setMark();
                 }
                 
@@ -387,6 +404,8 @@ public class CvsTransfer {
      * @param l10n      the l10n
      **/
     protected void readFile(File loadFile, GenericFile mfile, List cl, String l10n) {
+        ImportExportDataObject dao = new ImportExportDataObject();
+
         try {
             FileInputStream fis = new FileInputStream(loadFile);
             dao.setFileContent(FileUtils.loadFile(fis));

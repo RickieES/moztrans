@@ -36,6 +36,7 @@ import org.mozillatranslator.kernel.*;
  * @version 1.0
  */
 public class BinaryAccess implements FileAccess {
+    private final static String UNKNOWN_FILETYPE_DEFAULT_KEY = "UNKNOWN_FILETYPE_DEFAULT_KEY";
     // FIXME: the entire binary vs text io needs refactoring
     
     /** Creates new BinaryAccess */
@@ -55,7 +56,7 @@ public class BinaryAccess implements FileAccess {
             dataObject.setFileContent(binFile.getBinaryContent());
         } else {
             BinaryFile binFile = (BinaryFile) dataObject.getNode();
-            Phrase binaryPhrase = (Phrase) binFile.getChildByName("MT_UknownFileType");
+            Phrase binaryPhrase = (Phrase) binFile.getChildByName(UNKNOWN_FILETYPE_DEFAULT_KEY);
             if (binFile.getTranslatedContent() != null && !binaryPhrase.isKeepOriginal()) {
                 dataObject.setFileContent(binFile.getTranslatedContent());
             } else {
@@ -94,9 +95,9 @@ public class BinaryAccess implements FileAccess {
                 sb.append(hash[i] < 0x10 ? "0" : "").append(s);
             }
             
-            currentPhrase = (Phrase) binFile.getChildByName("MT_UknownFileType");
+            currentPhrase = (Phrase) binFile.getChildByName(UNKNOWN_FILETYPE_DEFAULT_KEY);
             if (currentPhrase == null) {
-                currentPhrase = new Phrase("MT_UknownFileType", binFile,
+                currentPhrase = new Phrase(UNKNOWN_FILETYPE_DEFAULT_KEY, binFile,
                                            "Unknown filetype!!!");
                 binFile.addChild(currentPhrase);
                 currentPhrase.setText("Use Binary edit dialog to Translate");
@@ -106,6 +107,7 @@ public class BinaryAccess implements FileAccess {
             if (!binFile.getMd5Hash().equals(sb.toString())) {
                 dataObject.getChangeList().add(currentPhrase);
                 binFile.setMd5Hash(sb.toString());
+                binFile.touch();
             }
             currentPhrase.setMark();
         } else {

@@ -23,6 +23,7 @@
  */
 package org.mozillatranslator.datamodel;
 
+import java.util.Iterator;
 import javax.swing.tree.*;
 import org.mozillatranslator.io.common.*;
 
@@ -31,7 +32,6 @@ import org.mozillatranslator.io.common.*;
  * @author rpalomares
  */
 public abstract class MozFile extends MozTreeNode implements GenericFile {
-
     /**
      * the original file license, together with the contributor identification
      */
@@ -82,7 +82,6 @@ public abstract class MozFile extends MozTreeNode implements GenericFile {
     @Override
     public void setRealFilename(String value) {
         realFilename = value;
-        touch(); // Update last modified time on changing the real filename
     }
 
     @Override
@@ -93,7 +92,6 @@ public abstract class MozFile extends MozTreeNode implements GenericFile {
     @Override
     public void setRelativeFilename(String value) {
         relativeFilename = value;
-        touch(); // Update last modified time on changing the relative filename
     }
 
     @Override
@@ -128,6 +126,33 @@ public abstract class MozFile extends MozTreeNode implements GenericFile {
     }
 
     @Override
+    public boolean isModified(boolean onlyPhrases) {
+        return this.isModified(onlyPhrases, this.getAlteredTime());
+    }
+
+    @Override
+    public boolean isModified(boolean onlyPhrases, long referenceTime) {
+        Iterator<Phrase> it = this.iterator();
+        boolean result = (this.getAlteredTime() > referenceTime);
+
+        while (it.hasNext() && !result) {
+            Phrase p = it.next();
+            if (p.getAlteredTime() > referenceTime) {
+                result = true;
+            } else {
+                if (!onlyPhrases && p.hasChildren()) {
+                    Iterator<Translation> itt = p.iterator();
+                    while (itt.hasNext() && !result) {
+                        Translation t = itt.next();
+                        result = t.getAlteredTime() > referenceTime;
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    @Override
     public void save(ImportExportDataObject dataObject) {
         dataObject.setNode(this);
     }
@@ -159,9 +184,6 @@ public abstract class MozFile extends MozTreeNode implements GenericFile {
     @Override
     public void removeAllChildren() {
         children.clear();
-    }
-
-    public void setDirty() {
     }
 
     @Override

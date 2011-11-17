@@ -44,17 +44,19 @@ public class Region extends MozTreeNode implements ProductChild {
 
     public void setJarFile(String newJar) {
         jarFile = newJar;
-        touch(); // Update last modified time when assigning JAR file
     }
 
+    @Override
     public String getJarFile() {
         return jarFile;
     }
 
+    @Override
     public int getType() {
         return ProductChild.TYPE_REGION;
     }
 
+    @Override
     public void load(ProductChildInputOutputDataObject dataObject) throws IOException {
         dataObject.setProductChild(this);
         switch (dataObject.getFormat()) {
@@ -64,6 +66,7 @@ public class Region extends MozTreeNode implements ProductChild {
         }
     }
 
+    @Override
     public void save(ProductChildInputOutputDataObject dataObject) throws IOException {
         dataObject.setProductChild(this);
         switch (dataObject.getFormat()) {
@@ -73,18 +76,21 @@ public class Region extends MozTreeNode implements ProductChild {
         }
     }
 
+    @Override
     public String getJarInXpiFile(String l10n) {
         String result;
         result = l10n.substring(l10n.indexOf("-") + 1);
         return result;
     }
 
+    @Override
     public String getLocaleDisplay(String l10n) {
         String result;
         result = l10n.substring(l10n.indexOf("-") + 1);
         return result;
     }
 
+    @Override
     public String getTypeName() {
         return "Region";
     }
