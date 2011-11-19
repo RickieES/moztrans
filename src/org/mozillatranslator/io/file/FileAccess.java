@@ -30,8 +30,7 @@ import org.mozillatranslator.io.common.*;
  * @author  Henrik Lynggaard
  * @version 1.0
  */
-public interface FileAccess
-{
+public interface FileAccess {
  	public void load(ImportExportDataObject dataObject);
 
         public void save(ImportExportDataObject dataObject);
