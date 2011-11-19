@@ -116,6 +116,7 @@ public class Settings {
     // Do we want to replace en-US with ab-CD on exporting?
     public static final String EXPORT_REPLACE_ENUS = "export.replace.enus";
     public static final String EXPORT_ONLY_MODIFIED = "export.only.modified";
+    public static final String EXPORT_ENUS_VALUE_ON_EMPTY_TRANSLATIONS = "export.enus.on.empty.trns";
     // Do we want to use external ZIP utilities on exporting?
     public static final String USE_EXTERNAL_ZIP = "export.use_external_zip";
     public static final String EXTERNAL_ZIP_PATH = "export.zip.path";
@@ -188,6 +189,7 @@ public class Settings {
         // Do we want to replace en-US with ab-CD on exporting?
         startup.setProperty(EXPORT_REPLACE_ENUS, "false");
         startup.setProperty(EXPORT_ONLY_MODIFIED, "true");
+        startup.setProperty(EXPORT_ENUS_VALUE_ON_EMPTY_TRANSLATIONS, "false");
         startup.setProperty(USE_EXTERNAL_ZIP, "false");
         startup.setProperty(EXTERNAL_ZIP_PATH, "");
         startup.setProperty(EXTERNAL_UNZIP_PATH, "");

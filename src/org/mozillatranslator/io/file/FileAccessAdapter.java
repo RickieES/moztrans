@@ -87,6 +87,8 @@ public abstract class FileAccessAdapter implements FileAccess {
         String key;
         String value;
         boolean original;
+        Settings set = Kernel.settings;
+        boolean dumpEnUSOnEmptyTrns = set.getBoolean(Settings.EXPORT_ENUS_VALUE_ON_EMPTY_TRANSLATIONS);
 
         original = dataObject.getL10n().equals(Kernel.ORIGINAL_L10N) ? true : false;
         try {
@@ -104,11 +106,16 @@ public abstract class FileAccessAdapter implements FileAccess {
                         dataObject.getL10n());
                 key = currentPhrase.getName();
 
-                if (original || currentTranslation == null || currentPhrase.isKeepOriginal()) {
-                    value = currentPhrase.getText();
-                } else {
-                    value = currentTranslation.getText();
-                }
+                value = (currentPhrase.isKeepOriginal()) ?
+                            currentPhrase.getText() :
+                            ((currentTranslation == null) ?
+                                ((dumpEnUSOnEmptyTrns) ?
+                                    currentPhrase.getText() :
+                                    "") :
+                                ((original) ?
+                                    currentPhrase.getText() :
+                                    currentTranslation.getText()));
+
                 // The following writeLine method is overriden by every specific
                 // file access (like DTDAccess or PropertiesAccess)
                 writeLine(key, value);
