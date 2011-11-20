@@ -23,14 +23,11 @@
  *
  */
 
-
 package org.mozillatranslator.runner;
-
 
 import org.mozillatranslator.kernel.*;
 import org.mozillatranslator.datamodel.*;
 import java.util.Stack;
-
 
 /** This traverse class is used to migrate one product into another
  * @author Henrik Lynggaard
@@ -39,9 +36,7 @@ public class MigrateProductTraverse extends EmptyTraverseCommand {
     private Product destProduct;
     private ProductChild destProductChild;
     private Stack componentStack;
-    private Component destComponent;
     private GenericFile destFile;
-    private GenericFile sourceFile;
     private Phrase destPhrase;
     private String l10n;
     
@@ -68,7 +63,7 @@ public class MigrateProductTraverse extends EmptyTraverseCommand {
         destProductChild = (destProduct != null) ? (ProductChild)
                 destProduct.getChildByName(currentNode.getName()) : null;
         
-        return (destProductChild != null) ? true : false;
+        return (destProductChild != null);
     }
     
     /** This is called by the traverse when a component is
@@ -102,8 +97,7 @@ public class MigrateProductTraverse extends EmptyTraverseCommand {
             }
         }
         return (newLevel != null) ?
-                ((newLevel.getName().equals(currentNode.getName())) ? true : false)
-                : false;
+                newLevel.getName().equals(currentNode.getName()) : false;
     }
     
     /** This is called by the traverse when a file is
@@ -127,8 +121,7 @@ public class MigrateProductTraverse extends EmptyTraverseCommand {
         } else {
             destFile = null;
         }
-        
-        return (destFile != null) ? true : false;
+        return (destFile != null);
     }
     
     /** This is called by the traverse when a phrase is

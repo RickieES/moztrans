@@ -39,6 +39,7 @@ public class ExportComponentRunner extends MozTask {
     }
 
     /** the main method */
+    @Override
     public void  taskImplementation() throws MozException {
         ComponentTransferDataObject dao = (ComponentTransferDataObject) dataObject;
         ImportExportDataObject data = new ImportExportDataObject();
@@ -52,6 +53,7 @@ public class ExportComponentRunner extends MozTask {
         }
     }
 
+    @Override
     public String getTitle() {
         return "Export Component";
     }

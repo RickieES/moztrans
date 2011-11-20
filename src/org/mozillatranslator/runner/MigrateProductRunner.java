@@ -32,19 +32,16 @@ import org.mozillatranslator.gui.*;
  *
  * @author  Henrik Lynggaard
  */
-public class MigrateProductRunner extends MozTask
-{
-    
+public class MigrateProductRunner extends MozTask {
+
     /** Creates a new instance of ExportFileRunner */
-    public MigrateProductRunner()
-    {
+    public MigrateProductRunner() {
     }
     
-    public void taskImplementation() throws MozException
-    {
+    @Override
+    public void taskImplementation() throws MozException {
         MigrateProductDataObject dao = (MigrateProductDataObject) dataObject;
         Product productSource, productDestination;
-
         String l10n;
         
         l10n = dao.getL10n();
@@ -52,13 +49,11 @@ public class MigrateProductRunner extends MozTask
         productDestination = dao.getDestination();
         
         MigrateProductTraverse command = new MigrateProductTraverse(productDestination, l10n);
-        
         productSource.traverse(command, TreeNode.LEVEL_PHRASE);
     }    
     
-    public String getTitle()
-    {
+    @Override
+    public String getTitle() {
         return "Migrate product";
     }
-    
 }
