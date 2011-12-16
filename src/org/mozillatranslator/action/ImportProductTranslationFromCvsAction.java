@@ -55,7 +55,8 @@ public class ImportProductTranslationFromCvsAction extends AbstractAction {
         ImportFromCvsRunner runner;
 
         // Bring a dialog box
-        up = new UpdateProduct("Import from SCM", UpdateProduct.TYPE_IMPORT_TRANSLATION);
+        up = new UpdateProduct("Import from Repository",
+                               UpdateProduct.TYPE_IMPORT_TRANSLATION);
         prod = up.showDialog();
 
         try {
@@ -68,7 +69,8 @@ public class ImportProductTranslationFromCvsAction extends AbstractAction {
             l10n = JOptionPane.showInputDialog(Kernel.mainWindow, "Select locale to import",
                     Kernel.settings.getString(Settings.STATE_L10N));
             if (l10n != null) {
-                runner = new ImportFromCvsRunner(prod, selectedDir, l10n);
+                runner = new ImportFromCvsRunner(prod, selectedDir, l10n,
+                                                 up.isRunAutoTranslate());
                 runner.start();
             }
         }

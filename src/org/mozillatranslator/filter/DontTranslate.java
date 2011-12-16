@@ -38,6 +38,7 @@ public class DontTranslate implements Filter {
         this.localeName = ln;
     }
 
+    @Override
     public boolean check(Phrase ph) {
         boolean result = false;
         

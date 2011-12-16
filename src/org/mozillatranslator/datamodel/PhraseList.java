@@ -150,6 +150,13 @@ public class PhraseList extends ArrayList<Phrase> implements ListModel,
         this.ldls.remove(l);
     }
 
+    /**
+     * Calculates the matching percentage of all suggestions for the phrase
+     * passed in and sorts the PhraseList based on its percentage (values range
+     * from 0 to 100)
+     * 
+     * @param p the prase for which we want to calculate the matching percentage
+     */
     public void calculateMatchPercentage(Phrase p) {
         this.matchPercentage = new int[this.getSize()];
         int referenceLength = p.getText().length();
@@ -163,18 +170,37 @@ public class PhraseList extends ArrayList<Phrase> implements ListModel,
         this.sortOnMatchPercentageValue();
     }
 
+    /**
+     * Sets the matching percentage of a suggestion; the value is adjusted to the
+     * range 0-100
+     * @param index the suggestion index
+     * @param value the matching percentage to set
+     */
     public void setMatchPercentage(int index, int value) {
-        this.matchPercentage[index] = value;
+        this.matchPercentage[index] = Math.min(Math.max(0, value), 100);
     }
 
+    /**
+     * Gets the matching percentage of a suggestion
+     * @param index the suggestion index
+     * @return value the matching percentage of the suggestion in the range 0-100
+     */
     public int getMatchPercentage(int index) {
         return this.matchPercentage[index];
     }
 
+    /**
+     * Gets the matching percentage of the current suggestion in the cycle
+     * @return value the matching percentage of the current suggestion in the cycle, in the range 0-100
+     */
     public int getCurrentMatchPercentage() {
         return getMatchPercentage(this.cycleIndex);
     }
 
+    /**
+     * Sorts both the underlying ArrayList<Phrase> and the percentage array
+     * based on descending percentage values
+     */
     public void sortOnMatchPercentageValue() {
         // We use the selection algorithm, since most of the time we will be
         // dealing with tiny lists with less than 10 elements

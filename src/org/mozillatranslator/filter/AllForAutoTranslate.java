@@ -24,39 +24,34 @@
 
 package org.mozillatranslator.filter;
 
-import org.mozillatranslator.datamodel.*;
+import org.mozillatranslator.datamodel.Phrase;
+import org.mozillatranslator.datamodel.Translation;
+import org.mozillatranslator.datamodel.TrnsStatus;
+
 /**
+ * Filter to retrieve all Phrases that need a Translation
  *
  * @author  Henrik Lynggaard
  * @version 1.0
  */
-public class AllForAutoTranslate implements Filter
-{
-    
+public class AllForAutoTranslate implements Filter {
     private String localeName;
     
     /** Creates new FetchUntranslated */
-    public AllForAutoTranslate(String ln)
-    {
-        localeName = ln;
+    public AllForAutoTranslate(String ln) {
+        this.localeName = ln;
     }
     
-    public boolean check(Phrase ph)
-    {
+    @Override
+    public boolean check(Phrase ph) {
         boolean result = true;
-//        Translation currentTranslation;
-//        
-//        currentTranslation = (Translation) ph.getChildByName(localeName);
-//        
-//        if ((currentTranslation == null) && (!ph.isKeepOriginal()))
-//        {
-//            result = true;
-//        }
-//        else
-//        {
-//            result = false;
-//        }
+        Translation currentTranslation;
+        
+        currentTranslation = (Translation) ph.getChildByName(localeName);
+
+        result = ((currentTranslation == null) && (!ph.isKeepOriginal()));
+        result = result || ((currentTranslation != null) &&
+                            (currentTranslation.getStatus() == TrnsStatus.Untranslated));
         return result;
     }
-    
 }

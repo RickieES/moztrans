@@ -30,12 +30,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.beans.PropertyChangeListener;
 import java.util.Collections;
+import java.util.List;
 import org.mozillatranslator.kernel.Kernel;
 import org.mozillatranslator.kernel.Settings;
 
 /**
  * This class keeps track of Phrases in an indexed way to be able to provide
- * translations suggestions 
+ * translations suggestions
  * @author rpalomares
  */
 public class TranslationSuggestions implements PropertyChangeListener {
@@ -56,7 +57,7 @@ public class TranslationSuggestions implements PropertyChangeListener {
                           ? ' ' : oldValue.toLowerCase().charAt(0);
         char newInitial = ((newValue == null) || (newValue.length() == 0))
                           ? ' ' : newValue.toLowerCase().charAt(0);
-        
+
         // If the initial character doesn't change, we don't need to move the
         // Phrase object from one ArrayList to another one
         if (oldInitial == newInitial) {
@@ -78,32 +79,32 @@ public class TranslationSuggestions implements PropertyChangeListener {
 
     private void addToIndexedList(Phrase p, char c) {
         PhraseList pl = this.initialEntries.get(c);
-        
+
         // If there is no list for this initial yet, add it
         if (pl == null) {
             pl = new PhraseList(null);
             this.initialEntries.put(c, pl);
         }
-        
+
         pl.add(p);
         Collections.sort(pl, Phrase.TEXT_ORDER);
     }
-    
+
     private void removeFromIndexedList(Phrase p, char c) {
         PhraseList pl = this.initialEntries.get(c);
-        
+
         // This condition will likely always be true, unless we are creating
         // the structure on glossary loading
         if (pl != null) {
             int idx = pl.indexOfThisPhrase(p, false);
-            
+
             // ...as will this one with the same exception, too
             if (idx != -1) {
                 pl.remove(idx);
             }
         }
     }
-    
+
     /**
      * Returns a list of Phrases with the same text than p
      * @param p the Phrase whose text we want a list of
@@ -120,25 +121,25 @@ public class TranslationSuggestions implements PropertyChangeListener {
         boolean include;
         boolean onlyExactMatches;
         Phrase pInList;
-        
+
         // Get the index letter
         if ((p.getText() != null) && (p.getText().length() > 0)) {
             c = p.getText().toLowerCase().charAt(0);
         } else {
             c = ' ';
         }
-        
+
         // Get the list for the index letter
         PhraseList pl = this.initialEntries.get(c);
         onlyExactMatches = (Kernel.settings.getInteger(Settings.SUGGESTIONS_MATCH_VALUE) == 100);
         idx = onlyExactMatches ? pl.indexOfThisPhrase(p, true) : 0;
-        
+
         // If the list isn't empty and (the phrase is in the list, or we don't
         // want exact matches)
         if ((pl != null) && (idx != -1)) {
             // Create the list of suggestions to return
             suggestions = new PhraseList(l10n);
-            
+
             while (idx < pl.size()) {
 
                 if (onlyExactMatches) {
@@ -164,7 +165,7 @@ public class TranslationSuggestions implements PropertyChangeListener {
                         pInList = null;
                     }
                 }
-                
+
                 // If the current phrase is not p or we want to keep p in the list
                 if ((pInList != null) && !(excludeOwn && (pInList == p))) {
                     // We don't want to include phrases without Translation
@@ -184,7 +185,7 @@ public class TranslationSuggestions implements PropertyChangeListener {
         }
         return suggestions;
     }
-    
+
     private boolean isCandidate(String s, String c) {
         int maxDistance = s.length() - (s.length() *
                           Kernel.settings.getInteger(Settings.SUGGESTIONS_MATCH_VALUE) / 100);
@@ -195,6 +196,81 @@ public class TranslationSuggestions implements PropertyChangeListener {
             result = (maxDistance >= getLevenshteinDistance(s, c));
         }
         return result;
+    }
+
+    /**
+     * Takes an ArrayList of Phrases and provides translations for them per
+     * the following rules (see bug http://kenai.com/bugzilla/show_bug.cgi?id=4438):
+     * <ul>
+     * <li>Commandkeys will be flagged as Keep Original and no translation will
+     *   be added.</li>
+     * <li>Accesskeys will be left empty, as it is important than they are
+     *   included in a bundle by the user through the Auto-Assign AccessKey
+     *   dialog to propose better suggestions.</li>
+     * <li>Phrases with DO_NOT_TRANSLATE associated comments will be left empty.
+     *   They won't be marked instead as Keep Original because there are cases
+     *   where this L10n note has been added to remark that specific parts of
+     *   the original string, as opposed to the whole one, must be left
+     *   untouched.</li>
+     * <li>Phrases with existing translations will not be modified.</li>
+     * </ul>
+     * 
+     * It also adjust the TrnsStatus value of the Translations provided.
+     * 
+     * @param pl a List of Phrases
+     * @param locale a locale code
+     */
+    public void translatePhraseList(List<Phrase> pl, String locale) {
+        for (Phrase phrase : pl) {
+            // If there is no existing Translation
+            if (phrase.getChildByName(locale) == null) {
+                if (phrase.isCommandkey()) {
+                    phrase.setKeepOriginal(true);
+                } else if (phrase.isAccesskey()) {
+                    // If the Phrase in this list to auto-translate has a
+                    // Translation child, let's mark it as Untranslated
+                    if (phrase.getChildByName(locale) != null) {
+                        ((Translation) phrase.getChildByName(locale))
+                                .setStatus(TrnsStatus.Untranslated);
+                    }
+                } else if ((phrase.getLocalizationNote() != null)
+                            && phrase.getLocalizationNote().contains("DO_NOT_TRANSLATE")) {
+                    // If the Phrase in this list to auto-translate has a
+                    // Translation child, let's mark it as Untranslated
+                    if (phrase.getChildByName(locale) != null) {
+                        ((Translation) phrase.getChildByName(locale))
+                                .setStatus(TrnsStatus.Untranslated);
+                    }
+                } else {
+                    PhraseList suggList = this.suggestionsForPhrase(phrase, 
+                                                                locale, true);
+                    if ((suggList != null) && (suggList.getRowCount() > 0)) {
+                        suggList.sortOnMatchPercentageValue();
+                        // Now we have the suggestions list sorted on descending
+                        // percentage value. We will always use the best possible
+                        // suggestion and set the translation status correspondingly
+                        // (see TrnsStatus enumeration for details)
+                        Phrase bestSuggestion = suggList.getFirstElementInList();
+
+                        phrase.setKeepOriginal(bestSuggestion.isKeepOriginal());
+                        if (bestSuggestion.getChildByName(locale) != null) {
+                            Translation t = (Translation) bestSuggestion.getChildByName(locale);
+                            TrnsStatus tStatus;
+
+                            if (suggList.getCurrentMatchPercentage() == 100) {
+                                tStatus = (suggList.getRowCount() == 1) ?
+                                        TrnsStatus.Copied : TrnsStatus.Proposed;
+                            } else {
+                                tStatus = TrnsStatus.Approximated;
+                            }
+
+                            phrase.addChild(new Translation(locale, phrase,
+                                            t.getText(), tStatus));
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /**

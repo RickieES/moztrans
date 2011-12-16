@@ -63,15 +63,16 @@ public class UpdateProduct extends javax.swing.JDialog {
         switch (typeAction) {
             case TYPE_IMPORT_ORIGINAL:
             case TYPE_IMPORT_TRANSLATION:
-                exportOnlyModifiedCheckBox.setVisible(false);
-                cvsPathLabel.setText("SCM Import Path");
+                repositoryPathLabel.setText("Repository Import Path");
+                autoTrnsOrExportOnlyModifCheckBox.setText("Auto-translate after updating");
+                autoTrnsOrExportOnlyModifCheckBox.setToolTipText("Run Auto-translate on new/modified strings");
                 break;
             case TYPE_EXPORT_TRANSLATION:
-                exportOnlyModifiedCheckBox.setVisible(true);
-                cvsPathLabel.setText("SCM Export Path");
+                repositoryPathLabel.setText("Repository Export Path");
+                autoTrnsOrExportOnlyModifCheckBox.setText("Export only modified files");
+                autoTrnsOrExportOnlyModifCheckBox.setToolTipText("Export only files modified since last export");
                 break;
         }
-        
         JDialogHelper.setupOKCancelHotkeys(this, okButton, cancelButton);
         GuiTools.placeFrameAtCenter(this);
     }
@@ -88,10 +89,10 @@ public class UpdateProduct extends javax.swing.JDialog {
         infoPanel = new javax.swing.JPanel();
         productLabel = new javax.swing.JLabel();
         productCombo = new JComboBox(Kernel.datamodel.toArray());
-        cvsPathLabel = new javax.swing.JLabel();
-        cvsPathField = new javax.swing.JTextField();
-        cvsPathButton = new javax.swing.JButton();
-        exportOnlyModifiedCheckBox = new javax.swing.JCheckBox();
+        repositoryPathLabel = new javax.swing.JLabel();
+        repositoryPathField = new javax.swing.JTextField();
+        repositoryPathButton = new javax.swing.JButton();
+        autoTrnsOrExportOnlyModifCheckBox = new javax.swing.JCheckBox();
         buttonPanel = new javax.swing.JPanel();
         okButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
@@ -131,41 +132,41 @@ public class UpdateProduct extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         infoPanel.add(productCombo, gridBagConstraints);
 
-        cvsPathLabel.setDisplayedMnemonic('V');
-        cvsPathLabel.setFont(new java.awt.Font("Dialog", 0, 12));
-        cvsPathLabel.setLabelFor(cvsPathField);
-        cvsPathLabel.setText("SCM Import Path");
+        repositoryPathLabel.setDisplayedMnemonic('V');
+        repositoryPathLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        repositoryPathLabel.setLabelFor(repositoryPathField);
+        repositoryPathLabel.setText("Repository Import Path");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
-        infoPanel.add(cvsPathLabel, gridBagConstraints);
+        infoPanel.add(repositoryPathLabel, gridBagConstraints);
 
-        cvsPathField.setMinimumSize(new java.awt.Dimension(100, 27));
-        cvsPathField.setPreferredSize(new java.awt.Dimension(200, 27));
+        repositoryPathField.setMinimumSize(new java.awt.Dimension(100, 27));
+        repositoryPathField.setPreferredSize(new java.awt.Dimension(200, 27));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
-        infoPanel.add(cvsPathField, gridBagConstraints);
+        infoPanel.add(repositoryPathField, gridBagConstraints);
 
-        cvsPathButton.setFont(new java.awt.Font("Dialog", 0, 12));
-        cvsPathButton.setMnemonic('C');
-        cvsPathButton.setText("Choose");
-        cvsPathButton.addActionListener(new java.awt.event.ActionListener() {
+        repositoryPathButton.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        repositoryPathButton.setMnemonic('C');
+        repositoryPathButton.setText("Choose");
+        repositoryPathButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cvsPathButtonActionPerformed(evt);
+                repositoryPathButtonActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
-        infoPanel.add(cvsPathButton, gridBagConstraints);
+        infoPanel.add(repositoryPathButton, gridBagConstraints);
 
-        exportOnlyModifiedCheckBox.setText("Export only modified files");
-        exportOnlyModifiedCheckBox.setToolTipText("Export only files modified since last export");
+        autoTrnsOrExportOnlyModifCheckBox.setText("Auto-translate or export modified");
+        autoTrnsOrExportOnlyModifCheckBox.setToolTipText("Tooltip for autotrns or export only mod");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
@@ -173,7 +174,7 @@ public class UpdateProduct extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
-        infoPanel.add(exportOnlyModifiedCheckBox, gridBagConstraints);
+        infoPanel.add(autoTrnsOrExportOnlyModifCheckBox, gridBagConstraints);
 
         getContentPane().add(infoPanel, java.awt.BorderLayout.CENTER);
 
@@ -212,26 +213,26 @@ public class UpdateProduct extends javax.swing.JDialog {
         boolean isJarBased = ((prod.getNeutralPlatform().getJarFile() != null) &&
                 (prod.getNeutralPlatform().getJarFile().length() > 0));
         
-        cvsPathField.setEnabled(!isJarBased);
-        cvsPathButton.setEnabled(!isJarBased);
+        repositoryPathField.setEnabled(!isJarBased);
+        repositoryPathButton.setEnabled(!isJarBased);
         if (isJarBased) {
-            cvsPathField.setText("");
+            repositoryPathField.setText("");
         } else {
             switch (typeAction) {
                 case TYPE_IMPORT_ORIGINAL:
-                    cvsPathField.setText(prod.getCVSImportOriginalPath());
+                    repositoryPathField.setText(prod.getCVSImportOriginalPath());
                     break;
                 case TYPE_IMPORT_TRANSLATION:
-                    cvsPathField.setText(prod.getCVSImportTranslationPath());
+                    repositoryPathField.setText(prod.getCVSImportTranslationPath());
                     break;
                 case TYPE_EXPORT_TRANSLATION:
-                    cvsPathField.setText(prod.getCVSExportTranslationPath());
+                    repositoryPathField.setText(prod.getCVSExportTranslationPath());
                     break;
             }
         }
     }//GEN-LAST:event_productComboActionPerformed
     
-    private void cvsPathButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cvsPathButtonActionPerformed
+    private void repositoryPathButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_repositoryPathButtonActionPerformed
         File defaultFile;
         File f;
         JFileChooser chooser;
@@ -239,7 +240,7 @@ public class UpdateProduct extends javax.swing.JDialog {
         int result;
         
         prod = (Product) productCombo.getSelectedItem();
-        defaultFile = new File(cvsPathField.getText());
+        defaultFile = new File(repositoryPathField.getText());
         if (defaultFile.isDirectory()) {
             f = defaultFile;
         } else {
@@ -252,13 +253,22 @@ public class UpdateProduct extends javax.swing.JDialog {
         
         chooser = new JFileChooser(f);
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        chooser.setDialogTitle("Select directory to import from");
+
+        switch (this.typeAction) {
+            case UpdateProduct.TYPE_IMPORT_ORIGINAL:
+            case UpdateProduct.TYPE_IMPORT_TRANSLATION:
+                chooser.setDialogTitle("Select directory to import from");
+                break;
+            case UpdateProduct.TYPE_EXPORT_TRANSLATION:
+                chooser.setDialogTitle("Select directory to export to");
+                break;
+        }
         
         result = chooser.showDialog(this, "Choose directory");
         if (result == JFileChooser.APPROVE_OPTION) {
-            cvsPathField.setText(chooser.getSelectedFile().getAbsolutePath());
+            repositoryPathField.setText(chooser.getSelectedFile().getAbsolutePath());
         }
-    }//GEN-LAST:event_cvsPathButtonActionPerformed
+    }//GEN-LAST:event_repositoryPathButtonActionPerformed
     
     private void okButtonPressed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_okButtonPressed
     {//GEN-HEADEREND:event_okButtonPressed
@@ -272,7 +282,7 @@ public class UpdateProduct extends javax.swing.JDialog {
             setVisible(false);
         } else {
             try {
-                selectedDir = new File(cvsPathField.getText());
+                selectedDir = new File(repositoryPathField.getText());
                 okay = selectedDir.exists() && selectedDir.isDirectory();
             } catch (java.lang.NullPointerException e) {
                 selectedDir = null;
@@ -311,7 +321,10 @@ public class UpdateProduct extends javax.swing.JDialog {
         Settings set = Kernel.settings;
         
         productComboActionPerformed(null);
-        exportOnlyModifiedCheckBox.setSelected(set.getBoolean(Settings.EXPORT_ONLY_MODIFIED));
+        autoTrnsOrExportOnlyModifCheckBox.setSelected(
+                set.getBoolean((this.typeAction == UpdateProduct.TYPE_EXPORT_TRANSLATION) ?
+                                Settings.EXPORT_ONLY_MODIFIED :
+                                Settings.AUTOTRANSLATE_ON_UPDATE));
         setVisible(true);
         if (okay) {
             result = (Product) productCombo.getSelectedItem();
@@ -325,7 +338,7 @@ public class UpdateProduct extends javax.swing.JDialog {
      * @return the import path provided by the user in the dialog
      */
     public String getCVSImportPath() {
-        return cvsPathField.getText();
+        return repositoryPathField.getText();
     }
 
     /**
@@ -333,19 +346,27 @@ public class UpdateProduct extends javax.swing.JDialog {
      * @return true if the user has chosen to export just modified files
      */
     public boolean exportOnlyModified() {
-        return exportOnlyModifiedCheckBox.isSelected();
+        return autoTrnsOrExportOnlyModifCheckBox.isSelected();
+    }
+
+    /**
+     * Returns the value of the Run Auto-translate check box un updating
+     * @return true if the user wants to run auto-translate on upate
+     */
+    public boolean isRunAutoTranslate() {
+        return this.autoTrnsOrExportOnlyModifCheckBox.isSelected();
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox autoTrnsOrExportOnlyModifCheckBox;
     private javax.swing.JPanel buttonPanel;
     private javax.swing.JButton cancelButton;
-    private javax.swing.JButton cvsPathButton;
-    private javax.swing.JTextField cvsPathField;
-    private javax.swing.JLabel cvsPathLabel;
-    private javax.swing.JCheckBox exportOnlyModifiedCheckBox;
     private javax.swing.JPanel infoPanel;
     private javax.swing.JButton okButton;
     private javax.swing.JComboBox productCombo;
     private javax.swing.JLabel productLabel;
+    private javax.swing.JButton repositoryPathButton;
+    private javax.swing.JTextField repositoryPathField;
+    private javax.swing.JLabel repositoryPathLabel;
     // End of variables declaration//GEN-END:variables
 }

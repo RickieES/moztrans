@@ -58,16 +58,25 @@ public class ImportFromCvsRunner extends Thread {
     private String l10n;
 
     /**
+     * Flag indicating wether to run Auto-translate after importing strings
+     */
+    private boolean runAutoTranslate;
+
+    /**
      * Creates new UpdateProductRunner
      *
      * @param p     the product to update
      * @param id    the dir from where to import
      * @param l10n  the l10n to import
+     * @param runAutoTranslate true if the user wants to run Auto-Translate on
+     *                         news/modified strings
      **/
-    public ImportFromCvsRunner(Product p, File id, String l10n) {
+    public ImportFromCvsRunner(Product p, File id, String l10n,
+            boolean runAutoTranslate) {
         this.prod = p;
         this.importDir = id;
         this.l10n = l10n;
+        this.runAutoTranslate = runAutoTranslate;
     }
     
 
@@ -79,11 +88,9 @@ public class ImportFromCvsRunner extends Thread {
         CvsTransfer cvsInstance = new CvsTransfer(this.prod, this.importDir);
         
         if (l10n.equals(Kernel.ORIGINAL_L10N)) {
-            List changed = cvsInstance.loadProduct();
+            List<Phrase> changed = cvsInstance.loadProduct();
             if (changed.size() > 0) {
-                Iterator modelIterator = changed.iterator();
-                while (modelIterator.hasNext()) {
-                    Phrase curPhrase = (Phrase) modelIterator.next();
+                for(Phrase curPhrase : changed) {
                     curPhrase.setFuzzy(true);
                 }
                 
@@ -93,13 +100,15 @@ public class ImportFromCvsRunner extends Thread {
                     List cols = swd.getSelectedColumns();
                     
                     Collections.sort(changed);
+
+                    if (this.runAutoTranslate) {
+                        Kernel.ts.translatePhraseList(changed, localeName);
+                    }
+
                     new ComplexTableWindow(Kernel.translate("changed_strings"),
                             changed, cols, localeName, null);
                 } else {
-                    modelIterator = changed.iterator();
-                    while (modelIterator.hasNext()) {
-                        Phrase curPhrase = (Phrase) modelIterator.next();
-                        
+                    for(Phrase curPhrase : changed) {
                         if (curPhrase.getName().indexOf("lang.version") > -1) {
                             Kernel.settings.setString(Settings.STATE_VERSION,
                             curPhrase.getText());

@@ -53,7 +53,7 @@ public class UpdateProductRunner extends Thread {
      */
     @Override
     public void run() {
-        List changeList = new ArrayList();
+        List<Phrase> changeList = new ArrayList();
         Kernel.startTimeBatch();
         Iterator productChildIterator = prod.iterator();
         ProductChildInputOutputDataObject dao = new
@@ -90,12 +90,9 @@ public class UpdateProductRunner extends Thread {
         Kernel.endTimeBatch();
 
         if (changeList.size() > 0) {
-            Iterator modelIterator = changeList.iterator();
-            while (modelIterator.hasNext()) {
-                Phrase curPhrase = (Phrase) modelIterator.next();
+            for(Phrase curPhrase : changeList) {
                 curPhrase.setFuzzy(true);
             }
-
             ShowWhatDialog swd = new ShowWhatDialog();
 
             if (swd.showDialog()) {
@@ -103,12 +100,10 @@ public class UpdateProductRunner extends Thread {
                 List cols = swd.getSelectedColumns();
 
                 Collections.sort(changeList);
-                new ComplexTableWindow(Kernel.translate("changed_strings"), changeList, cols, localeName, null);
+                new ComplexTableWindow(Kernel.translate("changed_strings"),
+                                        changeList, cols, localeName, null);
             } else {
-                modelIterator = changeList.iterator();
-                while (modelIterator.hasNext()) {
-                    Phrase curPhrase = (Phrase) modelIterator.next();
-
+                for(Phrase curPhrase : changeList) {
                     if (curPhrase.getName().indexOf("lang.version") > -1) {
                         Kernel.settings.setString(Settings.STATE_VERSION,
                                 curPhrase.getText());

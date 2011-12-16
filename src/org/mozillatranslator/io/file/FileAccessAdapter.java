@@ -217,8 +217,12 @@ public abstract class FileAccessAdapter implements FileAccess {
                                     "Update info: previous original value was: \n" +
                                     "[" + currentPhrase.getText() + "]");
                             currentPhrase.setText(value);
-                            dataObject.getChangeList().add(currentPhrase);
                             findConnections(currentPhrase, currentFile);
+                            Translation t = (Translation) currentPhrase.getChildByName(dataObject.getL10n());
+                            if (t != null) {
+                                t.setStatus(TrnsStatus.Modified);
+                            }
+                            dataObject.getChangeList().add(currentPhrase);
                         }
                     }
 
@@ -231,23 +235,23 @@ public abstract class FileAccessAdapter implements FileAccess {
                     }
 
                     currentPhrase.setSort(sortIndex++);
-                    fLogger.log(Level.FINE, "Set Phrase {0} to sort{1}",
+                    fLogger.log(Level.FINE, "Set Phrase {0} to sort {1}",
                             new Object[]{currentPhrase, sortIndex - 1});
                     currentPhrase.setMark();
                 } else {
                     if (currentPhrase != null) {
-                        currentTranslation = (Translation) currentPhrase.getChildByName(
-                                dataObject.getL10n());
-
                         if (!value.equals(currentPhrase.getText())) {
+                            currentTranslation = (Translation) currentPhrase.getChildByName(
+                                    dataObject.getL10n());
                             if (currentTranslation == null) {
                                 currentTranslation = new Translation(dataObject.getL10n(),
-                                        currentPhrase, value, TrnsStatus.Untranslated);
+                                        currentPhrase, value, TrnsStatus.Proposed);
                                 currentPhrase.addChild(currentTranslation);
                                 dataObject.getChangeList().add(currentPhrase);
                             } else {
                                 if (!currentTranslation.getText().equals(value)) {
                                     currentTranslation.setText(value);
+                                    currentTranslation.setStatus(TrnsStatus.Proposed);
                                     dataObject.getChangeList().add(currentPhrase);
                                 }
                             }

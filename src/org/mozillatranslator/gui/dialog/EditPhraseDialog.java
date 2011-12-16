@@ -961,6 +961,15 @@ public class EditPhraseDialog extends javax.swing.JDialog {
                     if (currentTranslation.getStatus() != status) {
                         status = TrnsStatus.Translated;
                     }
+                } else {
+                    // If ther user has not touched the translation, but the
+                    // previous existing status was Copied or Proposed, it
+                    // probably comes from an auto-translation and by not
+                    // editing it, the user is validating the translation
+                    if ((currentTranslation.getStatus() == TrnsStatus.Copied) ||
+                        (currentTranslation.getStatus() == TrnsStatus.Proposed)) {
+                        status = TrnsStatus.Translated;
+                    }
                 }
 
                 if ((currentTranslation.getComment() != null)

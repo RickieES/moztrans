@@ -67,7 +67,7 @@ public class UpdateProductAction extends AbstractAction {
             if (up.getCVSImportPath().trim().length() > 0) {
                 File selectedDir = new File(up.getCVSImportPath());
                 ImportFromCvsRunner runner = new ImportFromCvsRunner(prod,
-                        selectedDir, Kernel.ORIGINAL_L10N);
+                        selectedDir, Kernel.ORIGINAL_L10N, up.isRunAutoTranslate());
                 runner.start();
             } else {
                 upr = new UpdateProductRunner(prod);
