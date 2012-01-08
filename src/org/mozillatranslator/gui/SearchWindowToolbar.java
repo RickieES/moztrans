@@ -28,6 +28,7 @@ import java.awt.Component;
 import javax.swing.JToolBar;
 import org.mozillatranslator.action.BinaryEditPhraseAction;
 import org.mozillatranslator.action.EditPhraseAction;
+import org.mozillatranslator.action.FieldToChange;
 import org.mozillatranslator.action.RowBatchAction;
 import org.mozillatranslator.action.SearchChromeViewAction;
 
@@ -42,20 +43,23 @@ public class SearchWindowToolbar implements MozFrameToolbar {
     public SearchWindowToolbar() {
     }
 
+    @Override
     public void destroy() {
     }
 
+    @Override
     public JToolBar getToolbar() {
         JToolBar jtool = new JToolBar();
 
         jtool.add(new EditPhraseAction());
         jtool.add(new BinaryEditPhraseAction());
         jtool.add(new SearchChromeViewAction());
-        jtool.add(new RowBatchAction(RowBatchAction.FLD_FUZZY_ON));
-        jtool.add(new RowBatchAction(RowBatchAction.FLD_FUZZY_OFF));
-        jtool.add(new RowBatchAction(RowBatchAction.FLD_KEEP_ON));
-        jtool.add(new RowBatchAction(RowBatchAction.FLD_KEEP_OFF));
-        jtool.add(new RowBatchAction(RowBatchAction.FLD_TRNS_CLEAR));
+        jtool.add(new RowBatchAction(FieldToChange.FUZZY, "true"));
+        jtool.add(new RowBatchAction(FieldToChange.FUZZY, "false"));
+        jtool.add(new RowBatchAction(FieldToChange.KEEPORIG, "true"));
+        jtool.add(new RowBatchAction(FieldToChange.KEEPORIG, "false"));
+        jtool.add(new RowBatchAction(FieldToChange.TRANSLATION, ""));
+        jtool.add(new RowBatchAction(FieldToChange.MULTIPLE, ""));
         jtool.setFloatable(false);
         jtool.setRollover(true);
         for (int i = 0; i < jtool.getComponentCount(); i++) {
@@ -65,6 +69,7 @@ public class SearchWindowToolbar implements MozFrameToolbar {
         return jtool;
     }
 
+    @Override
     public void init(MozFrame frame) {
     }
 }

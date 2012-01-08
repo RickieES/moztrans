@@ -25,19 +25,21 @@ package org.mozillatranslator.action;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JTable;
 import javax.swing.event.ChangeEvent;
-import org.mozillatranslator.datamodel.AutoAccessKeyAssign.AccessKeyBundleList;
 import org.mozillatranslator.datamodel.Phrase;
 import org.mozillatranslator.datamodel.Translation;
+import org.mozillatranslator.datamodel.TrnsStatus;
 import org.mozillatranslator.gui.MainWindow;
 import org.mozillatranslator.gui.MozFrame;
+import org.mozillatranslator.gui.dialog.MassChangePanel;
 import org.mozillatranslator.kernel.Kernel;
-
+import org.mozillatranslator.util.GuiTools;
 
 /** This action sets/unsets the Fuzzy or Keep Original flags
  * on every selected phrase
@@ -46,82 +48,93 @@ import org.mozillatranslator.kernel.Kernel;
  * @version 1.0
  */
 public class RowBatchAction extends AbstractAction {
-    public static final int FLD_FUZZY_ON   = 1;
-    public static final int FLD_FUZZY_OFF  = 2;
-    public static final int FLD_KEEP_ON    = 3;
-    public static final int FLD_KEEP_OFF   = 4;
-    public static final int FLD_TRNS_CLEAR = 5;
-
-    private int batchType;
+    private FieldToChange batchType;
+    private List<ChangeUnit> cul;
 
     /**
      * Constructor for RowBatchAction (an Action operating over a selection
-     * of rows in a JTable
+     * of rows in a JTable)
      * @param batchType the type of action to perform
      */
-    public RowBatchAction(int batchType) {
+    public RowBatchAction(FieldToChange batchType, String value) {
         super();
+        String buttonLabel, imagePathfile, buttonAccesskey;
+
+        cul = new ArrayList<ChangeUnit>();
+        cul.add(new ChangeUnit(batchType, value));
         this.batchType = batchType;
 
         switch (batchType) {
-            case FLD_FUZZY_ON:
-                putValue(NAME, Kernel.translate("SetFuzzyOn.button"));
-                putValue(Action.LARGE_ICON_KEY,
-                        new ImageIcon(getClass().getResource("/org/mozillatranslator/resource/fuzzy-on.png")));
-                putValue(Action.SHORT_DESCRIPTION,
-                        Kernel.translate("SetFuzzyOn.button"));
-                // Accelerator keys seem not to be honored in the UI
-                // putValue(ACCELERATOR_KEY, Kernel.translate("SetFuzzyOn.accesskey"));
+            case FUZZY:
+                if (value.equals("true")) {
+                    buttonLabel = "SetFuzzyOn.button";
+                    imagePathfile = "/org/mozillatranslator/resource/fuzzy-on.png";
+                    buttonAccesskey = "SetFuzzyOn.accesskey";
+                } else {
+                    buttonLabel = "SetFuzzyOff.button";
+                    imagePathfile = "/org/mozillatranslator/resource/fuzzy-off.png";
+                    buttonAccesskey = "SetFuzzyOff.accesskey";
+                }
                 break;
-            case FLD_FUZZY_OFF:
-                putValue(NAME, Kernel.translate("SetFuzzyOff.button"));
-                putValue(Action.LARGE_ICON_KEY,
-                        new ImageIcon(getClass().getResource("/org/mozillatranslator/resource/fuzzy-off.png")));
-                putValue(Action.SHORT_DESCRIPTION,
-                        Kernel.translate("SetFuzzyOff.button"));
-                // putValue(ACCELERATOR_KEY, Kernel.translate("SetFuzzyOff.accesskey"));
+            case KEEPORIG:
+                if (value.equals("true")) {
+                    buttonLabel = "SetKeepOn.button";
+                    imagePathfile = "/org/mozillatranslator/resource/keep-orig.png";
+                    buttonAccesskey = "SetKeepOn.accesskey";
+                } else {
+                    buttonLabel = "SetKeepOff.button";
+                    imagePathfile = "/org/mozillatranslator/resource/unkeep-orig.png";
+                    buttonAccesskey = "SetKeepOff.accesskey";
+                }
                 break;
-            case FLD_KEEP_ON:
-                putValue(NAME, Kernel.translate("SetKeepOn.button"));
-                putValue(Action.LARGE_ICON_KEY,
-                        new ImageIcon(getClass().getResource("/org/mozillatranslator/resource/keep-orig.png")));
-                putValue(Action.SHORT_DESCRIPTION,
-                        Kernel.translate("SetKeepOn.button"));
-                // putValue(ACCELERATOR_KEY, Kernel.translate("SetKeepOn.accesskey"));
+            case TRANSLATION:
+                buttonLabel = "ClearTranslation.button";
+                imagePathfile = "/org/mozillatranslator/resource/edit-clear.png";
+                buttonAccesskey = "ClearTranslation.accesskey";
                 break;
-            case FLD_KEEP_OFF:
-                putValue(NAME, Kernel.translate("SetKeepOff.button"));
-                putValue(Action.LARGE_ICON_KEY,
-                        new ImageIcon(getClass().getResource("/org/mozillatranslator/resource/unkeep-orig.png")));
-                putValue(Action.SHORT_DESCRIPTION,
-                        Kernel.translate("SetKeepOff.button"));
-                // putValue(ACCELERATOR_KEY, Kernel.translate("SetKeepOff.accesskey"));
-                break;
-            case FLD_TRNS_CLEAR:
-                putValue(NAME, Kernel.translate("ClearTranslation.button"));
-                putValue(Action.LARGE_ICON_KEY,
-                        new ImageIcon(getClass().getResource("/org/mozillatranslator/resource/edit-clear.png")));
-                putValue(Action.SHORT_DESCRIPTION,
-                        Kernel.translate("ClearTranslation.button"));
-                // putValue(ACCELERATOR_KEY, Kernel.translate("ClearTranslation.accesskey"));
+            case MULTIPLE:
+            default:
+                buttonLabel = "MassChange.button";
+                imagePathfile = "/org/mozillatranslator/resource/mass-change.png";
+                buttonAccesskey = "MassChange.accesskey";
                 break;
         }
+
+        putValue(NAME, Kernel.translate(buttonLabel));
+        putValue(Action.LARGE_ICON_KEY,
+                new ImageIcon(getClass().getResource(imagePathfile)));
+        putValue(Action.SHORT_DESCRIPTION, Kernel.translate(buttonLabel));
+        // putValue(ACCELERATOR_KEY, Kernel.translate(buttonAccesskey));
     }
 
     /**
      * This gets called when the event happens
      * @param evt the event
      */
-    @Override public void actionPerformed(ActionEvent evt) {
+    @Override
+    public void actionPerformed(ActionEvent evt) {
         MainWindow mw;
         MozFrame mf;
         ArrayList<Phrase> phraseList;
-        Iterator<Phrase> it;
-        Phrase ph;
         Translation tn;
         String locale;
         JTable table;
-        AccessKeyBundleList akl;
+        MassChangePanel mcPanel = new MassChangePanel();
+
+        if (cul.get(0).getChangeType() == FieldToChange.MULTIPLE) {
+            JDialog mcDialog = new JDialog(Kernel.mainWindow,
+                    Kernel.translate("dialog.masschange.title"), true);
+            mcDialog.setContentPane(mcPanel);
+            mcDialog.pack();
+            GuiTools.placeFrameAtCenter(mcDialog);
+            mcDialog.setVisible(true);
+
+            if (mcPanel.isOkPressed()) {
+                cul = mcPanel.getChangesToDo();
+            } else {
+                return;
+            }
+        }
 
         mw = Kernel.mainWindow;
         mf = mw.getInnerFrame();
@@ -129,37 +142,40 @@ public class RowBatchAction extends AbstractAction {
             phraseList = mf.getSelectedPhrases();
             if (phraseList != null) {
                 locale = mf.getLocalization();
-                it = phraseList.iterator();
                 table = mf.getTable();
                 table.editingCanceled(new ChangeEvent(this));
-                akl = new AccessKeyBundleList(locale);
-                
-                while (it.hasNext()) {
-                    ph = it.next();
+
+                for(Phrase ph : phraseList) {
                     tn = (Translation) ph.getChildByName(locale);
 
-                    switch (this.batchType) {
-                        case FLD_FUZZY_OFF:
-                            ph.setFuzzy(false);
-                            break;
-                        case FLD_FUZZY_ON:
-                            ph.setFuzzy(true);
-                            break;
-                        case FLD_KEEP_OFF:
-                            ph.setKeepOriginal(false);
-                            break;
-                        case FLD_KEEP_ON:
-                            ph.setKeepOriginal(true);
-                            break;
-                        case FLD_TRNS_CLEAR:
-                            if (tn!=null) {
-                                tn.setText("");
-                            }
-                            break;
+                    for(ChangeUnit cu : cul) {
+                        switch (cu.getChangeType()) {
+                            case FUZZY:
+                                ph.setFuzzy((cu.getChangeValue().equals("true")));
+                                break;
+                            case KEEPORIG:
+                                ph.setKeepOriginal((cu.getChangeValue().equals("true")));
+                                break;
+                            case TRANSLATION:
+                                if (tn != null) {
+                                    tn.setText(cu.getChangeValue());
+                                }
+                                break;
+                            case TRNSSTATUS:
+                                if (tn != null) {
+                                    tn.setStatus(TrnsStatus.valueOf(cu.getChangeValue()));
+                                }
+                                break;
+                        }
                     }
                 }
                 table.repaint();
             }
+        }
+
+        if (this.batchType == FieldToChange.MULTIPLE) {
+            cul.clear();
+            cul.add(new ChangeUnit(this.batchType, ""));
         }
     }
 }
