@@ -42,6 +42,7 @@ public class SaveSettingsAction extends AbstractAction {
     /** is called when the action is triggered
      * @param actionEvent The action event
      */
+    @Override
     public void actionPerformed(java.awt.event.ActionEvent actionEvent) {
         Kernel.settings.save();
     }

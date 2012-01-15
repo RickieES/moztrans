@@ -26,7 +26,8 @@ package org.mozillatranslator.kernel;
 import java.awt.Font;
 import java.io.*;
 import java.util.Properties;
-import java.util.logging.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.mozillatranslator.datamodel.TrnsStatus;
 
 /** This classs hold the application settings
@@ -107,6 +108,8 @@ public class Settings {
     // GUI parameters
     public static final String GUI_IMPORT_FILE_CHOOSER_PATH = "gui.filechooser.import.lastpath";
     public static final String GUI_EXPORT_FILE_CHOOSER_PATH = "gui.filechooser.export.lastpath";
+    public static final String GUI_MAIN_WINDOW_WIDTH = "gui.main.window.width";
+    public static final String GUI_MAIN_WINDOW_HEIGHT = "gui.main.window.height";
     // Info about commandkeys and accesskeys connections
     public static final String CONN_LABEL_PATTERNS = "connection.label.patterns";
     public static final String CONN_AKEYS_PATTERNS = "connection.accesskey.patterns";
@@ -271,6 +274,8 @@ public class Settings {
         startup.setProperty(GUI_SHOW_WHAT_DIALOG, "true");
         startup.setProperty(GUI_IMPORT_FILE_CHOOSER_PATH, ".");
         startup.setProperty(GUI_EXPORT_FILE_CHOOSER_PATH, ".");
+        startup.setProperty(GUI_MAIN_WINDOW_WIDTH, "800");
+        startup.setProperty(GUI_MAIN_WINDOW_HEIGHT, "600");
 
         // accesskey and commandkey connection parameters
         startup.setProperty(CONN_LABEL_PATTERNS, ".label|.button|[:empty:]");

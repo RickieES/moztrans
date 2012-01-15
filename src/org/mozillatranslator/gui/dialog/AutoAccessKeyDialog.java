@@ -80,7 +80,7 @@ public class AutoAccessKeyDialog extends javax.swing.JDialog {
 
         buttonPanel.setLayout(new java.awt.GridBagLayout());
 
-        prefButton.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        prefButton.setFont(new java.awt.Font("Dialog", 0, 12));
         prefButton.setMnemonic('P');
         prefButton.setText("Preferences");
         prefButton.setMaximumSize(new java.awt.Dimension(240, 29));
@@ -92,10 +92,10 @@ public class AutoAccessKeyDialog extends javax.swing.JDialog {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         buttonPanel.add(prefButton, gridBagConstraints);
 
-        autoAssignButtom.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        autoAssignButtom.setFont(new java.awt.Font("Dialog", 0, 12));
         autoAssignButtom.setMnemonic('A');
         autoAssignButtom.setText("Auto assign");
         autoAssignButtom.setMaximumSize(new java.awt.Dimension(100, 29));
@@ -107,10 +107,10 @@ public class AutoAccessKeyDialog extends javax.swing.JDialog {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         buttonPanel.add(autoAssignButtom, gridBagConstraints);
 
-        okButton.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        okButton.setFont(new java.awt.Font("Dialog", 0, 12));
         okButton.setText("OK");
         okButton.setMaximumSize(new java.awt.Dimension(100, 29));
         okButton.setMinimumSize(new java.awt.Dimension(88, 29));
@@ -121,10 +121,10 @@ public class AutoAccessKeyDialog extends javax.swing.JDialog {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         buttonPanel.add(okButton, gridBagConstraints);
 
-        cancelButton.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        cancelButton.setFont(new java.awt.Font("Dialog", 0, 12));
         cancelButton.setText("Cancel");
         cancelButton.setMaximumSize(new java.awt.Dimension(100, 29));
         cancelButton.setMinimumSize(new java.awt.Dimension(88, 29));
@@ -135,7 +135,7 @@ public class AutoAccessKeyDialog extends javax.swing.JDialog {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         buttonPanel.add(cancelButton, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
