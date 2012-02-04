@@ -23,15 +23,17 @@
  */
 package org.mozillatranslator.action;
 
-import java.awt.event.*;
-import javax.swing.*;
-import java.util.*;
-import java.util.logging.*;
-import org.mozillatranslator.gui.dialog.*;
+import java.awt.event.ActionEvent;
+import java.util.Collections;
+import java.util.List;
+import java.util.logging.Logger;
+import javax.swing.AbstractAction;
 import org.mozillatranslator.datamodel.Phrase;
-import org.mozillatranslator.filter.*;
+import org.mozillatranslator.filter.AllForAutoTranslate;
+import org.mozillatranslator.filter.FilterRunner;
 import org.mozillatranslator.gui.ComplexTableWindow;
-import org.mozillatranslator.kernel.*;
+import org.mozillatranslator.gui.dialog.ShowWhatDialog;
+import org.mozillatranslator.kernel.Kernel;
 
 /** This action tries to auto-fill empty translations with other existent
  * translations for the same original string

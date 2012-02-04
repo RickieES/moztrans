@@ -41,6 +41,7 @@ public class SetupAction extends AbstractAction {
     /** Called when the action is triggered.
      * @param actionEvent The action event
      */
+    @Override
     public void actionPerformed(java.awt.event.ActionEvent actionEvent) {
         SetupDialog sd = new SetupDialog();
         sd.showDialog();
