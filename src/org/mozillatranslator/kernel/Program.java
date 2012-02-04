@@ -24,8 +24,13 @@
 
 package org.mozillatranslator.kernel;
 
-import org.mozillatranslator.batchcontrol.*;
-import org.mozillatranslator.runner.*;
+import java.lang.reflect.InvocationTargetException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.SwingUtilities;
+import org.mozillatranslator.batchcontrol.BatchControl;
+import org.mozillatranslator.runner.LoadGlossaryDataObject;
+import org.mozillatranslator.runner.LoadGlossaryRunner;
 
 /** This is the main class that is run
  * @author Henrik Lynggaard
@@ -42,7 +47,18 @@ public class Program {
         } else {
             Kernel.init(true);
             Kernel.appLog.info("Entering GUI mode");
-            Kernel.startWindow();
+            try {
+                SwingUtilities.invokeAndWait(new Runnable() {
+                    @Override
+                    public void run() {
+                        Kernel.startWindow();
+                    }
+                });
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Program.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InvocationTargetException ex) {
+                Logger.getLogger(Program.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
             LoadGlossaryDataObject dao = new LoadGlossaryDataObject();
             dao.setFileName(Kernel.settings.getString(Settings.DATAMODEL_FILENAME,
