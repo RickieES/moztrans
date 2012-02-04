@@ -54,7 +54,7 @@ public class SimpleFontChooser extends javax.swing.JDialog {
     public SimpleFontChooser(java.awt.Frame parent, Font f) {
         this(parent, true);
 
-        int i = 0;
+        int i;
         
         for(i = 0; i < fonts.length; i++) {
             if (fonts[i].equals(f.getFamily())) {
@@ -79,7 +79,7 @@ public class SimpleFontChooser extends javax.swing.JDialog {
         setSampleText(sampleText);
     }
     
-    public void setSampleText(String s) {
+    public final void setSampleText(String s) {
         sampleTextArea.setText(s);
         sampleTextArea.repaint();
     }
