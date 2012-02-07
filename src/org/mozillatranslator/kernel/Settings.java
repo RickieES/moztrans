@@ -90,7 +90,6 @@ public class Settings {
     public static final String STATE_SEARCH_CASE = "state.search.case";
     public static final String STATE_SEARCH_KO_AS_TRANSLATED = "state.search.koastranslated";
     // Edit and view parameters
-    public static final String GUI_SHOW_WHAT_DIALOG = "gui.showwhat";
     public static final String QA_DTD_ORIG_ENTITIES_IGNORED = "qa.dtd_ignored_entities.orig";
     public static final String QA_DTD_TRNS_ENTITIES_IGNORED = "qa.dtd_ignored_entities.trns";
     public static final String QA_ENDING_CHECKED_CHARS = "qa.ending_checked_chars";
@@ -106,10 +105,12 @@ public class Settings {
     public static final String SUGGESTIONS_MATCH_VALUE = "suggestions.match.value";
     public static final String AUTOTRANSLATE_ON_UPDATE = "autotranslate.on.update";
     // GUI parameters
+    public static final String GUI_SHOW_WHAT_DIALOG = "gui.showwhat";
     public static final String GUI_IMPORT_FILE_CHOOSER_PATH = "gui.filechooser.import.lastpath";
     public static final String GUI_EXPORT_FILE_CHOOSER_PATH = "gui.filechooser.export.lastpath";
     public static final String GUI_MAIN_WINDOW_WIDTH = "gui.main.window.width";
     public static final String GUI_MAIN_WINDOW_HEIGHT = "gui.main.window.height";
+    public static final String GUI_LOOK_AND_FEEL = "gui.look.and.feel";
     // Info about commandkeys and accesskeys connections
     public static final String CONN_LABEL_PATTERNS = "connection.label.patterns";
     public static final String CONN_AKEYS_PATTERNS = "connection.accesskey.patterns";
@@ -276,6 +277,7 @@ public class Settings {
         startup.setProperty(GUI_EXPORT_FILE_CHOOSER_PATH, ".");
         startup.setProperty(GUI_MAIN_WINDOW_WIDTH, "800");
         startup.setProperty(GUI_MAIN_WINDOW_HEIGHT, "600");
+        startup.setProperty(GUI_LOOK_AND_FEEL, "Metal");
 
         // accesskey and commandkey connection parameters
         startup.setProperty(CONN_LABEL_PATTERNS, ".label|.button|[:empty:]");

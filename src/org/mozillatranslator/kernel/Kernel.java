@@ -23,8 +23,12 @@
  */
 package org.mozillatranslator.kernel;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.*;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 import org.mozillatranslator.datamodel.DataModel;
 import org.mozillatranslator.datamodel.TranslationSuggestions;
 import org.mozillatranslator.gui.MainWindow;
@@ -96,10 +100,47 @@ public class Kernel {
 
     /** This will open the main window */
     public static void startWindow() {
+        if (!Kernel.setBestAvailableLookAndFeel()) {
+            System.exit(1);
+        }
         ComplexColumnFactory.init();
         mainWindow = new MainWindow();
         mainWindow.setVisible(true);
         editPhrase = new EditPhraseDialog();
+    }
+
+    public static List<String> getAvailableLookAndFeels() {
+        ArrayList<String> availableLookAndFeels = new ArrayList<String>();
+
+        for(LookAndFeelInfo lafInfo : UIManager.getInstalledLookAndFeels()) {
+            availableLookAndFeels.add(lafInfo.getName());
+        }
+        return availableLookAndFeels;
+    }
+    
+    private static boolean setBestAvailableLookAndFeel() {
+        String preferredLafName = Kernel.settings.getString(Settings.GUI_LOOK_AND_FEEL);
+        
+        for(LookAndFeelInfo lafInfo : UIManager.getInstalledLookAndFeels()) {
+            if (lafInfo.getName().equals(preferredLafName)) {
+                try {
+                    UIManager.setLookAndFeel(lafInfo.getClassName());
+                } catch (Exception e1) {
+                    // UnsupportedLookAndFeelException, ClassNotFoundException,
+                    // InstantiationException or IllegalAccessException could be
+                    // thrown; in any case, we fallback to the cross-platform L&F
+                    try {
+                        Kernel.appLog.log(Level.WARNING, "L&F {0} couldn't be applied", preferredLafName);
+                        UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+                    } catch (Exception e2) {
+                        Kernel.appLog.log(Level.SEVERE,
+                                "Default Metal L&F couldn't be applied, execution can't continue");
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     /** This is used to lock the timer, so that all altered times
