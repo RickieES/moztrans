@@ -23,12 +23,15 @@
  */
 package org.mozillatranslator.datamodel;
 
-import java.io.*;
-import java.util.*;
-import java.util.logging.*;
-import javax.swing.*;
-import javax.swing.tree.*;
-import org.mozillatranslator.kernel.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Level;
+import javax.swing.AbstractListModel;
+import javax.swing.tree.DefaultMutableTreeNode;
+import org.mozillatranslator.kernel.Kernel;
+import org.mozillatranslator.kernel.TraverseCommand;
 
 /** Represents the entire glossary/datamodel.
  * <br>
@@ -205,7 +208,7 @@ public class DataModel extends AbstractListModel implements Serializable {
      * @return a TreeNode which represents the product
      */
     public TreeNode getChildByName(String name, boolean sensitive) {
-        TreeNode current = null;
+        TreeNode current;
         TreeNode result = null;
         boolean done = false;
         Iterator childIterator = products.iterator();
