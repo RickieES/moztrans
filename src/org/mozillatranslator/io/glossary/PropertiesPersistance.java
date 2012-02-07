@@ -28,14 +28,18 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.StringTokenizer;
-import java.util.zip.*;
-import java.util.logging.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 import javax.swing.JOptionPane;
 import org.mozillatranslator.datamodel.*;
-import org.mozillatranslator.kernel.*;
-import org.mozillatranslator.runner.*;
 import org.mozillatranslator.io.StructureAccess;
 import org.mozillatranslator.io.common.FileUtils;
+import org.mozillatranslator.kernel.Kernel;
+import org.mozillatranslator.kernel.Settings;
+import org.mozillatranslator.runner.LoadGlossaryDataObject;
 
 /** This classs load and saves the datamodel in a properties file
  *
@@ -101,12 +105,12 @@ public class PropertiesPersistance implements GlossaryAccess {
     @Override
     public void saveEntireGlossary() {
         DataModel datamodel = Kernel.datamodel;
-        Product currentProduct = null;
-        Platform currentPlatform = null;
+        Product currentProduct;
+        Platform currentPlatform;
         Iterator productIterator;
         Iterator platformIterator;
         int productCount = 0;
-        int platformCount = 0;
+        int platformCount;
         File bkf = new File("Glossary.bkf");
         File gls = new File("Glossary.zip");
 
@@ -125,6 +129,9 @@ public class PropertiesPersistance implements GlossaryAccess {
         // Initialize the Properties file ("glossary.txt") in which we are
         // saving the datamodel
         model.clear();
+
+        model.setProperty(PRODUCT_COUNT, "" + datamodel.getSize());
+        model.setProperty(PERSISTANCE_VERSION_KEY, PERSISTANCE_VERSION_VALUE);
 
         // Each glossary may have one or more products; let's iterate over them
         productIterator = datamodel.productIterator();
@@ -185,9 +192,6 @@ public class PropertiesPersistance implements GlossaryAccess {
 
             productCount++;
         }
-
-        model.setProperty(PRODUCT_COUNT, "" + productCount);
-        model.setProperty(PERSISTANCE_VERSION_KEY, PERSISTANCE_VERSION_VALUE);
 
         Kernel.feedback.progress("Saving glossary file");
         try {
@@ -459,7 +463,7 @@ public class PropertiesPersistance implements GlossaryAccess {
      **/
     private int writeFile(MozFile currentFile, String filePrefix) {
         int phraseCount = 0;
-        int translationCount = 0;
+        int translationCount;
 
         String phrasePrefix;
         String translationPrefix;
@@ -876,7 +880,7 @@ public class PropertiesPersistance implements GlossaryAccess {
         Phrase commandPhrase;
         Phrase labelPhrase;
         ExternalEntity currentEntity;
-        ArrayList entitiesList = null;
+        ArrayList entitiesList;
         TrnsStatus t;
 
         boolean keep;

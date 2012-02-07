@@ -26,10 +26,11 @@
 package org.mozillatranslator.io.glossary;
 
 import java.io.*;
-import java.util.logging.*;
-import org.mozillatranslator.kernel.*;
-import org.mozillatranslator.datamodel.*;
-import org.mozillatranslator.runner.*;
+import java.util.logging.Level;
+import org.mozillatranslator.datamodel.DataModel;
+import org.mozillatranslator.kernel.Kernel;
+import org.mozillatranslator.kernel.Settings;
+import org.mozillatranslator.runner.LoadGlossaryDataObject;
 
 /**
  *
@@ -42,6 +43,7 @@ public class SerializedPersistance implements GlossaryAccess {
     public SerializedPersistance() {
     }
 
+    @Override
     public void saveEntireGlossary() {
         String fileName;
         FileOutputStream fos;
@@ -61,6 +63,7 @@ public class SerializedPersistance implements GlossaryAccess {
     }
 
 
+    @Override
     public void loadEntireGlossary(LoadGlossaryDataObject data) {
         FileInputStream fis;
         ObjectInputStream ois;

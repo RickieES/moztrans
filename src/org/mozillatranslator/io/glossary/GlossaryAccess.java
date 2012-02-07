@@ -26,7 +26,7 @@
 
 package org.mozillatranslator.io.glossary;
 
-import org.mozillatranslator.runner.*;
+import org.mozillatranslator.runner.LoadGlossaryDataObject;
 /**
  *
  * @author  Henrik Lynggaard
