@@ -26,7 +26,10 @@
 package org.mozillatranslator.runner;
 
 import org.mozillatranslator.io.glossary.GlossaryAccess;
-import org.mozillatranslator.kernel.*;
+import org.mozillatranslator.kernel.Kernel;
+import org.mozillatranslator.kernel.MozException;
+import org.mozillatranslator.kernel.MozTask;
+import org.mozillatranslator.kernel.Settings;
 
 /**
  * <h3>Change List</h3>

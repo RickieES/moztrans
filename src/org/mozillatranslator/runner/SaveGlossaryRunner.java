@@ -26,7 +26,10 @@
 package org.mozillatranslator.runner;
 
 import org.mozillatranslator.io.glossary.GlossaryAccess;
-import org.mozillatranslator.kernel.*;
+import org.mozillatranslator.kernel.Kernel;
+import org.mozillatranslator.kernel.MozException;
+import org.mozillatranslator.kernel.MozTask;
+import org.mozillatranslator.kernel.Settings;
 
 /** This saves the glossary to disc
  *
@@ -57,7 +60,6 @@ public class SaveGlossaryRunner extends MozTask {
         String pclass;
         GlossaryAccess ga;
         try {
-            
             pclass = Kernel.settings.getString(Settings.DATAMODEL_PCLASS,
                     "org.mozillatranslator.io.PropertiesPersistance");
             ga = (GlossaryAccess) Class.forName(pclass).newInstance();
