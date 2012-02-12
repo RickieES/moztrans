@@ -83,6 +83,7 @@ public void showDialog() {
         zipPathTextField.setText(set.getString(Settings.EXTERNAL_ZIP_PATH));
         unzipPathTextField.setText(set.getString(Settings.EXTERNAL_UNZIP_PATH));
         exportOnlyModifFilesCheck.setSelected(set.getBoolean(Settings.EXPORT_ONLY_MODIFIED));
+        useOneFilePerProductCheck.setSelected(set.getBoolean(Settings.DATAMODEL_ONE_FILE_PER_PRODUCT));
 
         // Translation Assistance Tab
         useSuggCheckBox.setSelected(set.getBoolean(Settings.USE_SUGGESTIONS));
@@ -129,6 +130,7 @@ public void showDialog() {
             set.setString(Settings.EXTERNAL_ZIP_PATH, zipPathTextField.getText());
             set.setString(Settings.EXTERNAL_UNZIP_PATH, unzipPathTextField.getText());
             set.setBoolean(Settings.EXPORT_ONLY_MODIFIED, exportOnlyModifFilesCheck.isSelected());
+            set.setBoolean(Settings.DATAMODEL_ONE_FILE_PER_PRODUCT, useOneFilePerProductCheck.isSelected());
 
             // Translation Assistance Tab
             set.setBoolean(Settings.USE_SUGGESTIONS, useSuggCheckBox.isSelected());
@@ -186,6 +188,7 @@ public void showDialog() {
         unzipPathTextField = new javax.swing.JTextField();
         unzipPathButton = new javax.swing.JButton();
         exportOnlyModifFilesCheck = new javax.swing.JCheckBox();
+        useOneFilePerProductCheck = new javax.swing.JCheckBox();
         prefTrnsAssistPanel = new javax.swing.JPanel();
         translationSuggestionsLabel = new javax.swing.JLabel();
         useSuggCheckBox = new javax.swing.JCheckBox();
@@ -367,6 +370,10 @@ public void showDialog() {
         exportOnlyModifFilesCheck.setMnemonic('E');
         exportOnlyModifFilesCheck.setText("Export only modified files");
 
+        useOneFilePerProductCheck.setMnemonic('O');
+        useOneFilePerProductCheck.setText("On glossary save, use one file per product");
+        useOneFilePerProductCheck.setToolTipText("Use this to save memory while saving Glossary.zip");
+
         javax.swing.GroupLayout prefIOPanelLayout = new javax.swing.GroupLayout(prefIOPanel);
         prefIOPanel.setLayout(prefIOPanelLayout);
         prefIOPanelLayout.setHorizontalGroup(
@@ -392,7 +399,8 @@ public void showDialog() {
                                         .addComponent(zipPathTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(zipPathButton))))
-                            .addComponent(exportOnlyModifFilesCheck)))
+                            .addComponent(exportOnlyModifFilesCheck)
+                            .addComponent(useOneFilePerProductCheck)))
                     .addGroup(prefIOPanelLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(importExportLabel)))
@@ -419,7 +427,9 @@ public void showDialog() {
                     .addComponent(unzipPathButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(exportOnlyModifFilesCheck)
-                .addContainerGap(70, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(useOneFilePerProductCheck)
+                .addContainerGap(42, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("", new javax.swing.ImageIcon(getClass().getResource("/org/mozillatranslator/resource/pref-io.png")), prefIOPanel, "Input/Output"); // NOI18N
@@ -838,6 +848,7 @@ public void showDialog() {
     private javax.swing.JLabel unzipPathLabel;
     private javax.swing.JTextField unzipPathTextField;
     private javax.swing.JCheckBox useExtZipCheck;
+    private javax.swing.JCheckBox useOneFilePerProductCheck;
     private javax.swing.JCheckBox useSuggCheckBox;
     private javax.swing.JButton zipPathButton;
     private javax.swing.JLabel zipPathLabel;

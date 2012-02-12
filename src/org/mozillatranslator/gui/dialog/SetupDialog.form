@@ -288,6 +288,7 @@
                                       </Group>
                                   </Group>
                                   <Component id="exportOnlyModifFilesCheck" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="useOneFilePerProductCheck" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
@@ -322,7 +323,9 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="exportOnlyModifFilesCheck" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="70" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="useOneFilePerProductCheck" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="42" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -397,6 +400,13 @@
               <Properties>
                 <Property name="mnemonic" type="int" value="69"/>
                 <Property name="text" type="java.lang.String" value="Export only modified files"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JCheckBox" name="useOneFilePerProductCheck">
+              <Properties>
+                <Property name="mnemonic" type="int" value="79"/>
+                <Property name="text" type="java.lang.String" value="On glossary save, use one file per product"/>
+                <Property name="toolTipText" type="java.lang.String" value="Use this to save memory while saving Glossary.zip"/>
               </Properties>
             </Component>
           </SubComponents>
