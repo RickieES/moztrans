@@ -62,7 +62,7 @@ public class Program {
 
             LoadGlossaryDataObject dao = new LoadGlossaryDataObject();
             dao.setFileName(Kernel.settings.getString(Settings.DATAMODEL_FILENAME,
-                                                      "glossary.zip"));
+                                                      "Glossary.zip"));
             LoadGlossaryRunner task = new LoadGlossaryRunner();
             task.runTask(dao);
         }

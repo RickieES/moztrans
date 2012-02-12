@@ -61,6 +61,7 @@ public class Settings {
     // Datamodel
     public static final String DATAMODEL_FILENAME = "datamodel.filename";
     public static final String DATAMODEL_PCLASS = "datamodel.persistanceclass";
+    public static final String DATAMODEL_ONE_FILE_PER_PRODUCT = "datamodel.one.file.per.product";
     // GUI columns
     public static final String COLUMN_COUNT = "column.count";
     public static final String COLUMN_CLASS_PREFIX = "column.";
@@ -166,7 +167,7 @@ public class Settings {
 
         // system setting
         startup.setProperty(SETTINGS_FILENAME, "mozillatranslator.properties");
-        startup.setProperty(SYSTEM_VERSION, "5.26");
+        startup.setProperty(SYSTEM_VERSION, "5.30");
         // logging settings
         startup.setProperty(LOGGING_SOUT, "true");
         startup.setProperty(LOGGING_SERR, "false");
@@ -207,6 +208,7 @@ public class Settings {
         startup.setProperty(DATAMODEL_FILENAME, "Glossary.zip");
         startup.setProperty(DATAMODEL_PCLASS,
                 "org.mozillatranslator.io.glossary.PropertiesPersistance");
+        startup.setProperty(DATAMODEL_ONE_FILE_PER_PRODUCT, "false");
 
         // l10n settings
         startup.setProperty(L10N_OVERRIDE, "false");

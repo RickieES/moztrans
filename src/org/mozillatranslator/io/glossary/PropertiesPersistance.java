@@ -24,13 +24,11 @@
 package org.mozillatranslator.io.glossary;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Properties;
-import java.util.StringTokenizer;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 import javax.swing.JOptionPane;
@@ -53,7 +51,7 @@ import org.mozillatranslator.runner.LoadGlossaryDataObject;
 public class PropertiesPersistance implements GlossaryAccess {
 
     private static final String PERSISTANCE_VERSION_KEY = "glossary_version";
-    private static final String PERSISTANCE_VERSION_VALUE = "5.26";
+    private static final String PERSISTANCE_VERSION_VALUE = "5.30";
     private static final String PLATFORM = ".P";
     private static final String REGION = ".R";
     private static final String CUSTOM = ".C";
@@ -63,10 +61,11 @@ public class PropertiesPersistance implements GlossaryAccess {
     private static final String ALTERED = ".alteredTime";
     private static final String TYPE = ".nodetype";
     private static final String PRODUCT_COUNT = "product_count";
-    private static final String PRODUCT_CVSIMPORTORIGINAL = "cvs_import_original_path";
-    private static final String PRODUCT_CVSIMPORTTRANSLATION = "cvs_import_translation_path";
-    private static final String PRODUCT_CVSEXPORTTRANSLATION = "cvs_export_translation_path";
+    private static final String PRODUCT_CVSIMPORTORIGINAL = ".cvs_import_original_path";
+    private static final String PRODUCT_CVSIMPORTTRANSLATION = ".cvs_import_translation_path";
+    private static final String PRODUCT_CVSEXPORTTRANSLATION = ".cvs_export_translation_path";
     private static final String PRODUCT_LOCALE_ABCD_ONLY = ".consider_locale_abcd_only";
+    private static final String PRODUCT_GLOSSARY_FILENAME = ".glossary.filename";
     private static final String PLATFORM_ISNEUTRAL = ".isNeutral";
     private static final String PLATFORM_TYPE = ".type";
     private static final String COMPONENT_EXPORTTO = ".exportTo";
@@ -93,7 +92,6 @@ public class PropertiesPersistance implements GlossaryAccess {
     private static final String TRANSLATION_COMMENT = ".comment";
     private static final String CUSTOM_REAL = ".realfile";
     private static final String CUSTOM_RELATIVE = ".relative";
-    private Properties model = new Properties();
 
     /** Creates new PropertiesPersistance */
     public PropertiesPersistance() {
@@ -106,14 +104,11 @@ public class PropertiesPersistance implements GlossaryAccess {
     public void saveEntireGlossary() {
         DataModel datamodel = Kernel.datamodel;
         Product currentProduct;
-        Platform currentPlatform;
-        Iterator productIterator;
-        Iterator platformIterator;
         int productCount = 0;
-        int platformCount;
+        Iterator productIterator;
+        Properties model = new Properties();
         File bkf = new File("Glossary.bkf");
-        File gls = new File("Glossary.zip");
-
+        File gls = new File(Kernel.settings.getString(Settings.DATAMODEL_FILENAME, "Glossary.zip"));
         FileOutputStream fos;
         ZipOutputStream zos;
         ZipEntry ze;
@@ -129,74 +124,32 @@ public class PropertiesPersistance implements GlossaryAccess {
         // Initialize the Properties file ("glossary.txt") in which we are
         // saving the datamodel
         model.clear();
-
         model.setProperty(PRODUCT_COUNT, "" + datamodel.getSize());
         model.setProperty(PERSISTANCE_VERSION_KEY, PERSISTANCE_VERSION_VALUE);
 
-        // Each glossary may have one or more products; let's iterate over them
-        productIterator = datamodel.productIterator();
-
-        while (productIterator.hasNext()) {
-            platformCount = 0;
-            currentProduct = (Product) productIterator.next();
-
-            Kernel.feedback.progress("Saving product: " + currentProduct.getName());
-
-            // Do Platform Neutral
-            writePlatform(currentProduct.getNeutralPlatform(),
-                    "" + productCount + ".P.0");
-            platformCount++;
-
-            // Do the rest of platforms
-            platformIterator = currentProduct.platformIterator();
-            while (platformIterator.hasNext()) {
-                currentPlatform = (Platform) platformIterator.next();
-                writePlatform(currentPlatform,
-                        "" + productCount + ".P." + platformCount);
-                platformCount++;
-            }
-
-            // Now we know how many platforms we have saved
-            model.setProperty("" + productCount + COUNT, "" + platformCount);
-
-            // Do regional
-            writeRegional(currentProduct.getRegional(), "" + productCount + ".R");
-
-            // Do custom
-            writeCustom(currentProduct.getCustomContainer(), "" + productCount + ".C");
-
-            // Finally, let's save product specifics
-            // Product name
-            model.setProperty("" + productCount + NAME, currentProduct.getName());
-
-            // Product altered time
-            model.setProperty("" + productCount + ALTERED,
-                    "" + currentProduct.getAlteredTime());
-
-            // Product CVS Import original path
-            // TODO: next version should include "." into the CVS properties literals
-            model.setProperty("" + productCount + "." + PRODUCT_CVSIMPORTORIGINAL,
-                    "" + currentProduct.getCVSImportOriginalPath());
-
-            // Product CVS Import Translation path
-            model.setProperty("" + productCount + "." + PRODUCT_CVSIMPORTTRANSLATION,
-                    "" + currentProduct.getCVSImportTranslationPath());
-
-            // Product CVS Export translation path
-            model.setProperty("" + productCount + "." + PRODUCT_CVSEXPORTTRANSLATION,
-                    "" + currentProduct.getCVSExportTranslationPath());
-
-            // Product Consider files under /locale/ab-CD only (currently used only in JAR mode)
-            model.setProperty("" + productCount + PRODUCT_LOCALE_ABCD_ONLY,
-                    "" + currentProduct.isOnlyLocaleAbCD());
-
-            productCount++;
-        }
-
         Kernel.feedback.progress("Saving glossary file");
         try {
-            fos = new FileOutputStream(Kernel.settings.getString(Settings.DATAMODEL_FILENAME, "glossary.zip"));
+            fos = new FileOutputStream(Kernel.settings.getString(Settings.DATAMODEL_FILENAME, "Glossary.zip"));
             zos = new ZipOutputStream(fos);
+
+            // Each glossary may have one or more products; let's iterate over them
+            productIterator = datamodel.productIterator();
+            while (productIterator.hasNext()) {
+                currentProduct = (Product) productIterator.next();
+
+                if (Kernel.settings.getBoolean(Settings.DATAMODEL_ONE_FILE_PER_PRODUCT)) {
+                    Properties singleProductModel = new Properties();
+                    singleProductModel.clear();
+                    saveProduct(singleProductModel, currentProduct, "" + productCount);
+                    String prodGlossFilename = storeModelInZip(zos, productCount, singleProductModel);
+                    singleProductModel.clear();
+                    model.setProperty("" + productCount + PRODUCT_GLOSSARY_FILENAME, prodGlossFilename);
+                } else {
+                    saveProduct(model, currentProduct, "" + productCount);
+                }
+                productCount++;
+            }
+
             ze = new ZipEntry("glossary.txt");
             zos.putNextEntry(ze);
             model.store(zos, "Translated with MozillaTranslator "
@@ -206,9 +159,9 @@ public class PropertiesPersistance implements GlossaryAccess {
             writeImages(zos);
             zos.close();
         } catch (OutOfMemoryError e) {
-            Kernel.feedback.progress("Out of memory while saving Glossary.zip; "
-                    + "trying to save glossary.txt (i.e., "
-                    + "glossary except images)");
+            Kernel.feedback.progress("Out of memory while saving "
+                    + Kernel.settings.getString(Settings.DATAMODEL_FILENAME, "Glossary.zip")
+                    + "; trying to save glossary.txt (i.e., glossary except images)");
             try {
                 fos = new FileOutputStream("glossary.txt");
                 model.store(fos, "Translated with MozillaTranslator "
@@ -227,6 +180,73 @@ public class PropertiesPersistance implements GlossaryAccess {
         model.clear();
     }
 
+    private String storeModelInZip(ZipOutputStream zos, int productCount, Properties singleProductModel)
+        throws OutOfMemoryError, IOException {
+
+        String productGlossaryFilename = "product_glossary." + productCount + ".txt";
+        ZipEntry ze = new ZipEntry(productGlossaryFilename);
+        zos.putNextEntry(ze);
+        singleProductModel.store(zos, "Translated with MozillaTranslator "
+                + Kernel.settings.getString(Settings.SYSTEM_VERSION,
+                "(unknown version)"));
+        zos.closeEntry();
+        return productGlossaryFilename;
+    }
+
+    private void saveProduct(Properties store, Product currentProduct, String productPrefix) {
+        Platform currentPlatform;
+        Iterator platformIterator;
+        int platformCount = 0;
+
+        Kernel.feedback.progress("Saving product: " + currentProduct.getName());
+
+        // Do Platform Neutral
+        writePlatform(store, currentProduct.getNeutralPlatform(), productPrefix + ".P.0");
+        platformCount++;
+
+        // Do the rest of platforms
+        platformIterator = currentProduct.platformIterator();
+        while (platformIterator.hasNext()) {
+            currentPlatform = (Platform) platformIterator.next();
+            writePlatform(store, currentPlatform, productPrefix + ".P." + platformCount);
+            platformCount++;
+        }
+
+        // Now we know how many platforms we have saved
+        store.setProperty(productPrefix + COUNT, "" + platformCount);
+
+        // Do regional
+        writeRegional(store, currentProduct.getRegional(), productPrefix + ".R");
+
+        // Do custom
+        writeCustom(store, currentProduct.getCustomContainer(), productPrefix + ".C");
+
+        // Finally, let's save product specifics
+        // Product name
+        store.setProperty(productPrefix + NAME, currentProduct.getName());
+
+        // Product altered time
+        store.setProperty(productPrefix + ALTERED, "" + currentProduct.getAlteredTime());
+
+        // Product CVS Import original path
+        // TODO: next version should include "." into the CVS properties literals
+        store.setProperty(productPrefix  + PRODUCT_CVSIMPORTORIGINAL,
+                "" + currentProduct.getCVSImportOriginalPath());
+
+        // Product CVS Import Translation path
+        store.setProperty(productPrefix + PRODUCT_CVSIMPORTTRANSLATION,
+                "" + currentProduct.getCVSImportTranslationPath());
+
+        // Product CVS Export translation path
+        store.setProperty(productPrefix + PRODUCT_CVSEXPORTTRANSLATION,
+                "" + currentProduct.getCVSExportTranslationPath());
+
+        // Product Consider files under /locale/ab-CD only (currently used only in JAR mode)
+        store.setProperty(productPrefix  + PRODUCT_LOCALE_ABCD_ONLY,
+                "" + currentProduct.isOnlyLocaleAbCD());
+
+    }
+
     /**
      * Save a component of the datamodel (including its children) as a partial
      * glossary
@@ -237,6 +257,7 @@ public class PropertiesPersistance implements GlossaryAccess {
      * @author  Ricardo
      */
     public void savePartialGlossary(Component currentNode, File exportFile) {
+        Properties model = new Properties();
         FileOutputStream fos;
         ZipOutputStream zos;
         ZipEntry ze;
@@ -247,7 +268,7 @@ public class PropertiesPersistance implements GlossaryAccess {
         // saving the component
         model.clear();
 
-        childrenCount = writeContent(currentNode, prefix);
+        childrenCount = writeContent(model, currentNode, prefix);
         model.setProperty(prefix + COUNT, "" + childrenCount);
         model.setProperty(PERSISTANCE_VERSION_KEY, PERSISTANCE_VERSION_VALUE);
 
@@ -275,10 +296,10 @@ public class PropertiesPersistance implements GlossaryAccess {
      * @param prefix            the prefix that identifies the platform in the
      *                          property key
      */
-    private void writePlatform(Platform currentPlatform, String prefix) {
+    private void writePlatform(Properties model, Platform currentPlatform, String prefix) {
         int componentCount;
 
-        componentCount = writeContent(currentPlatform, prefix);
+        componentCount = writeContent(model, currentPlatform, prefix);
 
         model.setProperty(prefix + COUNT, "" + componentCount);
         model.setProperty(prefix + JARFILE, currentPlatform.getJarFile());
@@ -296,10 +317,10 @@ public class PropertiesPersistance implements GlossaryAccess {
      * @param prefix            the prefix that identifies the region in the
      *                          property key
      */
-    private void writeRegional(Region currentRegion, String prefix) {
+    private void writeRegional(Properties model, Region currentRegion, String prefix) {
         int componentCount;
 
-        componentCount = writeContent(currentRegion, prefix);
+        componentCount = writeContent(model, currentRegion, prefix);
         model.setProperty(prefix + COUNT, "" + componentCount);
         model.setProperty(prefix + JARFILE, currentRegion.getJarFile());
         model.setProperty(prefix + NAME, currentRegion.getName());
@@ -313,7 +334,7 @@ public class PropertiesPersistance implements GlossaryAccess {
      * @param prefix        the prefix that identifies the custom container in
      *                      the property key
      */
-    private void writeCustom(CustomContainer localroot, String prefix) {
+    private void writeCustom(Properties model, CustomContainer localroot, String prefix) {
         Iterator fileIterator;
         MozFile currentFile;
         String filePrefix;
@@ -326,7 +347,7 @@ public class PropertiesPersistance implements GlossaryAccess {
             currentFile.increaseReferenceCount();
             filePrefix = prefix + "." + fileCount;
 
-            phraseCount = writeFile(currentFile, filePrefix);
+            phraseCount = writeFile(model, currentFile, filePrefix);
 
             model.setProperty(filePrefix + COUNT, "" + phraseCount);
             model.setProperty(filePrefix + NAME, currentFile.getName());
@@ -349,7 +370,7 @@ public class PropertiesPersistance implements GlossaryAccess {
      * @param prefix        the prefix that identifies the component in the
      *                      property key
      */
-    private int writeContent(TreeNode currentNode, String prefix) {
+    private int writeContent(Properties model, TreeNode currentNode, String prefix) {
         Iterator fileOrComponentIterator, entityIterator;
 
         Object o;
@@ -375,7 +396,7 @@ public class PropertiesPersistance implements GlossaryAccess {
             if (o instanceof Component) {
                 subLevelType = Component.TYPE_DIR;
                 currentComponent = (Component) o;
-                subLevelCount = writeContent(currentComponent, thisLevelPrefix);
+                subLevelCount = writeContent(model, currentComponent, thisLevelPrefix);
 
                 if (currentComponent.getExportedToDir() != null) {
                     model.setProperty(thisLevelPrefix + COMPONENT_EXPORTTO,
@@ -385,7 +406,7 @@ public class PropertiesPersistance implements GlossaryAccess {
                 subLevelType = Component.TYPE_FILE;
                 currentFile = (MozFile) o;
                 currentFile.increaseReferenceCount();
-                subLevelCount = writeFile(currentFile, thisLevelPrefix);
+                subLevelCount = writeFile(model, currentFile, thisLevelPrefix);
 
                 // Save license and external entities information
                 if (currentFile != null) {
@@ -461,7 +482,7 @@ public class PropertiesPersistance implements GlossaryAccess {
      *                    for the property in glossary.txt
      * @return int        the number of phrases included in the file
      **/
-    private int writeFile(MozFile currentFile, String filePrefix) {
+    private int writeFile(Properties model, MozFile currentFile, String filePrefix) {
         int phraseCount = 0;
         int translationCount;
 
@@ -552,97 +573,56 @@ public class PropertiesPersistance implements GlossaryAccess {
      **/
     @Override
     public void loadEntireGlossary(LoadGlossaryDataObject data) {
+        Properties model = new Properties();
         FileInputStream fis;
-        ZipInputStream zis;
+        InputStream is;
+        ZipFile zipfile;
         ZipEntry ze;
         File testing;
+        HashMap<String, ZipEntry> entryList = new HashMap<String, ZipEntry>();
         int productMax;
-        int platformMax;
-        Product currentProduct;
         String name;
-        long alteredTime;
+        String productGlossaryFile;
 
         model.clear();
 
         try {
             testing = data.getRealFile();
             if (testing.exists()) {
+                Kernel.feedback.progress("Loading glossary file into memory");
                 fis = new FileInputStream(data.getFileName());
-                zis = new ZipInputStream(fis);
-                boolean done = false;
-                while (!done) {
-                    ze = zis.getNextEntry();
-                    if (ze.getName().equals("glossary.txt")) {
-                        done = true;
-                    }
+                zipfile = new ZipFile(data.getFileName());
+
+                // We load the ZipEntries into the HashMap
+                Enumeration<? extends ZipEntry> zipEntriesList = zipfile.entries();
+                while (zipEntriesList.hasMoreElements()) {
+                    ze = zipEntriesList.nextElement();
+                    entryList.put(ze.getName(), ze);
                 }
 
-                Kernel.feedback.progress("Loading glossary file into memory");
-                model.load(zis);
-                zis.closeEntry();
-                zis.close();
+                if (entryList.get("glossary.txt") == null) {
+                    throw new Exception("No glossary.txt inside " + data.getFileName());
+                }
+
+                is = zipfile.getInputStream(entryList.get("glossary.txt"));
+                model.load(is);
+                is.close();
 
                 productMax = Integer.parseInt(model.getProperty(PRODUCT_COUNT));
-
                 for (int productCount = 0; productCount < productMax; productCount++) {
-
-                    name = model.getProperty("" + productCount + NAME);
-                    Kernel.feedback.progress("Loading product: " + name);
-                    alteredTime = Long.parseLong("0" + model.getProperty(""
-                            + productCount + ALTERED, ""));
-                    platformMax = Integer.parseInt(model.getProperty(""
-                            + productCount + COUNT));
-
-                    currentProduct = new Product(name);
-                    currentProduct.setAlteredTime(alteredTime);
-
-                    // Product CVS Import original path
-                    // TODO: for the next version, we should remove these ifs,
-                    // that are a hack to solve a problem with the CVS literals
-                    // in version 5.05pl5, since they should have "." prepended
-                    if (model.getProperty("" + productCount + PRODUCT_CVSIMPORTORIGINAL) != null) {
-                        currentProduct.setCVSImportOriginalPath(model.getProperty(""
-                                + productCount + PRODUCT_CVSIMPORTORIGINAL));
+                    // We try to read the product's individual glossary filename property
+                    productGlossaryFile = model.getProperty("" + productCount + PRODUCT_GLOSSARY_FILENAME, null);
+                    if (productGlossaryFile != null) {
+                        if (entryList.get(productGlossaryFile) == null) {
+                            throw new Exception("Missing " + productGlossaryFile + " in " + data.getFileName());
+                        }
+                        is = zipfile.getInputStream(entryList.get(productGlossaryFile));
+                        Properties productModel = new Properties();
+                        productModel.load(is);
+                        loadProduct(productModel, productCount);
                     } else {
-                        currentProduct.setCVSImportOriginalPath(model.getProperty(""
-                                + productCount + "." + PRODUCT_CVSIMPORTORIGINAL));
+                        loadProduct(model, productCount);
                     }
-
-                    // Product CVS Import Translation path
-                    if (model.getProperty("" + productCount + PRODUCT_CVSIMPORTTRANSLATION) != null) {
-                        currentProduct.setCVSImportTranslationPath(model.getProperty(""
-                                + productCount + PRODUCT_CVSIMPORTTRANSLATION));
-                    } else {
-                        currentProduct.setCVSImportTranslationPath(model.getProperty(""
-                                + productCount + "." + PRODUCT_CVSIMPORTTRANSLATION));
-                    }
-
-                    // Product CVS Export translation path
-                    if (model.getProperty("" + productCount + PRODUCT_CVSEXPORTTRANSLATION) != null) {
-                        currentProduct.setCVSExportTranslationPath(model.getProperty(""
-                                + productCount + PRODUCT_CVSEXPORTTRANSLATION));
-                    } else {
-                        currentProduct.setCVSExportTranslationPath(model.getProperty(""
-                                + productCount + "." + PRODUCT_CVSEXPORTTRANSLATION));
-                    }
-
-                    currentProduct.setOnlyLocaleAbCD(Boolean.valueOf(
-                            model.getProperty("" + productCount + PRODUCT_LOCALE_ABCD_ONLY,
-                            "true")).booleanValue());
-
-
-                    Kernel.datamodel.addProduct(currentProduct);
-                    for (int platformCount = 0; platformCount < platformMax;
-                            platformCount++) {
-                        readPlatform(currentProduct, "" + productCount + ".P."
-                                + platformCount);
-                    }
-                    readRegional(currentProduct, "" + productCount + ".R");
-                    readCustom(currentProduct.getCustomContainer(),
-                            "" + productCount + ".C");
-
-                    // FIXME maybe there is better way to handle versions
-                    currentProduct.setVersion(Kernel.settings.getString(Settings.STATE_VERSION));
                 }
                 readImages();
                 System.gc();
@@ -650,6 +630,61 @@ public class PropertiesPersistance implements GlossaryAccess {
         } catch (Exception e) {
             Kernel.appLog.log(Level.SEVERE, "Error loading glossary", e);
         }
+    }
+
+    private void loadProduct(Properties model, int productCount) {
+        int platformMax;
+        Product currentProduct;
+        String name;
+        long alteredTime;
+
+        name = model.getProperty("" + productCount + NAME);
+        Kernel.feedback.progress("Loading product: " + name);
+        alteredTime = Long.parseLong("0" + model.getProperty(""
+                + productCount + ALTERED, ""));
+        platformMax = Integer.parseInt(model.getProperty(""
+                + productCount + COUNT));
+
+        currentProduct = new Product(name);
+        currentProduct.setAlteredTime(alteredTime);
+
+        currentProduct.setCVSImportOriginalPath(model.getProperty(""
+                + productCount + PRODUCT_CVSIMPORTORIGINAL));
+
+        // Product CVS Import Translation path
+        if (model.getProperty("" + productCount + PRODUCT_CVSIMPORTTRANSLATION) != null) {
+            currentProduct.setCVSImportTranslationPath(model.getProperty(""
+                    + productCount + PRODUCT_CVSIMPORTTRANSLATION));
+        } else {
+            currentProduct.setCVSImportTranslationPath(model.getProperty(""
+                    + productCount + "." + PRODUCT_CVSIMPORTTRANSLATION));
+        }
+
+        // Product CVS Export translation path
+        if (model.getProperty("" + productCount + PRODUCT_CVSEXPORTTRANSLATION) != null) {
+            currentProduct.setCVSExportTranslationPath(model.getProperty(""
+                    + productCount + PRODUCT_CVSEXPORTTRANSLATION));
+        } else {
+            currentProduct.setCVSExportTranslationPath(model.getProperty(""
+                    + productCount + "." + PRODUCT_CVSEXPORTTRANSLATION));
+        }
+
+        currentProduct.setOnlyLocaleAbCD(Boolean.valueOf(
+                model.getProperty("" + productCount + PRODUCT_LOCALE_ABCD_ONLY,
+                "true")).booleanValue());
+
+        Kernel.datamodel.addProduct(currentProduct);
+        for (int platformCount = 0; platformCount < platformMax;
+                platformCount++) {
+            readPlatform(model, currentProduct, "" + productCount + ".P."
+                    + platformCount);
+        }
+        readRegional(model, currentProduct, "" + productCount + ".R");
+        readCustom(model, currentProduct.getCustomContainer(),
+                "" + productCount + ".C");
+
+        // FIXME maybe there is better way to handle versions
+        currentProduct.setVersion(Kernel.settings.getString(Settings.STATE_VERSION));
     }
 
     /**
@@ -661,11 +696,11 @@ public class PropertiesPersistance implements GlossaryAccess {
      * @author  Ricardo
      */
     public void loadPartialGlossary(Component currentNode, File importFile) {
+        Properties model = new Properties();
         FileInputStream fis;
         ZipInputStream zis;
 
         String prefix = "PARTIAL";
-
         model.clear();
         try {
             if (importFile.exists()) {
@@ -676,7 +711,7 @@ public class PropertiesPersistance implements GlossaryAccess {
                 zis.closeEntry();
                 zis.close();
 
-                readContent(currentNode, prefix);
+                readContent(model, currentNode, prefix);
                 System.gc();
             }
         } catch (Exception e) {
@@ -691,7 +726,7 @@ public class PropertiesPersistance implements GlossaryAccess {
      * @param prefix            the prefix that identifies the platform in the
      *                          property key
      */
-    private void readPlatform(Product currentProduct, String prefix) {
+    private void readPlatform(Properties model, Product currentProduct, String prefix) {
         String name;
         String jarFile;
         boolean neutral;
@@ -715,7 +750,7 @@ public class PropertiesPersistance implements GlossaryAccess {
         }
         currentPlatform.setJarFile(jarFile);
         currentPlatform.setAlteredTime(alteredTime);
-        readContent(currentPlatform, prefix);
+        readContent(model,currentPlatform, prefix);
     }
 
     /**
@@ -725,7 +760,7 @@ public class PropertiesPersistance implements GlossaryAccess {
      * @param prefix            the prefix that identifies the regional content in the
      *                          property key
      */
-    private void readRegional(Product currentProduct, String prefix) {
+    private void readRegional(Properties model, Product currentProduct, String prefix) {
         String name;
         String jarFile;
         Region currentRegion;
@@ -738,7 +773,7 @@ public class PropertiesPersistance implements GlossaryAccess {
         currentRegion = currentProduct.getRegional();
         currentRegion.setJarFile(jarFile);
         currentRegion.setAlteredTime(alteredTime);
-        readContent(currentRegion, prefix);
+        readContent(model, currentRegion, prefix);
     }
 
     /**
@@ -748,14 +783,14 @@ public class PropertiesPersistance implements GlossaryAccess {
      * @param prefix        the prefix that identifies the custom container in the
      *                      property key
      */
-    private void readCustom(CustomContainer localroot, String prefix) {
+    private void readCustom(Properties model, CustomContainer localroot, String prefix) {
         int fileMax;
         String filePrefix;
 
         fileMax = Integer.parseInt(model.getProperty("" + prefix + COUNT));
         for (int fileCount = 0; fileCount < fileMax; fileCount++) {
             filePrefix = prefix + "." + fileCount;
-            readFile(localroot, filePrefix);
+            readFile(model, localroot, filePrefix);
         } // end of file loop
     }
 
@@ -767,7 +802,7 @@ public class PropertiesPersistance implements GlossaryAccess {
      * @param prefix        the prefix that identifies the MozTreeNode of which
      *                      the content is going to be read
      */
-    private void readContent(MozTreeNode currentNode, String prefix) {
+    private void readContent(Properties model, MozTreeNode currentNode, String prefix) {
         Component currentComponent;
 
         boolean loadingPartial = (prefix.startsWith("PARTIAL"));
@@ -858,9 +893,9 @@ public class PropertiesPersistance implements GlossaryAccess {
                     }
                 }
 
-                readContent(currentComponent, subLevelPrefix);
+                readContent(model, currentComponent, subLevelPrefix);
             } else {
-                readFile(currentNode, subLevelPrefix);
+                readFile(model, currentNode, subLevelPrefix);
             }
         } // end of component loop
     }
@@ -872,7 +907,7 @@ public class PropertiesPersistance implements GlossaryAccess {
      * @param filePrefix the property key prefix that identifies the file to be
      *        read
      */
-    public void readFile(MozTreeNode parent, String filePrefix) {
+    public void readFile(Properties model, MozTreeNode parent, String filePrefix) {
         GenericFile currentFile;
         Phrase currentPhrase;
         Translation currentTranslation;
@@ -1103,7 +1138,7 @@ public class PropertiesPersistance implements GlossaryAccess {
 
         try {
             fileName = Kernel.settings.getString(Settings.DATAMODEL_FILENAME,
-                    "glossary.zip");
+                    "Glossary.zip");
             testing = new File(fileName);
             if (testing.exists()) {
                 fis = new FileInputStream(fileName);
