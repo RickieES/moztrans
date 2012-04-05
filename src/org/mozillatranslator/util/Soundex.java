@@ -24,8 +24,6 @@
 
 package org.mozillatranslator.util;
 
-import java.lang.Integer;
-
 /**
  * This is just a reimplementation of Soundex algorithm to avoid having to care
  * about Apache (or any other free) license conformance to MPL. The Soundex
@@ -64,9 +62,9 @@ public class Soundex {
         StringBuilder value = new StringBuilder();
         int textPos = 0;
         int valuePos = 0;
-        int prevTPos = 0;
-        int prevVPos = 0;
-        int letterValue = 1;
+        int prevTPos;
+        int prevVPos;
+        int letterValue;
         char letter;
         
         text = text.toUpperCase();

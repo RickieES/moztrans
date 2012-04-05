@@ -108,6 +108,7 @@ public class EnhancedString {
         return this.value.substring(0, pos);
     }
 
+    @Override
     public String toString() {
         return this.value;
     }

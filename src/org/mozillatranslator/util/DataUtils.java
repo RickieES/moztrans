@@ -21,57 +21,57 @@
  * Henrik Lynggaard Hansen (Initial Code)
  *
  */
-
-
 package org.mozillatranslator.util;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import org.mozillatranslator.datamodel.ProductChild;
+import org.mozillatranslator.datamodel.TreeNode;
+import org.mozillatranslator.kernel.Kernel;
 
-import org.mozillatranslator.kernel.*;
-import org.mozillatranslator.datamodel.*;
-/** This class is a utility class for the datamodel
+/**
+ * This class is a utility class for the datamodel
  *
  * @author Henrik Lynggaard
  * @version 1.0
  */
-public class DataUtils
-{
-    
-    
-    /** This will return a complete list of platforms and regions
-     * in all the products
+public class DataUtils {
+
+    /**
+     * This will return a complete list of platforms and regions in all the products
+     *
      * @return a list of regions and platforms
-     */    
-    public static List fillWithPors()
-    {
+     */
+    public static List fillWithPors() {
         List theList = new ArrayList();
-        
+
         FillwithPorrTraverse trav = new FillwithPorrTraverse(theList);
         Kernel.datamodel.traverse(trav, TreeNode.LEVEL_PRODUCTCHILD);
-       
+
         return theList;
     }
-    
-    /** This will return a list of possible types of platforms
+
+    /**
+     * This will return a list of possible types of platforms
+     *
      * @return a list of platform types
-     */    
-    public static List fillWithTypes()
-    {
+     */
+    public static List fillWithTypes() {
         KeyValuePair pair;
         List theList = new ArrayList();
-        
+
         pair = new KeyValuePair(new Integer(ProductChild.TYPE_WINDOWS), Kernel.translate("Windows"));
         theList.add(pair);
-        
+
         pair = new KeyValuePair(new Integer(ProductChild.TYPE_UNIX), Kernel.translate("Unix"));
         theList.add(pair);
-        
+
         pair = new KeyValuePair(new Integer(ProductChild.TYPE_MAC), Kernel.translate("Mac"));
         theList.add(pair);
-        
+
         pair = new KeyValuePair(new Integer(ProductChild.TYPE_OTHER), Kernel.translate("Other"));
         theList.add(pair);
-       
+
         return theList;
     }
 }

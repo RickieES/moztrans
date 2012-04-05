@@ -23,7 +23,9 @@
  */
 package org.mozillatranslator.util;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 
 /** Minor tools for the gui part of this application
  * @author Henrik Lynggaard

@@ -21,40 +21,43 @@
  * Henrik Lynggaard Hansen (Initial Code)
  *
  */
- package org.mozillatranslator.util;
+package org.mozillatranslator.util;
 
-import java.util.*;
+import java.util.List;
+import org.mozillatranslator.datamodel.ProductChild;
+import org.mozillatranslator.kernel.EmptyTraverseCommand;
 
-import org.mozillatranslator.kernel.*;
-import org.mozillatranslator.datamodel.*;
-
-/** This class is a subclass of the traverse Class.
- * It is used by the traverse function to fill
- * a list with the names of the product childs
- * @author Henrik Lynggaard */
-public class FillwithPorrTraverse extends EmptyTraverseCommand
-{
+/**
+ * This class is a subclass of the traverse Class. It is used by the traverse function
+ * to fill a list with the names of the product childs
+ *
+ * @author Henrik Lynggaard
+ */
+public class FillwithPorrTraverse extends EmptyTraverseCommand {
     private List theList;
-    
-    /** Creates a new instance of FilterTraverse
-     * @param colList The list to fill with the names */
-    public FillwithPorrTraverse(List colList)
-    {
+
+    /**
+     * Creates a new instance of FilterTraverse
+     *
+     * @param colList The list to fill with the names
+     */
+    public FillwithPorrTraverse(List colList) {
         theList = colList;
     }
-    
-    /** This is called by the traverser when it passed a product
-     * child.
+
+    /**
+     * This is called by the traverser when it passed a product child.
+     *
      * @param currentNode The current Product child
-     * @return true, meaning tha the traverseing should go
-     * deeper if needed */    
-    public boolean action(ProductChild currentNode)
-    {
+     * @return true, meaning tha the traverseing should go deeper if needed
+     */
+    @Override
+    public boolean action(ProductChild currentNode) {
         String value;
-        
+
         value = currentNode.getParent().getName() + " >> " + currentNode.getTypeName();
         KeyValuePair pair = new KeyValuePair(currentNode, value);
         theList.add(pair);
-        return true;        
+        return true;
     }
 }
