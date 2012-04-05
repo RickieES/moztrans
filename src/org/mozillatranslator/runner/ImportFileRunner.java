@@ -24,11 +24,13 @@
 
 package org.mozillatranslator.runner;
 
-import org.mozillatranslator.io.FileTransferDialogDataObject;
-import org.mozillatranslator.io.common.*;
-import org.mozillatranslator.kernel.*;
-import java.io.*;
-import java.util.*;
+import java.io.FileInputStream;
+import java.util.ArrayList;
+import org.mozillatranslator.dataobjects.FileTransferDialogDataObject;
+import org.mozillatranslator.io.common.FileUtils;
+import org.mozillatranslator.dataobjects.ImportExportDataObject;
+import org.mozillatranslator.kernel.MozException;
+import org.mozillatranslator.kernel.MozTask;
 
 /** This runner will import a file
  * @author Henrik Lynggaard */
@@ -38,6 +40,7 @@ public class ImportFileRunner extends MozTask {
     }
 
     /** The main method */
+    @Override
     public void taskImplementation() throws MozException {
         try {
             FileTransferDialogDataObject dao = (FileTransferDialogDataObject) dataObject;
@@ -49,7 +52,7 @@ public class ImportFileRunner extends MozTask {
             fis.close();
             data.setChangeList(new ArrayList());
             data.setFormat(dao.getFormat());
-            data.setL10n(dao.getLocalization());
+            data.setL10n(dao.getL10n());
             dao.getChosenFile().increaseReferenceCount();
             dao.getChosenFile().load(data);
             dao.getChosenFile().decreaseReferenceCount();
@@ -58,6 +61,7 @@ public class ImportFileRunner extends MozTask {
         }
     }
 
+    @Override
     public String getTitle() {
         return "Import file";
     }

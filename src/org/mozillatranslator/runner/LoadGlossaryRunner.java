@@ -25,6 +25,7 @@
 
 package org.mozillatranslator.runner;
 
+import org.mozillatranslator.dataobjects.LoadGlossaryDataObject;
 import org.mozillatranslator.io.glossary.GlossaryAccess;
 import org.mozillatranslator.kernel.Kernel;
 import org.mozillatranslator.kernel.MozException;

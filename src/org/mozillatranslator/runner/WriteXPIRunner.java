@@ -24,9 +24,9 @@
 
 package org.mozillatranslator.runner;
 
-import org.mozillatranslator.io.ProductChildInputOutputDataObject;
+import org.mozillatranslator.dataobjects.ProductChildInputOutputDataObject;
 import org.mozillatranslator.io.common.FileUtils;
-import org.mozillatranslator.io.WriteXpiDataObject;
+import org.mozillatranslator.dataobjects.WriteXpiDataObject;
 import org.mozillatranslator.datamodel.*;
 import org.mozillatranslator.kernel.*;
 import java.io.*;
@@ -263,7 +263,7 @@ public class WriteXPIRunner extends MozTask {
         pcioDataObject.setChangeList(null);
         pcioDataObject.setDisplay(xpiData.getDisplay());
         pcioDataObject.setFormat(ProductChildInputOutputDataObject.FORMAT_JAR);
-        pcioDataObject.setL10n(xpiData.getLocaleName());
+        pcioDataObject.setL10n(xpiData.getL10n());
         pcioDataObject.setPreviewUrl(xpiData.getPreviewUrl());
         pcioDataObject.setVersion(xpiData.getVersion());
     }
@@ -324,10 +324,10 @@ public class WriteXPIRunner extends MozTask {
         // l10n resources
         pw.println("// --- strings specific to that single Language Pack ---");
         pw.println("var prettyName =\"" + xpiData.getDisplay() + QUOTE_SEMICOLON);
-        pw.println("var langcode = \"" + xpiData.getLocaleName().substring(0,
-                xpiData.getLocaleName().indexOf("-")) + QUOTE_SEMICOLON);
-        pw.println("var regioncode = \"" + xpiData.getLocaleName().substring(
-                xpiData.getLocaleName().indexOf("-") + 1) + QUOTE_SEMICOLON);
+        pw.println("var langcode = \"" + xpiData.getL10n().substring(0,
+                xpiData.getL10n().indexOf("-")) + QUOTE_SEMICOLON);
+        pw.println("var regioncode = \"" + xpiData.getL10n().substring(
+                xpiData.getL10n().indexOf("-") + 1) + QUOTE_SEMICOLON);
         pw.println("var version = \"" + xpiData.getVersion() + QUOTE_SEMICOLON);
         pw.println("// --- end pack-specific strings ---");
         pw.println("");

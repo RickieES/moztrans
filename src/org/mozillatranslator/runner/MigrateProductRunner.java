@@ -25,6 +25,7 @@
 
 package org.mozillatranslator.runner;
 
+import org.mozillatranslator.dataobjects.MigrateProductDataObject;
 import org.mozillatranslator.datamodel.*;
 import org.mozillatranslator.kernel.*;
 import org.mozillatranslator.gui.*;

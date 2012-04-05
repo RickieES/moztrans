@@ -24,12 +24,13 @@
 
 package org.mozillatranslator.runner;
 
+import org.mozillatranslator.dataobjects.ProductChildInputOutputDataObject;
 import java.util.*;
 import java.io.*;
 import org.mozillatranslator.datamodel.*;
 import org.mozillatranslator.io.*;
 import org.mozillatranslator.kernel.*;
-import org.mozillatranslator.io.ImportTranslationDataObject;
+import org.mozillatranslator.dataobjects.ImportTranslationDataObject;
 
 /** This runner will import a translation from a chrome
  * @author Henrik Lynggaard
@@ -48,7 +49,7 @@ public class ImportTranslationRunner extends MozTask {
         Kernel.startTimeBatch();
         ProductChild pc = (ProductChild) dao.getNode();
         ProductChildInputOutputDataObject data = new ProductChildInputOutputDataObject();
-        data.setL10n(dao.getLocalization());
+        data.setL10n(dao.getL10n());
         data.setAuthor("");
         data.setBuffInStream(null);
         data.setBuffOutStream(null);

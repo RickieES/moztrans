@@ -25,13 +25,17 @@
 
 package org.mozillatranslator.runner;
 
-import java.io.*;
-import java.util.*;
-import org.mozillatranslator.datamodel.*;
-import org.mozillatranslator.io.common.*;
-import org.mozillatranslator.kernel.*;
-import org.mozillatranslator.gui.dialog.*;
-import org.mozillatranslator.gui.*;
+import java.io.File;
+import java.util.Collections;
+import java.util.List;
+import org.mozillatranslator.datamodel.GenericFile;
+import org.mozillatranslator.datamodel.Phrase;
+import org.mozillatranslator.datamodel.Product;
+import org.mozillatranslator.gui.ComplexTableWindow;
+import org.mozillatranslator.gui.dialog.ShowWhatDialog;
+import org.mozillatranslator.io.common.CvsTransfer;
+import org.mozillatranslator.kernel.Kernel;
+import org.mozillatranslator.kernel.Settings;
 
 /**
  * This runner will update a product
@@ -40,7 +44,6 @@ import org.mozillatranslator.gui.*;
  * @version 1.0
  **/
 public class ImportFromCvsRunner extends Thread {
-    
     /**
      * The product to update
      **/
@@ -63,7 +66,7 @@ public class ImportFromCvsRunner extends Thread {
     private boolean runAutoTranslate;
 
     /**
-     * Creates new UpdateProductRunner
+     * Creates new ImportFromCvsRunner
      *
      * @param p     the product to update
      * @param id    the dir from where to import
@@ -71,8 +74,7 @@ public class ImportFromCvsRunner extends Thread {
      * @param runAutoTranslate true if the user wants to run Auto-Translate on
      *                         news/modified strings
      **/
-    public ImportFromCvsRunner(Product p, File id, String l10n,
-            boolean runAutoTranslate) {
+    public ImportFromCvsRunner(Product p, File id, String l10n, boolean runAutoTranslate) {
         this.prod = p;
         this.importDir = id;
         this.l10n = l10n;

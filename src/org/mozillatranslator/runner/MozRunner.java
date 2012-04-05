@@ -22,18 +22,15 @@
  *
  */
 
-
 package org.mozillatranslator.runner;
 
-import org.mozillatranslator.kernel.*;
-/** This interface dictates a Thread that takes a
- * dataobject  for its run
+import org.mozillatranslator.dataobjects.DataObject;
+
+/** This interface dictates a Thread that takes a dataobject for its run
  * @author Henrik Lynggaard */
-public interface MozRunner extends Runnable
-{
-    /** This methoed sets the dataobject. It is
-     * called before the thread is started
-     * @param data The dataObject */    
+public interface MozRunner extends Runnable {
+    /** This method sets the dataobject. It is called before the thread is started
+     * @param data The dataObject
+     */
     public void setDataObject(DataObject data);
-    
 }

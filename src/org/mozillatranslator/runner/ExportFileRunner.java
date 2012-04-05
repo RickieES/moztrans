@@ -24,7 +24,8 @@
 
 package org.mozillatranslator.runner;
 
-import org.mozillatranslator.io.FileTransferDialogDataObject;
+import org.mozillatranslator.dataobjects.ImportExportDataObject;
+import org.mozillatranslator.dataobjects.FileTransferDialogDataObject;
 import org.mozillatranslator.io.common.*;
 import org.mozillatranslator.kernel.*;
 import java.io.*;
@@ -47,7 +48,7 @@ public class ExportFileRunner extends MozTask {
         data.setFileName(dao.getFileName());
         data.setChangeList(null);
         data.setFormat(dao.getFormat());
-        data.setL10n(dao.getLocalization());
+        data.setL10n(dao.getL10n());
         data.setFileContent(null);
         dao.getChosenFile().increaseReferenceCount();
         dao.getChosenFile().save(data);

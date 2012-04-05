@@ -25,9 +25,9 @@
 
 package org.mozillatranslator.runner;
 
-import java.io.*;
-import org.mozillatranslator.datamodel.*;
-import org.mozillatranslator.io.common.*;
+import java.io.File;
+import org.mozillatranslator.datamodel.Product;
+import org.mozillatranslator.io.common.CvsTransfer;
 
 /** This runner will update a product
  * @author Henrik Lynggaard

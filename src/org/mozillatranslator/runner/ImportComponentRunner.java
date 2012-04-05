@@ -24,8 +24,8 @@
 
 package org.mozillatranslator.runner;
 
-import org.mozillatranslator.io.common.ImportExportDataObject;
-import org.mozillatranslator.io.ComponentTransferDataObject;
+import org.mozillatranslator.dataobjects.ImportExportDataObject;
+import org.mozillatranslator.dataobjects.ComponentTransferDataObject;
 import org.mozillatranslator.kernel.*;
 import java.io.*;
 

@@ -24,6 +24,7 @@
 
 package org.mozillatranslator.runner;
 
+import org.mozillatranslator.dataobjects.ProductChildInputOutputDataObject;
 import java.io.*;
 import java.util.*;
 import javax.swing.*;
