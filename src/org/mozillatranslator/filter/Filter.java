@@ -24,8 +24,8 @@
 
 package org.mozillatranslator.filter;
 
-import org.mozillatranslator.datamodel.*;
-import org.mozillatranslator.kernel.*;
+import org.mozillatranslator.datamodel.Phrase;
+import org.mozillatranslator.dataobjects.DataObject;
 /**
  *
  * @author  Henrik Lynggaard
