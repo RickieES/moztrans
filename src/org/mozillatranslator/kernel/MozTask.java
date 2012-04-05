@@ -23,7 +23,9 @@
  */
 package org.mozillatranslator.kernel;
 
-import java.util.*;
+import org.mozillatranslator.dataobjects.DataObject;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -50,6 +52,7 @@ public abstract class MozTask implements Runnable {
         Kernel.feedback.runTask(this);
     }
     
+    @Override
     public void run() {
         try {
             taskImplementation();

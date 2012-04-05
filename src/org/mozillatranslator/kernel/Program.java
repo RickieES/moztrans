@@ -29,7 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 import org.mozillatranslator.batchcontrol.BatchControl;
-import org.mozillatranslator.runner.LoadGlossaryDataObject;
+import org.mozillatranslator.dataobjects.LoadGlossaryDataObject;
 import org.mozillatranslator.runner.LoadGlossaryRunner;
 
 /** This is the main class that is run

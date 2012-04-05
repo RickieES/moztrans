@@ -24,10 +24,11 @@
 
 package org.mozillatranslator.kernel;
 
-import org.mozillatranslator.gui.dialog.ShowWhatDialog;
+import java.util.Collections;
+import java.util.List;
+import java.util.logging.Level;
 import org.mozillatranslator.gui.ComplexTableWindow;
-import java.util.*;
-import java.util.logging.*;
+import org.mozillatranslator.gui.dialog.ShowWhatDialog;
 
 /**
  *
@@ -75,7 +76,7 @@ public class FeedbackProvider {
     }
     
     public void sleep(long millis) throws InterruptedException {
-        runner.sleep(millis);
+        Thread.sleep(millis);
     }
     
     public boolean isAlive() {
