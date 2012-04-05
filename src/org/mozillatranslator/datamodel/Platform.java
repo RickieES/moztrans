@@ -23,8 +23,9 @@
  */
 package org.mozillatranslator.datamodel;
 
-import java.io.*;
-import org.mozillatranslator.io.*;
+import java.io.IOException;
+import org.mozillatranslator.dataobjects.ProductChildInputOutputDataObject;
+import org.mozillatranslator.io.StructureAccess;
 
 /**
  * <h3>Change List</h3>

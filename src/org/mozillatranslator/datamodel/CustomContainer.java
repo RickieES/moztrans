@@ -24,8 +24,9 @@
 
 package org.mozillatranslator.datamodel;
 
-import java.io.*;
-import org.mozillatranslator.io.*;
+import java.io.IOException;
+import org.mozillatranslator.dataobjects.ProductChildInputOutputDataObject;
+import org.mozillatranslator.io.CustomContainerAccess;
 
 /** A container for custom files added to a Product
  * @author Henrik Lynggaard
@@ -42,10 +43,12 @@ public class CustomContainer extends MozTreeNode implements ProductChild {
         super(n, p, TreeNode.LEVEL_PRODUCTCHILD);
     }
 
+    @Override
     public int getType() {
         return ProductChild.TYPE_CUSTOM;
     }
 
+    @Override
     public void load(ProductChildInputOutputDataObject dataObject) throws IOException {
         dataObject.setProductChild(this);
         switch (dataObject.getFormat()) {
@@ -55,6 +58,7 @@ public class CustomContainer extends MozTreeNode implements ProductChild {
         }
     }
 
+    @Override
     public void save(ProductChildInputOutputDataObject dataObject) throws IOException {
         dataObject.setProductChild(this);
         switch (dataObject.getFormat()) {
@@ -64,18 +68,22 @@ public class CustomContainer extends MozTreeNode implements ProductChild {
         }
     }
 
+    @Override
     public String getJarFile() {
         return null;
     }
 
+    @Override
     public String getJarInXpiFile(String l10n) {
         return null;
     }
 
+    @Override
     public String getLocaleDisplay(String l10n) {
         return null;
     }
 
+    @Override
     public String getTypeName() {
         return "Custom";
     }

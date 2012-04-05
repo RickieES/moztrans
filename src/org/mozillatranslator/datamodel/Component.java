@@ -23,10 +23,10 @@
  */
 package org.mozillatranslator.datamodel;
 
+import java.io.IOException;
+import org.mozillatranslator.dataobjects.ImportExportDataObject;
+import org.mozillatranslator.io.PartialAccess;
 import org.mozillatranslator.io.component.ComponentToXmlAccess;
-import org.mozillatranslator.io.common.ImportExportDataObject;
-import org.mozillatranslator.io.*;
-import java.io.*;
 
 /** Represent a Mozilla component
  * @author Henrik Lynggaard

@@ -23,7 +23,7 @@
  */
 package org.mozillatranslator.datamodel;
 
-import org.mozillatranslator.io.common.ImportExportDataObject;
+import org.mozillatranslator.dataobjects.ImportExportDataObject;
 
 /**
  * General interface for all files in datamodel

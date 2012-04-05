@@ -24,6 +24,7 @@
 
 package org.mozillatranslator.datamodel;
 
+import org.mozillatranslator.dataobjects.ImportExportDataObject;
 import org.mozillatranslator.io.file.FileToXmlAccess;
 import org.mozillatranslator.io.file.FileAccess;
 import org.mozillatranslator.io.file.BinaryAccess;

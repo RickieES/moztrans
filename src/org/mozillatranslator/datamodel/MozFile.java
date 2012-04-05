@@ -23,6 +23,7 @@
  */
 package org.mozillatranslator.datamodel;
 
+import org.mozillatranslator.dataobjects.ImportExportDataObject;
 import java.util.Iterator;
 import javax.swing.tree.*;
 import org.mozillatranslator.io.common.*;

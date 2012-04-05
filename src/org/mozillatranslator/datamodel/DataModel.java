@@ -80,12 +80,11 @@ import org.mozillatranslator.kernel.TraverseCommand;
  * @version 1.4
  */
 public class DataModel extends AbstractListModel implements Serializable {
-
-    private List products;
+    private List<Product> products;
 
     /** Creates new Datamodel */
     public DataModel() {
-        products = new ArrayList();
+        products = new ArrayList<Product>();
     }
 
     /** Get the number of products
@@ -117,7 +116,7 @@ public class DataModel extends AbstractListModel implements Serializable {
      * @return the Product at the index
      */
     @Override
-    public java.lang.Object getElementAt(int index) {
+    public Product getElementAt(int index) {
         return products.get(index);
     }
 
@@ -155,15 +154,15 @@ public class DataModel extends AbstractListModel implements Serializable {
     /** Returns the Products as an Array
      * @return An array of products
      */
-    public Object[] toArray() {
-        return products.toArray();
+    public Product[] toArray() {
+        return products.toArray(new Product[1]);
     }
 
     /** Returns a iterator for the products
      * @return the iterator
      * @since 1.4
      */
-    public Iterator productIterator() {
+    public Iterator<Product> productIterator() {
         return products.iterator();
     }
 

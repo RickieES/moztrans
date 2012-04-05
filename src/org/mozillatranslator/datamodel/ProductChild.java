@@ -21,19 +21,18 @@
  * Henrik Lynggaard Hansen (Initial Code)
  *
  */
-
 package org.mozillatranslator.datamodel;
 
-import java.io.*;
-import org.mozillatranslator.io.*;
+import java.io.IOException;
+import org.mozillatranslator.dataobjects.ProductChildInputOutputDataObject;
+
 /**
  *
- * @author  Henrik Lynggaard
+ * @author Henrik Lynggaard
  * @version 1.0
  */
-public interface ProductChild extends TreeNode
-{
-    
+public interface ProductChild extends TreeNode {
+
     public static final int TYPE_NEUTRAL = 1;
     public static final int TYPE_WINDOWS = 2;
     public static final int TYPE_UNIX = 3;
@@ -41,25 +40,18 @@ public interface ProductChild extends TreeNode
     public static final int TYPE_REGION = 5;
     public static final int TYPE_CUSTOM = 6;
     public static final int TYPE_OTHER = 100;
-    
-    public int getType();
-    
-    public String getTypeName();
-    
-    
-    public void load(ProductChildInputOutputDataObject dataObject) throws IOException;
-    
-    public void save(ProductChildInputOutputDataObject dataObject)  throws IOException;
-    
-    public String getJarFile();
-    
-    public String getJarInXpiFile(String l10n);
-    
-    public String getLocaleDisplay(String l10n);
-    
-    
-    
-    
-    
-}
 
+    public int getType();
+
+    public String getTypeName();
+
+    public void load(ProductChildInputOutputDataObject dataObject) throws IOException;
+
+    public void save(ProductChildInputOutputDataObject dataObject) throws IOException;
+
+    public String getJarFile();
+
+    public String getJarInXpiFile(String l10n);
+
+    public String getLocaleDisplay(String l10n);
+}

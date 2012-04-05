@@ -24,6 +24,7 @@
 
 package org.mozillatranslator.datamodel;
 
+import org.mozillatranslator.dataobjects.ImportExportDataObject;
 import java.util.ArrayList;
 import java.util.Iterator;
 import org.mozillatranslator.io.file.*;
