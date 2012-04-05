@@ -21,45 +21,37 @@
  * Henrik Lynggaard Hansen (Initial Code)
  *
  */
-
 package org.mozillatranslator.batchcontrol;
 
-import org.mozillatranslator.kernel.*;
-import org.mozillatranslator.runner.*;
+import java.util.logging.Level;
+import org.mozillatranslator.dataobjects.DataObject;
+import org.mozillatranslator.kernel.Kernel;
+import org.mozillatranslator.runner.MozRunner;
 
 /**
  *
- * @author  henrik
+ * @author henrik
  */
-public class Serializer
-{
-    
-    public static void action(MozRunner runner, DataObject dao)
-    {
+public class Serializer {
+
+    public static void action(MozRunner runner, DataObject dao) {
         Thread thread;
-        try
-        {
+        try {
             runner.setDataObject(dao);
             thread = new Thread(runner);
             thread.start();
             thread.join();
-        }
-        catch (Exception e)
-        {
-            Kernel.appLog.severe("Error during bacth run" + e);
+        } catch (Exception e) {
+            Kernel.appLog.log(Level.SEVERE, "Error during bacth run{0}", e);
         }
     }
-    
-    public static void action(Thread thread)
-    {
-        try
-        {
+
+    public static void action(Thread thread) {
+        try {
             thread.start();
             thread.join();
+        } catch (Exception e) {
+            Kernel.appLog.log(Level.SEVERE, "Error during bacth run{0}", e);
         }
-        catch (Exception e)
-        {
-            Kernel.appLog.severe("Error during bacth run" + e);
-        }
-    }    
+    }
 }

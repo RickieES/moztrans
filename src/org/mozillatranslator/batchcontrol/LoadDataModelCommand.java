@@ -24,6 +24,7 @@
 
 package org.mozillatranslator.batchcontrol;
 
+import org.mozillatranslator.dataobjects.LoadGlossaryDataObject;
 import org.mozillatranslator.kernel.*;
 import org.mozillatranslator.runner.*;
 import org.w3c.dom.*;
