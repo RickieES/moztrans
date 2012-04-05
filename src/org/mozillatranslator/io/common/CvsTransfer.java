@@ -28,11 +28,19 @@
 
 package org.mozillatranslator.io.common;
 
-import java.io.*;
-import java.util.*;
-import java.util.logging.*;
-import org.mozillatranslator.kernel.*;
+import org.mozillatranslator.dataobjects.ImportExportDataObject;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.mozillatranslator.datamodel.*;
+import org.mozillatranslator.kernel.Kernel;
+import org.mozillatranslator.kernel.Settings;
 
 /**
  *
@@ -109,7 +117,7 @@ public class CvsTransfer {
      **/
     private void saveComponent(Iterator thisLevel, String parentPath) {
         MozTreeNode currentNode;
-        File subDirFile = null;
+        File subDirFile;
         
         // For every children in thisLevel
         while (thisLevel.hasNext()) {
@@ -275,7 +283,7 @@ public class CvsTransfer {
         
         Component currentComponent;
         File[] nextLevelFiles;
-        int numFilesOrDirs = 0;
+        int numFilesOrDirs;
         boolean loadingOriginal = (this.l10n.equals(Kernel.ORIGINAL_L10N));
         
         try {
@@ -311,7 +319,6 @@ public class CvsTransfer {
                     if (loadingOriginal) {
                         TreeNode aNode = parent.getChildByName(currentFileOrDir.getName());
                         aNode.removeChildren();
-                        aNode = null;
                     }
                     currentComponent = null;
                 }
@@ -366,7 +373,6 @@ public class CvsTransfer {
             if (loadingOriginal) {
                 TreeNode aNode = parent.getChildByName(thisFile.getName());
                 aNode.removeChildren();
-                aNode = null;
             }
             currentFile = null;
         }

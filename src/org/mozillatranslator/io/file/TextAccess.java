@@ -24,6 +24,7 @@
 
 package org.mozillatranslator.io.file;
 
+import org.mozillatranslator.dataobjects.ImportExportDataObject;
 import java.nio.charset.Charset;
 import java.util.logging.Level;
 import org.mozillatranslator.io.common.*;

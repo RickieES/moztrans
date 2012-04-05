@@ -24,6 +24,7 @@
 
 package org.mozillatranslator.io.file;
 
+import org.mozillatranslator.dataobjects.ImportExportDataObject;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import org.mozillatranslator.io.common.*;

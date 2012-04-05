@@ -30,7 +30,7 @@ import java.util.logging.Level;
 import org.mozillatranslator.datamodel.DataModel;
 import org.mozillatranslator.kernel.Kernel;
 import org.mozillatranslator.kernel.Settings;
-import org.mozillatranslator.runner.LoadGlossaryDataObject;
+import org.mozillatranslator.dataobjects.LoadGlossaryDataObject;
 
 /**
  *

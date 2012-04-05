@@ -28,7 +28,7 @@ import java.io.*;
 import java.util.Random;
 import java.util.logging.*;
 import org.mozillatranslator.datamodel.*;
-import org.mozillatranslator.io.JarXpiDataObject;
+import org.mozillatranslator.dataobjects.JarXpiDataObject;
 import org.mozillatranslator.kernel.*;
 
 /** This is a utility class for file handling

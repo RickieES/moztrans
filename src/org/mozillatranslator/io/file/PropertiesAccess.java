@@ -26,6 +26,7 @@
 
 package org.mozillatranslator.io.file;
 
+import org.mozillatranslator.dataobjects.ImportExportDataObject;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.mozillatranslator.io.common.*;

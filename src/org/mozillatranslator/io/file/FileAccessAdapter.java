@@ -28,10 +28,13 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.logging.*;
-import org.mozillatranslator.io.common.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.mozillatranslator.datamodel.*;
-import org.mozillatranslator.kernel.*;
+import org.mozillatranslator.dataobjects.ImportExportDataObject;
+import org.mozillatranslator.io.common.MozIOException;
+import org.mozillatranslator.kernel.Kernel;
+import org.mozillatranslator.kernel.Settings;
 
 /**
  * This class is used as a base class, when making format specific readers and
@@ -173,12 +176,12 @@ public abstract class FileAccessAdapter implements FileAccess {
      **/
     @Override
     public void load(ImportExportDataObject dataObject) {
-        String key = null;
-        String value = null;
-        String l10nNote = null;
-        MozFile currentFile = null;
-        Phrase currentPhrase = null;
-        Translation currentTranslation = null;
+        String key;
+        String value;
+        String l10nNote;
+        MozFile currentFile;
+        Phrase currentPhrase;
+        Translation currentTranslation;
         boolean original;
 
         try {

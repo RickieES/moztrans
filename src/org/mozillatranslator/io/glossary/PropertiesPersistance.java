@@ -37,7 +37,7 @@ import org.mozillatranslator.io.StructureAccess;
 import org.mozillatranslator.io.common.FileUtils;
 import org.mozillatranslator.kernel.Kernel;
 import org.mozillatranslator.kernel.Settings;
-import org.mozillatranslator.runner.LoadGlossaryDataObject;
+import org.mozillatranslator.dataobjects.LoadGlossaryDataObject;
 
 /** This classs load and saves the datamodel in a properties file
  *

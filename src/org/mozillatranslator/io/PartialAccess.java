@@ -25,7 +25,7 @@
 
 package org.mozillatranslator.io;
 
-import org.mozillatranslator.io.common.ImportExportDataObject;
+import org.mozillatranslator.dataobjects.ImportExportDataObject;
 import org.mozillatranslator.io.glossary.PropertiesPersistance;
 import org.mozillatranslator.datamodel.*;
 

@@ -25,7 +25,7 @@
 
 package org.mozillatranslator.io.component;
 
-import org.mozillatranslator.io.common.ImportExportDataObject;
+import org.mozillatranslator.dataobjects.ImportExportDataObject;
 import org.mozillatranslator.io.common.XmlExporter;
 import org.mozillatranslator.datamodel.*;
 import org.mozillatranslator.kernel.*;

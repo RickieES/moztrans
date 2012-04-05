@@ -24,6 +24,8 @@
  */
 package org.mozillatranslator.io;
 
+import org.mozillatranslator.dataobjects.ProductChildInputOutputDataObject;
+import org.mozillatranslator.dataobjects.ImportExportDataObject;
 import java.io.*;
 import java.util.*;
 import java.util.jar.*;
