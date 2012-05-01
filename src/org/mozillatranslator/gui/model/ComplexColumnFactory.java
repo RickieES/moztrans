@@ -23,9 +23,12 @@
  */
 package org.mozillatranslator.gui.model;
 
-import java.util.*;
-import org.mozillatranslator.kernel.*;
-import java.util.logging.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.mozillatranslator.kernel.Kernel;
+import org.mozillatranslator.kernel.Settings;
 
 /**
  * @author  Henrik Lynggaard
@@ -63,7 +66,7 @@ public class ComplexColumnFactory {
         }
     }
 
-    public static Object[] toArray() {
-        return columnList.toArray();
+    public static ComplexColumn[] toArray() {
+        return (ComplexColumn[]) columnList.toArray(new ComplexColumn[Kernel.settings.getInteger(Settings.COLUMN_COUNT)]);
     }
 }

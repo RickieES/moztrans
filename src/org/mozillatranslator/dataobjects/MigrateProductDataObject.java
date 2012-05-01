@@ -21,79 +21,86 @@
  * Henrik Lynggaard Hansen (Initial Code)
  *
  */
+package org.mozillatranslator.dataobjects;
 
+import org.mozillatranslator.datamodel.Product;
 
-package org.mozillatranslator.gui;
-
-import org.mozillatranslator.datamodel.*;
-import org.mozillatranslator.kernel.*;
 /**
  *
- * @author  Henrik Lynggaard
+ * @author Henrik Lynggaard
  */
-public class MigrateProductDataObject implements DataObject
-{
-    
-    /** Holds value of property source. */
+public class MigrateProductDataObject implements DataObject {
+
+    /**
+     * Holds value of property source.
+     */
     private Product source;
-    
-    /** Holds value of property destination. */
+    /**
+     * Holds value of property destination.
+     */
     private Product destination;
-    
-    /** Holds value of property l10n. */
+    /**
+     * Holds value of property l10n.
+     */
     private String l10n;
-    
-    /** Creates a new instance of MigrateProductDataObject */
-    public MigrateProductDataObject()
-    {
+
+    /**
+     * Creates a new instance of MigrateProductDataObject
+     */
+    public MigrateProductDataObject() {
     }
-    
-    /** Getter for property source.
+
+    /**
+     * Getter for property source.
+     *
      * @return Value of property source.
      */
-    public Product getSource()
-    {
+    public Product getSource() {
         return this.source;
     }
-    
-    /** Setter for property source.
+
+    /**
+     * Setter for property source.
+     *
      * @param source New value of property source.
      */
-    public void setSource(Product source)
-    {
+    public void setSource(Product source) {
         this.source = source;
     }
-    
-    /** Getter for property destination.
+
+    /**
+     * Getter for property destination.
+     *
      * @return Value of property destination.
      */
-    public Product getDestination()
-    {
+    public Product getDestination() {
         return this.destination;
     }
-    
-    /** Setter for property destination.
+
+    /**
+     * Setter for property destination.
+     *
      * @param destination New value of property destination.
      */
-    public void setDestination(Product destination)
-    {
+    public void setDestination(Product destination) {
         this.destination = destination;
     }
-    
-    /** Getter for property l10n.
+
+    /**
+     * Getter for property l10n.
+     *
      * @return Value of property l10n.
      */
-    public String getL10n()
-    {
+    public String getL10n() {
         return this.l10n;
     }
-    
-    /** Setter for property l10n.
+
+    /**
+     * Setter for property l10n.
+     *
      * @param l10n New value of property l10n.
      */
-    public void setL10n(String l10n)
-    {
+    public void setL10n(String l10n) {
         this.l10n = l10n;
     }
-    
 }

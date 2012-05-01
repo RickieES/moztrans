@@ -23,16 +23,22 @@
  */
 package org.mozillatranslator.action;
 
-import java.io.*;
-import java.awt.event.*;
-import javax.swing.*;
-import org.mozillatranslator.runner.*;
-import org.mozillatranslator.datamodel.*;
-import org.mozillatranslator.gui.dialog.*;
-import org.mozillatranslator.kernel.*;
+import java.awt.event.ActionEvent;
+import java.io.File;
+import javax.swing.AbstractAction;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import org.mozillatranslator.datamodel.Product;
+import org.mozillatranslator.dataobjects.ProductUpdateDataObject;
+import org.mozillatranslator.gui.dialog.ProductImportExport;
+import org.mozillatranslator.gui.dialog.ShowWhatDialog;
+import org.mozillatranslator.kernel.Kernel;
+import org.mozillatranslator.kernel.Settings;
+import org.mozillatranslator.runner.ImportFromCvsRunner;
+import org.mozillatranslator.util.GuiTools;
 
 /**
- *
+ * Imports an existing translation in the form of a set of files into a product in the datamodel
  * @author Henrik Lynggaard
  * @version 1.00
  */
@@ -48,30 +54,42 @@ public class ImportProductTranslationFromCvsAction extends AbstractAction {
      */
     @Override
     public void actionPerformed(ActionEvent evt) {
-        Product prod;
-        File selectedDir;
-        UpdateProduct up;
-        String l10n;
-        ImportFromCvsRunner runner;
+        Product[] prodList;
+        ProductImportExport piePanel = new ProductImportExport(ProductImportExport.TYPE_IMPORT_TRANSLATION);
+        JDialog pieDialog = new JDialog(Kernel.mainWindow, Kernel.translate("menu.import.translation.cvs.label"), true);
+        pieDialog.setContentPane(piePanel);
+        pieDialog.pack();
+        GuiTools.placeFrameAtCenter(pieDialog);
+        pieDialog.setVisible(true);
+        ShowWhatDialog swd = new ShowWhatDialog();
 
-        // Bring a dialog box
-        up = new UpdateProduct("Import from Repository",
-                               UpdateProduct.TYPE_IMPORT_TRANSLATION);
-        prod = up.showDialog();
+        if (piePanel.isOkPressed() && swd.showDialog()) {
+            // Initialize the DataObject used to pass the parameters to runners
+            ProductUpdateDataObject puDO = new ProductUpdateDataObject();
 
-        try {
-            selectedDir = new File(up.getCVSImportPath());
-        } catch (java.lang.NullPointerException e) {
-            selectedDir = null;
-        }
+            puDO.setRunAutoTranslate(piePanel.isExportOnlyModified());
+            Kernel.settings.setString(Settings.GUI_IMPORT_FILE_CHOOSER_PATH, "");
+            prodList = piePanel.getSelectedProducts();
+            for(Product p : prodList) {
+                puDO.setProd(p);
+                puDO.setL10n(swd.getSelectedLocale());
 
-        if ((prod != null) && (selectedDir != null)) {
-            l10n = JOptionPane.showInputDialog(Kernel.mainWindow, "Select locale to import",
-                    Kernel.settings.getString(Settings.STATE_L10N));
-            if (l10n != null) {
-                runner = new ImportFromCvsRunner(prod, selectedDir, l10n,
-                                                 up.isRunAutoTranslate());
-                runner.start();
+                if (p.getCVSImportOriginalPath().trim().length() > 0) {
+                    File selectedDir = new File((prodList.length == 1) ? piePanel.getImpExpPath()
+                                                                       : p.getCVSImportOriginalPath());
+                    puDO.setImportDir(selectedDir);
+                    ImportFromCvsRunner runner = new ImportFromCvsRunner(puDO);
+                    runner.start();
+                    try {
+                        // We wait for the thread to end, since the datamodel is not really designed to be
+                        // thread-safe
+                        runner.join();
+                    } catch (InterruptedException e) {
+                        JOptionPane.showMessageDialog(Kernel.mainWindow,
+                                "Operation interrupted while dealing with product " + p.getName() + ", exitting");
+                        return;
+                    }
+                }
             }
         }
     }

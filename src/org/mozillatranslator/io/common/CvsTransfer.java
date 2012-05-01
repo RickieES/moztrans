@@ -28,7 +28,6 @@
 
 package org.mozillatranslator.io.common;
 
-import org.mozillatranslator.dataobjects.ImportExportDataObject;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -39,6 +38,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.mozillatranslator.datamodel.*;
+import org.mozillatranslator.dataobjects.ImportExportDataObject;
 import org.mozillatranslator.kernel.Kernel;
 import org.mozillatranslator.kernel.Settings;
 
@@ -60,6 +60,7 @@ public class CvsTransfer {
      * Default constructor
      */
     public CvsTransfer() {
+        fLogger.setLevel(Level.INFO);
     }
     
     /**
@@ -215,6 +216,14 @@ public class CvsTransfer {
                         e.getMessage());
             }
             currentFile.decreaseReferenceCount();
+        } else {
+            String[] params = {currentFile.getName(), Boolean.toString(currentFile.isDontExport()),
+                               Boolean.toString(this.exportOnlyModified),
+                               Boolean.toString(currentFile.isModified(false, this.productAlteredTime)),
+                               Long.toString(currentFile.getAlteredTime()),
+                               Long.toString(this.productAlteredTime)};
+            fLogger.log(Level.INFO, "File {0} not exported, dontExport = {1} ; exportOnlyModified = {2} ;"
+                    + " isModified = {3} ; alteredTime = {4}, productAlteredTime = {5}", params);
         }
     }
     

@@ -23,9 +23,11 @@
  */
 package org.mozillatranslator.gui.dialog;
 
-import org.mozillatranslator.kernel.*;
-import org.mozillatranslator.util.*;
-import org.mozillatranslator.filter.*;
+import org.mozillatranslator.filter.AdvancedSearch;
+import org.mozillatranslator.filter.Filter;
+import org.mozillatranslator.kernel.Kernel;
+import org.mozillatranslator.kernel.Settings;
+import org.mozillatranslator.util.GuiTools;
 
 /**
  *
@@ -389,7 +391,7 @@ public class AdvancedSearchDialog extends javax.swing.JDialog {
      * Returns the DAO object with all information gathered from this dialog
      * @return a DAO object that will be used by a Filter object
      */
-    public DataObject getDataObject() {
+    public Filter getDataObject() {
         return dao;
     }
 

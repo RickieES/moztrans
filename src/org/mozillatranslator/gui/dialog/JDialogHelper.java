@@ -25,7 +25,8 @@
 
 package org.mozillatranslator.gui.dialog;
 
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import javax.swing.*;
 
 /**
@@ -46,6 +47,7 @@ public abstract class JDialogHelper {
         dlg.getRootPane().setDefaultButton(btnOK);
         String actionName = "Close";
         Action closeAction = new AbstractAction(actionName) {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 btnCancel.doClick();
             }

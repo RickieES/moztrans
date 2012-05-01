@@ -24,11 +24,16 @@
 
 package org.mozillatranslator.gui.dialog;
 
-import java.util.*;
-import javax.swing.*;
-import org.mozillatranslator.kernel.*;
-import org.mozillatranslator.util.*;
-import org.mozillatranslator.gui.model.*;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
+import org.mozillatranslator.gui.model.ComplexColumn;
+import org.mozillatranslator.gui.model.ComplexColumnFactory;
+import org.mozillatranslator.kernel.Kernel;
+import org.mozillatranslator.kernel.Settings;
+import org.mozillatranslator.util.GuiTools;
 
 /**
  *
@@ -229,9 +234,13 @@ public class ShowWhatDialog extends javax.swing.JDialog {
         return okay;
     }
 
-    public List getSelectedColumns() {
+    public List<ComplexColumn> getSelectedColumns() {
         Object[] arrayResult = columnList.getSelectedValues();
-        return Arrays.asList(arrayResult);
+        List<ComplexColumn> result = new ArrayList<ComplexColumn>();
+        for(Object o : arrayResult) {
+            result.add((ComplexColumn) o);
+        }
+        return result;
     }
 
     public void disableLocaleField() {

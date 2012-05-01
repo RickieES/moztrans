@@ -34,7 +34,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import org.mozillatranslator.datamodel.GenericFile;
 import org.mozillatranslator.datamodel.TreeNode;
-import org.mozillatranslator.io.FileTransferDialogDataObject;
+import org.mozillatranslator.dataobjects.FileTransferDialogDataObject;
 import org.mozillatranslator.kernel.Kernel;
 import org.mozillatranslator.kernel.Settings;
 import org.mozillatranslator.util.GuiTools;
@@ -278,7 +278,7 @@ public class FileTransferDialog extends MozDialog {
         DefaultMutableTreeNode chosen = (DefaultMutableTreeNode) tp.getLastPathComponent();
 
         Kernel.settings.setString(Settings.STATE_L10N, localeField.getText());
-        dao.setLocalization(localeField.getText());
+        dao.setL10n(localeField.getText());
         dao.setFileName(fileField.getText());
         dao.setChosenFile((GenericFile) chosen.getUserObject());
         dao.setFormat(format);

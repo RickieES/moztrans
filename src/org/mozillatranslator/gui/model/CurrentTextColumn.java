@@ -47,7 +47,7 @@ public class CurrentTextColumn implements ComplexColumn {
 
     @Override
     public Object getValue(Phrase currentPhrase, String currentLocalization) {
-        String result = "";
+        String result;
         if (currentPhrase.getName().equals("MT_UknownFileType")) {
             if (currentPhrase.getParent() instanceof BinaryFile) {
                 result = "Binary files cannot be translated";

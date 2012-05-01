@@ -23,10 +23,10 @@
  */
 package org.mozillatranslator.action;
 
-import org.mozillatranslator.gui.dialog.*;
-import org.mozillatranslator.io.common.*;
-import org.mozillatranslator.kernel.*;
-import org.mozillatranslator.runner.*;
+import org.mozillatranslator.gui.dialog.FileTransferDialog;
+import org.mozillatranslator.dataobjects.ImportExportDataObject;
+import org.mozillatranslator.kernel.Kernel;
+import org.mozillatranslator.runner.ImportFileRunner;
 
 /**
  *

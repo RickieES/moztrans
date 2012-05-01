@@ -25,7 +25,7 @@
 
 package org.mozillatranslator.gui.dialog;
 
-import org.mozillatranslator.io.ComponentTransferDataObject;
+import org.mozillatranslator.dataobjects.ComponentTransferDataObject;
 import java.io.*;
 import javax.swing.*;
 import javax.swing.tree.*;

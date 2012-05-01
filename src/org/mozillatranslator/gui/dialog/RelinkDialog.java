@@ -26,7 +26,8 @@
 package org.mozillatranslator.gui.dialog;
 
 import org.mozillatranslator.filter.RelinkFilter;
-import org.mozillatranslator.kernel.*;
+import org.mozillatranslator.kernel.Kernel;
+import org.mozillatranslator.kernel.Settings;
 import org.mozillatranslator.util.GuiTools;
 
 /**
@@ -162,16 +163,19 @@ public class RelinkDialog extends MozDialog {
     private javax.swing.JButton okButton;
     // End of variables declaration//GEN-END:variables
     
+    @Override
     protected void init() {
         initComponents();
         JDialogHelper.setupOKCancelHotkeys(this, okButton, cancelButton);
         GuiTools.placeFrameAtCenter(this);        
     }    
     
+    @Override
     protected void populate() {
         localeField.setText(Kernel.settings.getString(Settings.STATE_L10N));
     }
 
+    @Override
     protected void collect() {
         String ln    = localeField.getText();
         boolean keep = keepExistingCheck.isSelected();

@@ -25,14 +25,10 @@
 
 package org.mozillatranslator.runner;
 
-import java.io.File;
-import java.util.Collections;
 import java.util.List;
 import org.mozillatranslator.datamodel.GenericFile;
 import org.mozillatranslator.datamodel.Phrase;
-import org.mozillatranslator.datamodel.Product;
-import org.mozillatranslator.gui.ComplexTableWindow;
-import org.mozillatranslator.gui.dialog.ShowWhatDialog;
+import org.mozillatranslator.dataobjects.ProductUpdateDataObject;
 import org.mozillatranslator.io.common.CvsTransfer;
 import org.mozillatranslator.kernel.Kernel;
 import org.mozillatranslator.kernel.Settings;
@@ -45,89 +41,51 @@ import org.mozillatranslator.kernel.Settings;
  **/
 public class ImportFromCvsRunner extends Thread {
     /**
-     * The product to update
-     **/
-    private Product prod;
-    
-    /**
-     * The path from where to import
+     * The data object containing all information needed to process a product update
      */
-    private File importDir;
-    
-    /**
-     * The l10n we're going to deal with (it may be both the original content or
-     * a translation locale code)
-     **/
-    private String l10n;
+    private ProductUpdateDataObject puDO;
 
     /**
-     * Flag indicating wether to run Auto-translate after importing strings
-     */
-    private boolean runAutoTranslate;
-
-    /**
-     * Creates new ImportFromCvsRunner
+     * Creates new ImporFromCvsRunner
      *
-     * @param p     the product to update
-     * @param id    the dir from where to import
-     * @param l10n  the l10n to import
-     * @param runAutoTranslate true if the user wants to run Auto-Translate on
-     *                         news/modified strings
-     **/
-    public ImportFromCvsRunner(Product p, File id, String l10n, boolean runAutoTranslate) {
-        this.prod = p;
-        this.importDir = id;
-        this.l10n = l10n;
-        this.runAutoTranslate = runAutoTranslate;
+     * @param puDO a ProductUpdateDataObject containing all relevant data for an ImportFromCvsRunner object creation
+     */
+    public ImportFromCvsRunner(ProductUpdateDataObject puDO) {
+        this.puDO = puDO;
     }
     
-
     /**
      * This is the main method
      **/
     @Override
     public void run() {
-        CvsTransfer cvsInstance = new CvsTransfer(this.prod, this.importDir);
+        CvsTransfer cvsInstance = new CvsTransfer(this.puDO.getProd(), this.puDO.getImportDir());
         
-        if (l10n.equals(Kernel.ORIGINAL_L10N)) {
+        if (this.puDO.getL10n().equals(Kernel.ORIGINAL_L10N)) {
             List<Phrase> changed = cvsInstance.loadProduct();
             if (changed.size() > 0) {
                 for(Phrase curPhrase : changed) {
                     curPhrase.setFuzzy(true);
                 }
+                this.puDO.getChangeList().addAll(changed);
                 
-                ShowWhatDialog swd = new ShowWhatDialog();
-                if (swd.showDialog()) {
-                    String localeName = swd.getSelectedLocale();
-                    List cols = swd.getSelectedColumns();
-                    
-                    Collections.sort(changed);
-
-                    if (this.runAutoTranslate) {
-                        Kernel.ts.translatePhraseList(changed, localeName);
+                for(Phrase curPhrase : changed) {
+                    if (curPhrase.getName().indexOf("lang.version") > -1) {
+                        Kernel.settings.setString(Settings.STATE_VERSION,
+                        curPhrase.getText());
                     }
 
-                    new ComplexTableWindow(Kernel.translate("changed_strings"),
-                            changed, cols, localeName, null);
-                } else {
-                    for(Phrase curPhrase : changed) {
-                        if (curPhrase.getName().indexOf("lang.version") > -1) {
-                            Kernel.settings.setString(Settings.STATE_VERSION,
-                            curPhrase.getText());
-                        }
-                        
-                        GenericFile mfile = (GenericFile) curPhrase.getParent();
-                        if (mfile != null) {
-                            mfile.decreaseReferenceCount();
-                        }
+                    GenericFile mfile = (GenericFile) curPhrase.getParent();
+                    if (mfile != null) {
+                        mfile.decreaseReferenceCount();
                     }
                 }
             }
             
             // FIXME maybe there is better way to handle versions
-            prod.setVersion(Kernel.settings.getString(Settings.STATE_VERSION));
+            this.puDO.getProd().setVersion(Kernel.settings.getString(Settings.STATE_VERSION));
         } else {
-            cvsInstance.loadTranslation(this.l10n);
+            cvsInstance.loadTranslation(this.puDO.getL10n());
         }
     }
 }

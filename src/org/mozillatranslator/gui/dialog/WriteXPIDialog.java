@@ -26,7 +26,7 @@ package org.mozillatranslator.gui.dialog;
 
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import org.mozillatranslator.io.WriteXpiDataObject;
+import org.mozillatranslator.dataobjects.WriteXpiDataObject;
 import java.io.*;
 import javax.swing.*;
 import java.util.*;
@@ -400,7 +400,7 @@ public class WriteXPIDialog extends MozDialog {
         
         WriteXpiDataObject dao = new WriteXpiDataObject();
         List currentList = null;
-        dao.setLocaleName(localeField.getText());
+        dao.setL10n(localeField.getText());
         dao.setDisplay(displayField.getText());
         dao.setAuthor(authorField.getText());
         dao.setPreviewUrl(previewField.getText());

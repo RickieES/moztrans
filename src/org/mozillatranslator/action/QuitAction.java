@@ -23,10 +23,12 @@
  */
 package org.mozillatranslator.action;
 
-import java.util.logging.*;
-import javax.swing.*;
-import org.mozillatranslator.kernel.*;
-import org.mozillatranslator.runner.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.AbstractAction;
+import javax.swing.JOptionPane;
+import org.mozillatranslator.kernel.Kernel;
+import org.mozillatranslator.runner.SaveGlossaryRunner;
 
 /** This exits the program after a user confimation and possibly a
  * save of the glossary and settings

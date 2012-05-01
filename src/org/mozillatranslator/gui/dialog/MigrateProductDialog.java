@@ -24,6 +24,7 @@
 
 package org.mozillatranslator.gui.dialog;
 
+import org.mozillatranslator.dataobjects.MigrateProductDataObject;
 import org.mozillatranslator.kernel.*;
 import org.mozillatranslator.gui.*;
 import org.mozillatranslator.datamodel.*;

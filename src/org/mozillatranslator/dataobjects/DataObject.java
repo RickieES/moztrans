@@ -21,29 +21,12 @@
  * Henrik Lynggaard Hansen (Initial Code)
  *
  */
-package org.mozillatranslator.action;
 
-import javax.swing.AbstractAction;
-import org.mozillatranslator.kernel.Kernel;
-import org.mozillatranslator.runner.SaveGlossaryRunner;
 
-/** This is used to save the datamodel (Glossary)
- * @author Henrik Lynggaard
- * @version 1.0
- */
-public class SaveDatamodelAction extends AbstractAction {
-    /** Creates new SaveDatamodelAction
-     */
-    public SaveDatamodelAction() {
-        super(Kernel.translate("menu.file.save_glossary.label"), null);
-    }
-    
-    /** Called when the action is triggered
-     * @param actionEvent the action event
-     */
-    @Override
-    public void actionPerformed(java.awt.event.ActionEvent actionEvent) {
-        SaveGlossaryRunner task = new SaveGlossaryRunner();
-        task.runTask(null);
-    }
+package org.mozillatranslator.dataobjects;
+
+/** This is a marker interface used for marking
+ * dataobjects used by MozRunners
+ * @author Henrik Lynggaard */
+public interface DataObject {
 }

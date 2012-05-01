@@ -24,30 +24,29 @@
 
 package org.mozillatranslator.runner;
 
-import org.mozillatranslator.dataobjects.ProductChildInputOutputDataObject;
-import java.io.*;
-import java.util.*;
-import javax.swing.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import javax.swing.JOptionPane;
 import org.mozillatranslator.datamodel.*;
-import org.mozillatranslator.io.*;
-import org.mozillatranslator.kernel.*;
-import org.mozillatranslator.gui.dialog.*;
-import org.mozillatranslator.gui.*;
+import org.mozillatranslator.dataobjects.ProductChildInputOutputDataObject;
+import org.mozillatranslator.dataobjects.ProductUpdateDataObject;
+import org.mozillatranslator.kernel.Kernel;
+import org.mozillatranslator.kernel.Settings;
 
 /** This runner will update a product
  * @author Henrik Lynggaard
  * @version 1.0
  */
 public class UpdateProductRunner extends Thread {
-    /** the product to update
-     */
-    private Product prod;
+    private ProductUpdateDataObject puDO;
 
     /** Creates new UpdateProductRunner
-     * @param p The product to update
+     * @param puDO a ProductUpdateDataObject containing all relevant data for an UpdateProductrunner object creation
      */
-    public UpdateProductRunner(Product p) {
-        prod = p;
+    public UpdateProductRunner(ProductUpdateDataObject puDO) {
+        this.puDO = puDO;
     }
 
     /** This is the main method
@@ -56,9 +55,8 @@ public class UpdateProductRunner extends Thread {
     public void run() {
         List<Phrase> changeList = new ArrayList();
         Kernel.startTimeBatch();
-        Iterator productChildIterator = prod.iterator();
-        ProductChildInputOutputDataObject dao = new
-                ProductChildInputOutputDataObject();
+        Iterator productChildIterator = puDO.getProd().iterator();
+        ProductChildInputOutputDataObject dao = new ProductChildInputOutputDataObject();
 
         dao.setL10n(Kernel.ORIGINAL_L10N);
         dao.setAuthor("");
@@ -78,7 +76,6 @@ public class UpdateProductRunner extends Thread {
 
                 if ((dao.getFileName() != null) && (!pc.getJarFile().equals(""))) {
                     pc.traverse(new ClearMarkTraverse(), TreeNode.LEVEL_TRANSLATION);
-                    // dao.setRealFile(new File(pc.getJarFile()));
                     pc.setMark();
                     pc.load(dao);
                     pc.deleteUntouched();
@@ -94,31 +91,22 @@ public class UpdateProductRunner extends Thread {
             for(Phrase curPhrase : changeList) {
                 curPhrase.setFuzzy(true);
             }
-            ShowWhatDialog swd = new ShowWhatDialog();
+            this.puDO.getChangeList().addAll(changeList);
 
-            if (swd.showDialog()) {
-                String localeName = swd.getSelectedLocale();
-                List cols = swd.getSelectedColumns();
+            for(Phrase curPhrase : changeList) {
+                if (curPhrase.getName().indexOf("lang.version") > -1) {
+                    Kernel.settings.setString(Settings.STATE_VERSION,
+                            curPhrase.getText());
+                }
 
-                Collections.sort(changeList);
-                new ComplexTableWindow(Kernel.translate("changed_strings"),
-                                        changeList, cols, localeName, null);
-            } else {
-                for(Phrase curPhrase : changeList) {
-                    if (curPhrase.getName().indexOf("lang.version") > -1) {
-                        Kernel.settings.setString(Settings.STATE_VERSION,
-                                curPhrase.getText());
-                    }
-
-                    GenericFile mfile = (GenericFile) curPhrase.getParent();
-                    if (mfile != null) {
-                        mfile.decreaseReferenceCount();
-                    }
+                GenericFile mfile = (GenericFile) curPhrase.getParent();
+                if (mfile != null) {
+                    mfile.decreaseReferenceCount();
                 }
             }
         }
 
         // FIXME maybe there is better way to handle versions
-        this.prod.setVersion(Kernel.settings.getString(Settings.STATE_VERSION));
+        this.puDO.getProd().setVersion(Kernel.settings.getString(Settings.STATE_VERSION));
     }
 }

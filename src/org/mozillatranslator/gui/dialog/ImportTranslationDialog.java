@@ -24,7 +24,7 @@
 
 package org.mozillatranslator.gui.dialog;
 
-import org.mozillatranslator.io.ImportTranslationDataObject;
+import org.mozillatranslator.dataobjects.ImportTranslationDataObject;
 import java.io.*;
 import javax.swing.*;
 import org.mozillatranslator.kernel.*;
@@ -226,7 +226,7 @@ public class ImportTranslationDialog extends MozDialog {
         dao.setFileName(fileField.getText());
         KeyValuePair pair = (KeyValuePair) porCombo.getSelectedItem();
         dao.setNode((TreeNode) pair.getKey());
-        dao.setLocalization(localeField.getText());
+        dao.setL10n(localeField.getText());
         data = dao;
     }
 

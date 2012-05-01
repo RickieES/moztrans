@@ -24,7 +24,8 @@
 
 package org.mozillatranslator.gui.dialog;
 
-import org.mozillatranslator.kernel.*;
+import org.mozillatranslator.dataobjects.DataObject;
+import org.mozillatranslator.kernel.Kernel;
 
 /**
  * Generic structure for MozillaTranslator dialogs, with methods to

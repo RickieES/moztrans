@@ -23,8 +23,8 @@
  */
 package org.mozillatranslator.gui.dialog;
 
-import org.mozillatranslator.kernel.*;
-import org.mozillatranslator.util.*;
+import org.mozillatranslator.kernel.Kernel;
+import org.mozillatranslator.util.GuiTools;
 
 /**
  *
@@ -51,7 +51,7 @@ public class AboutDialog extends javax.swing.JDialog {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        javax.swing.JTabbedPane jTabbedPane1 = new javax.swing.JTabbedPane();
+        javax.swing.JTabbedPane aboutTabbedPane = new javax.swing.JTabbedPane();
         javax.swing.JPanel generalPanel = new javax.swing.JPanel();
         imageLabel = new javax.swing.JLabel();
         productNameLabel = new javax.swing.JLabel();
@@ -64,6 +64,8 @@ public class AboutDialog extends javax.swing.JDialog {
         licenceArea = new javax.swing.JTextArea();
         javax.swing.JPanel addressPanel = new javax.swing.JPanel();
         adressArea = new javax.swing.JTextArea();
+        okButtonPanel = new javax.swing.JPanel();
+        okButton = new javax.swing.JButton();
 
         setTitle("About MozillaTranslator");
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -87,7 +89,7 @@ public class AboutDialog extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
         generalPanel.add(imageLabel, gridBagConstraints);
 
-        productNameLabel.setFont(new java.awt.Font("Dialog", 1, 18));
+        productNameLabel.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         productNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         productNameLabel.setText("MozillaTranslator");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -100,8 +102,8 @@ public class AboutDialog extends javax.swing.JDialog {
         generalArea.setBackground(new java.awt.Color(184, 207, 229));
         generalArea.setColumns(15);
         generalArea.setEditable(false);
-        generalArea.setRows(12);
-        generalArea.setText("\nA localization tool for Mozilla and other XUL based programs\n\nOriginal code by:\nHenrik Lynggaard (Denmark)\n\nContributors in alphabetical order:\nTsahi Asher\nSerhiy Brytskyy\nRicardo Palomares\n");
+        generalArea.setRows(10);
+        generalArea.setText("\nA localization tool for Mozilla and other XUL based programs\n\nOriginal code by:\nHenrik Lynggaard (Denmark)\n\nContributors in alphabetical order:\nTsahi Asher\nSerhiy Brytskyy\nRicardo Palomares");
         generalArea.setOpaque(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -110,7 +112,7 @@ public class AboutDialog extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         generalPanel.add(generalArea, gridBagConstraints);
 
-        versionNumberLabel.setFont(new java.awt.Font("Dialog", 1, 14));
+        versionNumberLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         versionNumberLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         versionNumberLabel.setText("v" + Kernel.settings.getString(Kernel.settings.SYSTEM_VERSION));
         versionNumberLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
@@ -139,7 +141,7 @@ public class AboutDialog extends javax.swing.JDialog {
         gridBagConstraints.gridy = 2;
         generalPanel.add(maxMemLabel, gridBagConstraints);
 
-        jTabbedPane1.addTab("General", null, generalPanel, "");
+        aboutTabbedPane.addTab("General", null, generalPanel, "");
 
         licencePanel.setLayout(new java.awt.BorderLayout());
 
@@ -151,7 +153,7 @@ public class AboutDialog extends javax.swing.JDialog {
         licenceArea.setOpaque(false);
         licencePanel.add(licenceArea, java.awt.BorderLayout.CENTER);
 
-        jTabbedPane1.addTab("Licence", null, licencePanel, "");
+        aboutTabbedPane.addTab("Licence", null, licencePanel, "");
 
         addressPanel.setLayout(new java.awt.BorderLayout());
 
@@ -163,9 +165,22 @@ public class AboutDialog extends javax.swing.JDialog {
         adressArea.setOpaque(false);
         addressPanel.add(adressArea, java.awt.BorderLayout.CENTER);
 
-        jTabbedPane1.addTab("Address", null, addressPanel, "");
+        aboutTabbedPane.addTab("Address", null, addressPanel, "");
 
-        getContentPane().add(jTabbedPane1, java.awt.BorderLayout.NORTH);
+        getContentPane().add(aboutTabbedPane, java.awt.BorderLayout.NORTH);
+
+        okButton.setText("OK");
+        okButton.setMaximumSize(new java.awt.Dimension(60, 29));
+        okButton.setMinimumSize(new java.awt.Dimension(60, 29));
+        okButton.setPreferredSize(new java.awt.Dimension(60, 29));
+        okButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                okButtonActionPerformed(evt);
+            }
+        });
+        okButtonPanel.add(okButton);
+
+        getContentPane().add(okButtonPanel, java.awt.BorderLayout.SOUTH);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -182,12 +197,19 @@ public class AboutDialog extends javax.swing.JDialog {
         freeMemLabel.setText("Free memory: " + (Runtime.getRuntime().freeMemory() / 1024) + " KB");
     }//GEN-LAST:event_formWindowOpened
 
+    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
+        setVisible(false);
+        dispose();
+    }//GEN-LAST:event_okButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea adressArea;
     private javax.swing.JLabel freeMemLabel;
     private javax.swing.JLabel imageLabel;
     private javax.swing.JTextArea licenceArea;
     private javax.swing.JLabel maxMemLabel;
+    private javax.swing.JButton okButton;
+    private javax.swing.JPanel okButtonPanel;
     private javax.swing.JLabel productNameLabel;
     private javax.swing.JLabel totalMemLabel;
     private javax.swing.JLabel versionNumberLabel;

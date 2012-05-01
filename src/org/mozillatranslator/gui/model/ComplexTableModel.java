@@ -23,13 +23,16 @@
  */
 package org.mozillatranslator.gui.model;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.table.*;
-
-import org.mozillatranslator.datamodel.*;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableColumnModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
+import org.mozillatranslator.datamodel.Phrase;
 import org.mozillatranslator.gui.ThreeDotKeyAdapter;
 
 /**
@@ -77,7 +80,7 @@ public class ComplexTableModel extends AbstractTableModel {
 
     public TableColumnModel getTableColumnModel() {
         DefaultTableColumnModel columnModel = new DefaultTableColumnModel();
-        TableColumn column = new TableColumn();
+        TableColumn column;
 
         Iterator it = columns.iterator();
         int i = 0;
@@ -86,7 +89,6 @@ public class ComplexTableModel extends AbstractTableModel {
             column = new TableColumn(i++);
             column.setHeaderValue(currentColumn.getColumnName());
             column.setPreferredWidth(currentColumn.getPreferredWidth());
-            //        column.setMinWidth(30);
 
             if (currentColumn instanceof TranslatedTextColumn) {
                 JTextField textField = new JTextField();

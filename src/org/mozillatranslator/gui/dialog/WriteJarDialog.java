@@ -23,6 +23,7 @@
  */
 package org.mozillatranslator.gui.dialog;
 
+import org.mozillatranslator.dataobjects.ProductChildInputOutputDataObject;
 import java.io.*;
 import javax.swing.*;
 import org.mozillatranslator.datamodel.*;

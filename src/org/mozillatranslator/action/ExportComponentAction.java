@@ -23,7 +23,7 @@
  */
 package org.mozillatranslator.action;
 
-import org.mozillatranslator.io.common.ImportExportDataObject;
+import org.mozillatranslator.dataobjects.ImportExportDataObject;
 import org.mozillatranslator.gui.dialog.*;
 import org.mozillatranslator.kernel.*;
 import org.mozillatranslator.runner.*;

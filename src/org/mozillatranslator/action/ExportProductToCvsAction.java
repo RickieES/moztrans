@@ -23,13 +23,17 @@
  */
 package org.mozillatranslator.action;
 
-import java.io.*;
-import java.awt.event.*;
-import javax.swing.*;
-import org.mozillatranslator.runner.*;
-import org.mozillatranslator.datamodel.*;
-import org.mozillatranslator.gui.dialog.*;
-import org.mozillatranslator.kernel.*;
+import java.awt.event.ActionEvent;
+import java.io.File;
+import javax.swing.AbstractAction;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import org.mozillatranslator.datamodel.Product;
+import org.mozillatranslator.gui.dialog.ProductImportExport;
+import org.mozillatranslator.kernel.Kernel;
+import org.mozillatranslator.kernel.Settings;
+import org.mozillatranslator.runner.ExportToCvsRunner;
+import org.mozillatranslator.util.GuiTools;
 
 /**
  *
@@ -48,25 +52,35 @@ public class ExportProductToCvsAction extends AbstractAction {
      */
     @Override
     public void actionPerformed(ActionEvent evt) {
-        Product prod;
-        // bring a dialog box
-        UpdateProduct up = new UpdateProduct("Export to SCM",
-                UpdateProduct.TYPE_EXPORT_TRANSLATION);
-        prod = up.showDialog();
+        Product[] prodList;
+        ProductImportExport piePanel = new ProductImportExport(ProductImportExport.TYPE_EXPORT_TRANSLATION);
+        JDialog pieDialog = new JDialog(Kernel.mainWindow, Kernel.translate("menu.export.cvs_translation.label"), true);
+        pieDialog.setContentPane(piePanel);
+        pieDialog.pack();
+        GuiTools.placeFrameAtCenter(pieDialog);
+        pieDialog.setVisible(true);
 
-        if (prod != null) {
-            String l10n = JOptionPane.showInputDialog(Kernel.mainWindow,
-                    "Select locale to export",
+        if (piePanel.isOkPressed()) {
+            String l10n = JOptionPane.showInputDialog(Kernel.mainWindow, "Select locale to export",
                     Kernel.settings.getString(Settings.STATE_L10N));
             if (l10n != null) {
                 Kernel.settings.setString(Settings.GUI_EXPORT_FILE_CHOOSER_PATH, "");
-                File selectedDir = new File(up.getCVSImportPath());
-                ExportToCvsRunner runner = new ExportToCvsRunner(prod, selectedDir,
-                        l10n, up.exportOnlyModified());
-                runner.start();
+                prodList = piePanel.getSelectedProducts();
+                for(Product p : prodList) {
+                    File selectedDir = new File((prodList.length == 1) ?  piePanel.getImpExpPath() : p.getCVSExportTranslationPath());
+                    ExportToCvsRunner runner = new ExportToCvsRunner(p, selectedDir, l10n, piePanel.isExportOnlyModified());
+                    runner.start();
+                    try {
+                        // We wait for the thread to end, since the datamodel is not really designed to be
+                        // thread-safe
+                        runner.join();
+                    } catch (InterruptedException e) {
+                        JOptionPane.showMessageDialog(Kernel.mainWindow, "Operation interrupted while dealing with product "
+                                + p.getName() + ", exitting");
+                        return;
+                    }
+                }
             }
         }
-
-
     }
 }

@@ -24,11 +24,15 @@
 
 package org.mozillatranslator.batchcontrol;
 
-import java.util.logging.*;
-import org.mozillatranslator.kernel.*;
-import org.mozillatranslator.datamodel.*;
-import org.mozillatranslator.runner.*;
-import org.w3c.dom.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.mozillatranslator.datamodel.Product;
+import org.mozillatranslator.dataobjects.ProductUpdateDataObject;
+import org.mozillatranslator.kernel.Kernel;
+import org.mozillatranslator.runner.UpdateProductRunner;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  *
@@ -45,6 +49,7 @@ public class UpdateGlossaryCommand extends BatchCommand {
     public UpdateGlossaryCommand() {
     }
     
+    @Override
     public boolean action(Element command) throws BatchException {
         NodeList list = command.getChildNodes();
         Node currentNode;
@@ -55,23 +60,23 @@ public class UpdateGlossaryCommand extends BatchCommand {
                 if (currentNode.getNodeName().equalsIgnoreCase("name")) {
                     valueNode = currentNode.getFirstChild();
                     name = valueNode.getNodeValue();
-                    Product prod = (Product) Kernel.datamodel.getChildByName(name);
-                    if (prod != null) {
-                        UpdateProductRunner upr = new UpdateProductRunner(prod);
+                    ProductUpdateDataObject puDO = new ProductUpdateDataObject();
+                    puDO.setProd((Product) Kernel.datamodel.getChildByName(name));
+
+                    if (puDO.getProd() != null) {
+                        UpdateProductRunner upr = new UpdateProductRunner(puDO);
                         fLogger.info("Starting update");
                         Serializer.action(upr);
                         fLogger.info("Ending update");
                     }
-                    fLogger.info("Product name: *" + name + "*");
+                    fLogger.log(Level.INFO, "Product name: *{0}*", name);
                 }
             }
-            
         }
         return true;
     }
     
-    public boolean  wasSuccessfull() {
+    public boolean  wasSuccessful() {
         return true;
     }
-    
 }
