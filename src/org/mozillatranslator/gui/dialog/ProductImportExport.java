@@ -90,10 +90,12 @@ public class ProductImportExport extends javax.swing.JPanel {
             case TYPE_IMPORT_ORIGINAL:
             case TYPE_IMPORT_TRANSLATION:
                 optionCheckBox.setText("Auto-translate after updating");
+                optionCheckBox.setMnemonic('u');
                 optionCheckBox.setToolTipText("Run Auto-translate on new/modified strings");
                 break;
             case TYPE_EXPORT_TRANSLATION:
                 optionCheckBox.setText("Export only modified files");
+                optionCheckBox.setMnemonic('x');
                 optionCheckBox.setToolTipText("Export only files modified since last export");
                 break;
         }
@@ -186,9 +188,9 @@ public class ProductImportExport extends javax.swing.JPanel {
         okCancelPanel.setPreferredSize(new java.awt.Dimension(353, 33));
 
         okButton.setText("OK");
-        okButton.setMaximumSize(new java.awt.Dimension(55, 29));
-        okButton.setMinimumSize(new java.awt.Dimension(55, 29));
-        okButton.setPreferredSize(new java.awt.Dimension(55, 29));
+        okButton.setMaximumSize(new java.awt.Dimension(75, 31));
+        okButton.setMinimumSize(new java.awt.Dimension(75, 31));
+        okButton.setPreferredSize(new java.awt.Dimension(75, 31));
         okButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 okButtonActionPerformed(evt);
@@ -196,6 +198,9 @@ public class ProductImportExport extends javax.swing.JPanel {
         });
 
         cancelButton.setText("Cancel");
+        cancelButton.setMaximumSize(new java.awt.Dimension(75, 31));
+        cancelButton.setMinimumSize(new java.awt.Dimension(75, 31));
+        cancelButton.setPreferredSize(new java.awt.Dimension(75, 31));
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButtonActionPerformed(evt);
@@ -207,18 +212,18 @@ public class ProductImportExport extends javax.swing.JPanel {
         okCancelPanelLayout.setHorizontalGroup(
             okCancelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(okCancelPanelLayout.createSequentialGroup()
-                .addGap(127, 127, 127)
+                .addGap(109, 109, 109)
                 .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cancelButton)
-                .addContainerGap(104, Short.MAX_VALUE))
+                .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(82, Short.MAX_VALUE))
         );
         okCancelPanelLayout.setVerticalGroup(
             okCancelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(okCancelPanelLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(okCancelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cancelButton)
+                    .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
@@ -230,9 +235,9 @@ public class ProductImportExport extends javax.swing.JPanel {
         optionCheckBox.setSelected(true);
         optionCheckBox.setText("Export only modified");
 
-        impExpPathLabel.setDisplayedMnemonic('E');
+        impExpPathLabel.setDisplayedMnemonic('m');
         impExpPathLabel.setLabelFor(impExpPathTextField);
-        impExpPathLabel.setText("Export Path");
+        impExpPathLabel.setText("Import/Export Path");
         impExpPathLabel.setToolTipText("");
 
         choosePathButton.setMnemonic('C');
@@ -285,7 +290,7 @@ public class ProductImportExport extends javax.swing.JPanel {
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(optionCheckBox)
                                             .addComponent(impExpPathLabel))
-                                        .addGap(0, 4, Short.MAX_VALUE))
+                                        .addGap(0, 0, Short.MAX_VALUE))
                                     .addComponent(impExpPathTextField))
                                 .addContainerGap())))
                     .addGroup(layout.createSequentialGroup()

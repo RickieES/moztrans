@@ -68,7 +68,7 @@ public class UpdateProductAction extends AbstractAction {
 
         Product[] prodList;
         ProductImportExport piePanel = new ProductImportExport(ProductImportExport.TYPE_IMPORT_ORIGINAL);
-        JDialog pieDialog = new JDialog(Kernel.mainWindow, Kernel.translate("menu.export.cvs_translation.label"), true);
+        JDialog pieDialog = new JDialog(Kernel.mainWindow, Kernel.translate("menu.file.update_product.label"), true);
         pieDialog.setContentPane(piePanel);
         pieDialog.pack();
         GuiTools.placeFrameAtCenter(pieDialog);
