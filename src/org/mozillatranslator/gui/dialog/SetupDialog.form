@@ -147,7 +147,7 @@
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace pref="279" max="32767" attributes="0"/>
+                      <EmptySpace pref="226" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -264,39 +264,49 @@
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="importExportLabel" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="24" pref="24" max="-2" attributes="0"/>
+                              <Component id="useExtZipCheck" min="-2" pref="461" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="24" pref="24" max="-2" attributes="0"/>
+                              <Component id="replaceEnUSCheck" min="-2" pref="461" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="replaceEnUSCheck" min="-2" pref="461" max="-2" attributes="0"/>
-                                  <Component id="useExtZipCheck" min="-2" pref="461" max="-2" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Component id="zipPathLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                                           <Component id="unzipPathLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="defContributorLabel" min="-2" max="-2" attributes="0"/>
                                       </Group>
-                                      <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Group type="102" attributes="0">
-                                              <Component id="unzipPathTextField" min="-2" pref="256" max="-2" attributes="0"/>
-                                              <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="unzipPathButton" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <Group type="102" attributes="0">
-                                              <Component id="zipPathTextField" min="-2" pref="256" max="-2" attributes="0"/>
-                                              <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="zipPathButton" min="-2" max="-2" attributes="0"/>
-                                          </Group>
+                                          <Component id="unzipPathTextField" alignment="0" pref="273" max="32767" attributes="0"/>
+                                          <Component id="defContributorTextField" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="zipPathTextField" alignment="0" max="32767" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="zipPathButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="unzipPathButton" alignment="0" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
-                                  <Component id="exportOnlyModifFilesCheck" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="useOneFilePerProductCheck" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" attributes="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="useOneFilePerProductCheck" min="-2" max="-2" attributes="0"/>
+                                          <Component id="exportOnlyModifFilesCheck" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  </Group>
                               </Group>
                           </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="importExportLabel" min="-2" max="-2" attributes="0"/>
-                          </Group>
                       </Group>
-                      <EmptySpace pref="112" max="32767" attributes="0"/>
+                      <EmptySpace pref="37" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -310,22 +320,29 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="useExtZipCheck" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="zipPathLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="zipPathTextField" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="zipPathButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="zipPathLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="zipPathButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="zipPathTextField" linkSize="1" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="unzipPathTextField" linkSize="1" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="unzipPathLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="unzipPathTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="unzipPathButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="defContributorTextField" linkSize="1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="defContributorLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="exportOnlyModifFilesCheck" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="useOneFilePerProductCheck" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="42" max="32767" attributes="0"/>
+                      <EmptySpace pref="15" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -396,6 +413,13 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="unzipPathButtonActionPerformed"/>
               </Events>
             </Component>
+            <Component class="javax.swing.JLabel" name="defContributorLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Default contributor:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="defContributorTextField">
+            </Component>
             <Component class="javax.swing.JCheckBox" name="exportOnlyModifFilesCheck">
               <Properties>
                 <Property name="mnemonic" type="int" value="69"/>
@@ -446,7 +470,7 @@
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace pref="186" max="32767" attributes="0"/>
+                      <EmptySpace pref="133" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -556,7 +580,7 @@
                                       </Group>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="ckeyPatternField" pref="355" max="32767" attributes="0"/>
+                                          <Component id="ckeyPatternField" max="32767" attributes="0"/>
                                           <Component id="labelPatternField" max="32767" attributes="0"/>
                                           <Component id="akeyPatternField" alignment="0" min="-2" pref="302" max="-2" attributes="0"/>
                                       </Group>
@@ -771,7 +795,7 @@
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace pref="68" max="32767" attributes="0"/>
+                      <EmptySpace pref="15" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>

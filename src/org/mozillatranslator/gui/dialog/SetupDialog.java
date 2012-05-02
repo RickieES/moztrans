@@ -82,6 +82,7 @@ public void showDialog() {
         useExtZipCheck.setSelected(set.getBoolean(Settings.USE_EXTERNAL_ZIP));
         zipPathTextField.setText(set.getString(Settings.EXTERNAL_ZIP_PATH));
         unzipPathTextField.setText(set.getString(Settings.EXTERNAL_UNZIP_PATH));
+        defContributorTextField.setText(set.getString(Settings.LICENSE_CONTRIBUTOR));
         exportOnlyModifFilesCheck.setSelected(set.getBoolean(Settings.EXPORT_ONLY_MODIFIED));
         useOneFilePerProductCheck.setSelected(set.getBoolean(Settings.DATAMODEL_ONE_FILE_PER_PRODUCT));
 
@@ -129,6 +130,7 @@ public void showDialog() {
             set.setBoolean(Settings.USE_EXTERNAL_ZIP, useExtZipCheck.isSelected());
             set.setString(Settings.EXTERNAL_ZIP_PATH, zipPathTextField.getText());
             set.setString(Settings.EXTERNAL_UNZIP_PATH, unzipPathTextField.getText());
+            set.setString(Settings.LICENSE_CONTRIBUTOR, defContributorTextField.getText());
             set.setBoolean(Settings.EXPORT_ONLY_MODIFIED, exportOnlyModifFilesCheck.isSelected());
             set.setBoolean(Settings.DATAMODEL_ONE_FILE_PER_PRODUCT, useOneFilePerProductCheck.isSelected());
 
@@ -187,6 +189,8 @@ public void showDialog() {
         unzipPathLabel = new javax.swing.JLabel();
         unzipPathTextField = new javax.swing.JTextField();
         unzipPathButton = new javax.swing.JButton();
+        defContributorLabel = new javax.swing.JLabel();
+        defContributorTextField = new javax.swing.JTextField();
         exportOnlyModifFilesCheck = new javax.swing.JCheckBox();
         useOneFilePerProductCheck = new javax.swing.JCheckBox();
         prefTrnsAssistPanel = new javax.swing.JPanel();
@@ -303,7 +307,7 @@ public void showDialog() {
                                     .addComponent(editPhraseChooseButton)
                                     .addComponent(tableViewChooseButton)
                                     .addComponent(lookAndFeelCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addContainerGap(279, Short.MAX_VALUE))
+                .addContainerGap(226, Short.MAX_VALUE))
         );
         prefDisplayPanelLayout.setVerticalGroup(
             prefDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -367,6 +371,8 @@ public void showDialog() {
             }
         });
 
+        defContributorLabel.setText("Default contributor:");
+
         exportOnlyModifFilesCheck.setMnemonic('E');
         exportOnlyModifFilesCheck.setText("Export only modified files");
 
@@ -381,30 +387,37 @@ public void showDialog() {
             .addGroup(prefIOPanelLayout.createSequentialGroup()
                 .addGroup(prefIOPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(prefIOPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(importExportLabel))
+                    .addGroup(prefIOPanelLayout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(useExtZipCheck, javax.swing.GroupLayout.PREFERRED_SIZE, 461, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(prefIOPanelLayout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(replaceEnUSCheck, javax.swing.GroupLayout.PREFERRED_SIZE, 461, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(prefIOPanelLayout.createSequentialGroup()
                         .addGap(24, 24, 24)
                         .addGroup(prefIOPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(replaceEnUSCheck, javax.swing.GroupLayout.PREFERRED_SIZE, 461, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(useExtZipCheck, javax.swing.GroupLayout.PREFERRED_SIZE, 461, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(prefIOPanelLayout.createSequentialGroup()
                                 .addGroup(prefIOPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(zipPathLabel)
-                                    .addComponent(unzipPathLabel))
-                                .addGap(7, 7, 7)
+                                    .addComponent(unzipPathLabel)
+                                    .addComponent(defContributorLabel))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(prefIOPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(prefIOPanelLayout.createSequentialGroup()
-                                        .addComponent(unzipPathTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(unzipPathButton))
-                                    .addGroup(prefIOPanelLayout.createSequentialGroup()
-                                        .addComponent(zipPathTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(zipPathButton))))
-                            .addComponent(exportOnlyModifFilesCheck)
-                            .addComponent(useOneFilePerProductCheck)))
-                    .addGroup(prefIOPanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(importExportLabel)))
-                .addContainerGap(112, Short.MAX_VALUE))
+                                    .addComponent(unzipPathTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+                                    .addComponent(defContributorTextField)
+                                    .addComponent(zipPathTextField))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(prefIOPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(zipPathButton)
+                                    .addComponent(unzipPathButton)))
+                            .addGroup(prefIOPanelLayout.createSequentialGroup()
+                                .addGroup(prefIOPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(useOneFilePerProductCheck)
+                                    .addComponent(exportOnlyModifFilesCheck))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
+                .addContainerGap(37, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         prefIOPanelLayout.setVerticalGroup(
             prefIOPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -416,21 +429,28 @@ public void showDialog() {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(useExtZipCheck)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(prefIOPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(prefIOPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(zipPathLabel)
+                        .addComponent(zipPathButton))
+                    .addComponent(zipPathTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(prefIOPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(zipPathLabel)
-                    .addComponent(zipPathTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(zipPathButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(prefIOPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(unzipPathLabel)
                     .addComponent(unzipPathTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(unzipPathLabel)
                     .addComponent(unzipPathButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(prefIOPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(defContributorTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(defContributorLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(exportOnlyModifFilesCheck)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(useOneFilePerProductCheck)
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
+
+        prefIOPanelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {defContributorTextField, unzipPathTextField, zipPathTextField});
 
         jTabbedPane1.addTab("", new javax.swing.ImageIcon(getClass().getResource("/org/mozillatranslator/resource/pref-io.png")), prefIOPanel, "Input/Output"); // NOI18N
 
@@ -475,7 +495,7 @@ public void showDialog() {
                                 .addComponent(provideSuggFor2Label))
                             .addComponent(useSuggCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(autoTranslateCheck))))
-                .addContainerGap(186, Short.MAX_VALUE))
+                .addContainerGap(133, Short.MAX_VALUE))
         );
         prefTrnsAssistPanelLayout.setVerticalGroup(
             prefTrnsAssistPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -561,7 +581,7 @@ public void showDialog() {
                                             .addComponent(ckeyPatternLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(prefKeyConnPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(ckeyPatternField, javax.swing.GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE)
+                                    .addComponent(ckeyPatternField)
                                     .addComponent(labelPatternField)
                                     .addComponent(akeyPatternField, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -657,7 +677,7 @@ public void showDialog() {
                                             .addComponent(pairedCharsListField, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addComponent(endingCheckedCharsField, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(endingCheckedCharsLabel))))))
-                .addContainerGap(68, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
         prefAutoTestsPanelLayout.setVerticalGroup(
             prefAutoTestsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -805,6 +825,8 @@ public void showDialog() {
     private javax.swing.JCheckBox ckeyCaseCheck;
     private javax.swing.JTextField ckeyPatternField;
     private javax.swing.JLabel ckeyPatternLabel;
+    private javax.swing.JLabel defContributorLabel;
+    private javax.swing.JTextField defContributorTextField;
     private javax.swing.JLabel descripLabel;
     private javax.swing.JButton editPhraseChooseButton;
     private javax.swing.JLabel editPhraseFontLabel;
