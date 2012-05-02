@@ -88,12 +88,16 @@ public class ProductImportExport extends javax.swing.JPanel {
 
         switch (typeAction) {
             case TYPE_IMPORT_ORIGINAL:
-            case TYPE_IMPORT_TRANSLATION:
+                optionCheckBox.setVisible(true);
                 optionCheckBox.setText("Auto-translate after updating");
                 optionCheckBox.setMnemonic('u');
                 optionCheckBox.setToolTipText("Run Auto-translate on new/modified strings");
                 break;
+            case TYPE_IMPORT_TRANSLATION:
+                optionCheckBox.setVisible(false);
+                break;
             case TYPE_EXPORT_TRANSLATION:
+                optionCheckBox.setVisible(true);
                 optionCheckBox.setText("Export only modified files");
                 optionCheckBox.setMnemonic('x');
                 optionCheckBox.setToolTipText("Export only files modified since last export");
