@@ -1,4 +1,26 @@
 --------------------------------------------------------------------------
+Version 5.30
+--------------------------------------------------------------------------
+* New values and meaning for Translation Status field (bug 3642) and
+  allow searching on its value (bug 3799)
+* Levenshtein distance algorithm for translation suggestions (bug 3791)
+  and auto-translate feature (bug 4438), which means that suggeestions
+  are offered now for similar but not equal existing strings
+* Redesigned preference dialog, removing obsolete preferences and adding
+  new ones (bug 3792)
+* Export can now dump only modified files (bug 3793)
+* Product data can be saved now in individual files inside Glossary.zip,
+  thus reducing the memory consumption during glossary save (bug 3794)
+* Add a massive changes dialog (bug 3800)
+* Fix for error in Properties files when pressing [Enter] in multiline
+  strings (bug 4216)
+* Some minor visual enhancements (bug 4439)
+* Quicker sorting on Product column (bug 4440); thanks to Bernat Arlandis
+  for providing the fix
+* Empty translations can be exported now as really empty strings, instead
+  of the en-US value (bug 4610).
+
+--------------------------------------------------------------------------
 Version 5.26
 --------------------------------------------------------------------------
 * Fix for bug 3097 (Provide a way to avoid exporting some specific files in
