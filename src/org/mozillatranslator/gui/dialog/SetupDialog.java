@@ -85,6 +85,7 @@ public void showDialog() {
         defContributorTextField.setText(set.getString(Settings.LICENSE_CONTRIBUTOR));
         exportOnlyModifFilesCheck.setSelected(set.getBoolean(Settings.EXPORT_ONLY_MODIFIED));
         useOneFilePerProductCheck.setSelected(set.getBoolean(Settings.DATAMODEL_ONE_FILE_PER_PRODUCT));
+        emptyTrnsAsOriginalCheck.setSelected(set.getBoolean(Settings.EXPORT_ENUS_VALUE_ON_EMPTY_TRANSLATIONS));
 
         // Translation Assistance Tab
         useSuggCheckBox.setSelected(set.getBoolean(Settings.USE_SUGGESTIONS));
@@ -133,6 +134,7 @@ public void showDialog() {
             set.setString(Settings.LICENSE_CONTRIBUTOR, defContributorTextField.getText());
             set.setBoolean(Settings.EXPORT_ONLY_MODIFIED, exportOnlyModifFilesCheck.isSelected());
             set.setBoolean(Settings.DATAMODEL_ONE_FILE_PER_PRODUCT, useOneFilePerProductCheck.isSelected());
+            set.setBoolean(Settings.EXPORT_ENUS_VALUE_ON_EMPTY_TRANSLATIONS, emptyTrnsAsOriginalCheck.isSelected());
 
             // Translation Assistance Tab
             set.setBoolean(Settings.USE_SUGGESTIONS, useSuggCheckBox.isSelected());
@@ -193,6 +195,7 @@ public void showDialog() {
         defContributorTextField = new javax.swing.JTextField();
         exportOnlyModifFilesCheck = new javax.swing.JCheckBox();
         useOneFilePerProductCheck = new javax.swing.JCheckBox();
+        emptyTrnsAsOriginalCheck = new javax.swing.JCheckBox();
         prefTrnsAssistPanel = new javax.swing.JPanel();
         translationSuggestionsLabel = new javax.swing.JLabel();
         useSuggCheckBox = new javax.swing.JCheckBox();
@@ -255,6 +258,7 @@ public void showDialog() {
 
         editPhraseFontLabel.setText("Font for Edit Phrase dialog");
 
+        editPhraseChooseButton.setMnemonic('C');
         editPhraseChooseButton.setText("Choose...");
         editPhraseChooseButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -264,6 +268,7 @@ public void showDialog() {
 
         tableViewFontLabel.setText("Font for table views");
 
+        tableViewChooseButton.setMnemonic('h');
         tableViewChooseButton.setText("Choose...");
         tableViewChooseButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -272,12 +277,14 @@ public void showDialog() {
         });
 
         behaviourLabel.setFont(new java.awt.Font("DejaVu Sans", 1, 13)); // NOI18N
-        behaviourLabel.setText("Behaviour");
+        behaviourLabel.setText("Behavior");
 
         guiShowWhatCheck.setMnemonic('M');
         guiShowWhatCheck.setText("Make ShowWhat dialog visible");
         guiShowWhatCheck.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
+        lookAndFeelLabel.setDisplayedMnemonic('L');
+        lookAndFeelLabel.setLabelFor(lookAndFeelCombo);
         lookAndFeelLabel.setText("Look And Feel");
 
         lookAndFeelCombo.setModel(new DefaultComboBoxModel(availableLafs.toArray()));
@@ -296,18 +303,20 @@ public void showDialog() {
                         .addGap(12, 12, 12)
                         .addGroup(prefDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(guiShowWhatCheck)
-                            .addGroup(prefDisplayPanelLayout.createSequentialGroup()
-                                .addGroup(prefDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(prefDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(prefDisplayPanelLayout.createSequentialGroup()
+                                    .addComponent(lookAndFeelLabel)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lookAndFeelCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(prefDisplayPanelLayout.createSequentialGroup()
                                     .addGroup(prefDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(tableViewFontLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(editPhraseFontLabel))
-                                    .addComponent(lookAndFeelLabel))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(prefDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(editPhraseChooseButton)
-                                    .addComponent(tableViewChooseButton)
-                                    .addComponent(lookAndFeelCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addContainerGap(226, Short.MAX_VALUE))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(prefDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(editPhraseChooseButton)
+                                        .addComponent(tableViewChooseButton)))))))
+                .addContainerGap(285, Short.MAX_VALUE))
         );
         prefDisplayPanelLayout.setVerticalGroup(
             prefDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -351,6 +360,8 @@ public void showDialog() {
             }
         });
 
+        zipPathLabel.setDisplayedMnemonic('Z');
+        zipPathLabel.setLabelFor(zipPathTextField);
         zipPathLabel.setText("Path to ZIP binary:");
 
         zipPathButton.setMnemonic('C');
@@ -361,6 +372,8 @@ public void showDialog() {
             }
         });
 
+        unzipPathLabel.setDisplayedMnemonic('N');
+        unzipPathLabel.setLabelFor(unzipPathTextField);
         unzipPathLabel.setText("Path to UNZIP binary:");
 
         unzipPathButton.setMnemonic('h');
@@ -371,6 +384,8 @@ public void showDialog() {
             }
         });
 
+        defContributorLabel.setDisplayedMnemonic('D');
+        defContributorLabel.setLabelFor(defContributorTextField);
         defContributorLabel.setText("Default contributor:");
 
         exportOnlyModifFilesCheck.setMnemonic('E');
@@ -379,6 +394,9 @@ public void showDialog() {
         useOneFilePerProductCheck.setMnemonic('O');
         useOneFilePerProductCheck.setText("On glossary save, use one file per product");
         useOneFilePerProductCheck.setToolTipText("Use this to save memory while saving Glossary.zip");
+
+        emptyTrnsAsOriginalCheck.setMnemonic('x');
+        emptyTrnsAsOriginalCheck.setText("Export empty translations as original (en-US) value");
 
         javax.swing.GroupLayout prefIOPanelLayout = new javax.swing.GroupLayout(prefIOPanel);
         prefIOPanel.setLayout(prefIOPanelLayout);
@@ -399,13 +417,16 @@ public void showDialog() {
                         .addGap(24, 24, 24)
                         .addGroup(prefIOPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(prefIOPanelLayout.createSequentialGroup()
+                                .addComponent(emptyTrnsAsOriginalCheck)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(prefIOPanelLayout.createSequentialGroup()
                                 .addGroup(prefIOPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(zipPathLabel)
                                     .addComponent(unzipPathLabel)
                                     .addComponent(defContributorLabel))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(prefIOPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(unzipPathTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+                                    .addComponent(unzipPathTextField)
                                     .addComponent(defContributorTextField)
                                     .addComponent(zipPathTextField))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -413,10 +434,9 @@ public void showDialog() {
                                     .addComponent(zipPathButton)
                                     .addComponent(unzipPathButton)))
                             .addGroup(prefIOPanelLayout.createSequentialGroup()
-                                .addGroup(prefIOPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(useOneFilePerProductCheck)
-                                    .addComponent(exportOnlyModifFilesCheck))
-                                .addGap(0, 0, Short.MAX_VALUE)))))
+                                .addComponent(exportOnlyModifFilesCheck)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                                .addComponent(useOneFilePerProductCheck)))))
                 .addContainerGap(37, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         prefIOPanelLayout.setVerticalGroup(
@@ -444,9 +464,11 @@ public void showDialog() {
                     .addComponent(defContributorTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(defContributorLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(exportOnlyModifFilesCheck)
+                .addGroup(prefIOPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(exportOnlyModifFilesCheck)
+                    .addComponent(useOneFilePerProductCheck))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(useOneFilePerProductCheck)
+                .addComponent(emptyTrnsAsOriginalCheck)
                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
@@ -830,6 +852,7 @@ public void showDialog() {
     private javax.swing.JLabel descripLabel;
     private javax.swing.JButton editPhraseChooseButton;
     private javax.swing.JLabel editPhraseFontLabel;
+    private javax.swing.JCheckBox emptyTrnsAsOriginalCheck;
     private javax.swing.JTextField endingCheckedCharsField;
     private javax.swing.JLabel endingCheckedCharsLabel;
     private javax.swing.JCheckBox exportOnlyModifFilesCheck;

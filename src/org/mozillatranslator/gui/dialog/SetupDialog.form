@@ -129,25 +129,28 @@
                               <EmptySpace min="12" pref="12" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="guiShowWhatCheck" min="-2" max="-2" attributes="0"/>
-                                  <Group type="102" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Group type="103" alignment="0" groupAlignment="1" attributes="0">
+                                  <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <Component id="lookAndFeelLabel" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
+                                          <Component id="lookAndFeelCombo" min="-2" pref="131" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" attributes="0">
+                                          <Group type="103" groupAlignment="1" attributes="0">
                                               <Component id="tableViewFontLabel" min="-2" pref="167" max="-2" attributes="0"/>
                                               <Component id="editPhraseFontLabel" min="-2" max="-2" attributes="0"/>
                                           </Group>
-                                          <Component id="lookAndFeelLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="editPhraseChooseButton" min="-2" max="-2" attributes="0"/>
-                                          <Component id="tableViewChooseButton" min="-2" max="-2" attributes="0"/>
-                                          <Component id="lookAndFeelCombo" alignment="0" min="-2" pref="131" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Component id="editPhraseChooseButton" min="-2" max="-2" attributes="0"/>
+                                              <Component id="tableViewChooseButton" min="-2" max="-2" attributes="0"/>
+                                          </Group>
                                       </Group>
                                   </Group>
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace pref="226" max="32767" attributes="0"/>
+                      <EmptySpace pref="285" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -196,6 +199,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="editPhraseChooseButton">
               <Properties>
+                <Property name="mnemonic" type="int" value="67"/>
                 <Property name="text" type="java.lang.String" value="Choose..."/>
               </Properties>
               <Events>
@@ -209,6 +213,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="tableViewChooseButton">
               <Properties>
+                <Property name="mnemonic" type="int" value="104"/>
                 <Property name="text" type="java.lang.String" value="Choose..."/>
               </Properties>
               <Events>
@@ -220,7 +225,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="DejaVu Sans" size="13" style="1"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Behaviour"/>
+                <Property name="text" type="java.lang.String" value="Behavior"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JCheckBox" name="guiShowWhatCheck">
@@ -232,6 +237,10 @@
             </Component>
             <Component class="javax.swing.JLabel" name="lookAndFeelLabel">
               <Properties>
+                <Property name="displayedMnemonic" type="int" value="76"/>
+                <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                  <ComponentRef name="lookAndFeelCombo"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Look And Feel"/>
               </Properties>
             </Component>
@@ -278,7 +287,11 @@
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Component id="emptyTrnsAsOriginalCheck" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" attributes="0">
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Component id="zipPathLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                                           <Component id="unzipPathLabel" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -286,7 +299,7 @@
                                       </Group>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="unzipPathTextField" alignment="0" pref="273" max="32767" attributes="0"/>
+                                          <Component id="unzipPathTextField" alignment="0" max="32767" attributes="0"/>
                                           <Component id="defContributorTextField" alignment="0" max="32767" attributes="0"/>
                                           <Component id="zipPathTextField" alignment="0" max="32767" attributes="0"/>
                                       </Group>
@@ -297,11 +310,9 @@
                                       </Group>
                                   </Group>
                                   <Group type="102" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="useOneFilePerProductCheck" min="-2" max="-2" attributes="0"/>
-                                          <Component id="exportOnlyModifFilesCheck" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                      <Component id="exportOnlyModifFilesCheck" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace pref="26" max="32767" attributes="0"/>
+                                      <Component id="useOneFilePerProductCheck" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -339,9 +350,12 @@
                           <Component id="defContributorLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="exportOnlyModifFilesCheck" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="exportOnlyModifFilesCheck" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="useOneFilePerProductCheck" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="useOneFilePerProductCheck" min="-2" max="-2" attributes="0"/>
+                      <Component id="emptyTrnsAsOriginalCheck" min="-2" max="-2" attributes="0"/>
                       <EmptySpace pref="15" max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -383,6 +397,10 @@
             </Component>
             <Component class="javax.swing.JLabel" name="zipPathLabel">
               <Properties>
+                <Property name="displayedMnemonic" type="int" value="90"/>
+                <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                  <ComponentRef name="zipPathTextField"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Path to ZIP binary:"/>
               </Properties>
             </Component>
@@ -399,6 +417,10 @@
             </Component>
             <Component class="javax.swing.JLabel" name="unzipPathLabel">
               <Properties>
+                <Property name="displayedMnemonic" type="int" value="78"/>
+                <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                  <ComponentRef name="unzipPathTextField"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Path to UNZIP binary:"/>
               </Properties>
             </Component>
@@ -415,6 +437,10 @@
             </Component>
             <Component class="javax.swing.JLabel" name="defContributorLabel">
               <Properties>
+                <Property name="displayedMnemonic" type="int" value="68"/>
+                <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                  <ComponentRef name="defContributorTextField"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Default contributor:"/>
               </Properties>
             </Component>
@@ -431,6 +457,12 @@
                 <Property name="mnemonic" type="int" value="79"/>
                 <Property name="text" type="java.lang.String" value="On glossary save, use one file per product"/>
                 <Property name="toolTipText" type="java.lang.String" value="Use this to save memory while saving Glossary.zip"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JCheckBox" name="emptyTrnsAsOriginalCheck">
+              <Properties>
+                <Property name="mnemonic" type="int" value="120"/>
+                <Property name="text" type="java.lang.String" value="Export empty translations as original (en-US) value"/>
               </Properties>
             </Component>
           </SubComponents>

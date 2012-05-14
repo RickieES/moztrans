@@ -109,15 +109,15 @@ public abstract class FileAccessAdapter implements FileAccess {
                         dataObject.getL10n());
                 key = currentPhrase.getName();
 
-                value = (currentPhrase.isKeepOriginal()) ?
-                            currentPhrase.getText() :
-                            ((currentTranslation == null) ?
-                                ((dumpEnUSOnEmptyTrns) ?
-                                    currentPhrase.getText() :
-                                    "") :
-                                ((original) ?
-                                    currentPhrase.getText() :
-                                    currentTranslation.getText()));
+                value = (original) ? // Are we exporting the en-US version?
+                            currentPhrase.getText() : // Yes, we're exporting the en-US version
+                            ((currentPhrase.isKeepOriginal()) ? // Exporting translation but, is Keep Original checked?
+                                currentPhrase.getText() : // If it is, export the en-US (original) value; otherwise
+                                ((currentTranslation == null) ? // Is the translation null (ie. there is no translation)?
+                                    ((dumpEnUSOnEmptyTrns) ? // If so, do we want to export en-US (original) value?
+                                        currentPhrase.getText() : // If so, export the en-US value for empty translations
+                                        "") : // Otherwise, export an empty string
+                                    currentTranslation.getText())); // Nope, we're exporting the translated version
 
                 // The following writeLine method is overriden by every specific
                 // file access (like DTDAccess or PropertiesAccess)
