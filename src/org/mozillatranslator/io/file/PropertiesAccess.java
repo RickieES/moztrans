@@ -26,16 +26,17 @@
 
 package org.mozillatranslator.io.file;
 
-import org.mozillatranslator.dataobjects.ImportExportDataObject;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import org.mozillatranslator.io.common.*;
-import org.mozillatranslator.datamodel.*;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import org.mozillatranslator.datamodel.MozFile;
+import org.mozillatranslator.datamodel.MozLicense;
+import org.mozillatranslator.dataobjects.ImportExportDataObject;
+import org.mozillatranslator.io.common.MozIOException;
 import org.mozillatranslator.util.EnhancedString;
 
 
@@ -293,8 +294,8 @@ public class PropertiesAccess extends FileAccessAdapter {
             final int STATUS_VALUE = 4;
             final int STATUS_EOF = 99;
             int currentStatus = STATUS_NULL;
-            int keyDelimiter = -1;
-            int pos = 0;
+            int keyDelimiter;
+            int pos;
             char c;
             String keyName = null;
             StringBuilder key = null;
@@ -443,12 +444,18 @@ public class PropertiesAccess extends FileAccessAdapter {
                                             value.append("\\r");
                                             break;
                                         case 'u':
-                                            if (pos + 4 <= line.length()) {
-                                                char uni = (char) Integer.parseInt
-                                                        (line.substring(pos, pos + 4), 16);
-                                                value.append(uni);
-                                                pos += 4;
-                                            }        // else throw exception?
+                                            // Hack to deal with shorter than 4 digits Unicode sequences
+                                            int unicodeSequenceEnd = pos;
+
+                                            while ((unicodeSequenceEnd < line.length())
+                                                    && (unicodeSequenceEnd < (pos + 4))
+                                                    && ("0123456789ABCDEFabcdef".indexOf(line.charAt(unicodeSequenceEnd)) != -1)) {
+                                                unicodeSequenceEnd++;
+                                            }
+
+                                            char uni = (char) Integer.parseInt(line.substring(pos, unicodeSequenceEnd), 16);
+                                            value.append(uni);
+                                            pos = unicodeSequenceEnd;
                                             break;
                                         default:
                                             value.append(c);
@@ -482,8 +489,6 @@ public class PropertiesAccess extends FileAccessAdapter {
                 keyName = (keyName == null) ? key.toString() : keyName;
 
                 commentMap.put(keyName, l10nComment.toString());
-                keyName = null;
-                l10nComment = null;
             }
         }
 
