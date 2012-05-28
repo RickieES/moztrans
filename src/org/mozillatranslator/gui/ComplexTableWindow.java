@@ -84,7 +84,7 @@ public class ComplexTableWindow extends JInternalFrame implements
         model.setJTableReference(table);
         sorter.addMouseListenerToHeaderInTable(table);
         
-        table.setDefaultRenderer(Phrase.class, new KeyColumnRenderer());
+        table.setDefaultRenderer(Phrase.class, new KeyColumnRenderer(localeName));
         table.setFont(f);
 
         scroll = new JScrollPane(table);

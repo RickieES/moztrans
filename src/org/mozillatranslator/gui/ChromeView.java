@@ -34,14 +34,24 @@ import java.awt.Font;
 import java.awt.Rectangle;
 import java.beans.PropertyVetoException;
 import java.text.DecimalFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
-import javax.swing.tree.*;
-import java.util.logging.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
 import org.mozillatranslator.datamodel.*;
-import org.mozillatranslator.gui.model.*;
-import org.mozillatranslator.kernel.*;
-import org.mozillatranslator.datamodel.TreeNode;
+import org.mozillatranslator.gui.model.ComplexColumn;
+import org.mozillatranslator.gui.model.ComplexTableModel;
+import org.mozillatranslator.gui.model.ComplexTableSorter;
+import org.mozillatranslator.gui.model.KeyColumnRenderer;
+import org.mozillatranslator.kernel.Kernel;
+import org.mozillatranslator.kernel.Settings;
 
 /**
  * internal frame for the main window's MDI container
@@ -789,7 +799,7 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
         model.setJTableReference(table);
         sorter.addMouseListenerToHeaderInTable(table);
 
-        table.setDefaultRenderer(Phrase.class, new KeyColumnRenderer());
+        table.setDefaultRenderer(Phrase.class, new KeyColumnRenderer(this.currentLocalization));
         table.setFont(f);
 
         // do column inits
@@ -866,7 +876,6 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
                 }
             }
         } catch (NullPointerException e) {
-            idxList = null;
         }
         return phraseList;
     }

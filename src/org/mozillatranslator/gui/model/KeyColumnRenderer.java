@@ -40,9 +40,12 @@ import org.mozillatranslator.kernel.Settings;
  * @author rpalomares
  */
 public class KeyColumnRenderer extends DefaultTableCellRenderer {
+    private String localeName;
+
     /** Creates a new instance of KeyColumnRenderer */
-    public KeyColumnRenderer() {
+    public KeyColumnRenderer(String localeName) {
         super();
+        this.localeName = localeName;
     }
     
     @Override
@@ -58,29 +61,20 @@ public class KeyColumnRenderer extends DefaultTableCellRenderer {
         }
 
         if (currentPhrase.isKeepOriginal()) {
-            st = new StringTokenizer(Kernel.settings.getString(Settings.TRNS_STATUS_COLOR
-                    +".translated"),",");
-            this.setBackground(new Color(Integer.parseInt(st.nextToken()),
-                                         Integer.parseInt(st.nextToken()),
-                                         Integer.parseInt(st.nextToken())));
+            Color c = Kernel.settings.getColor(Settings.TRNS_STATUS_COLOR + ".translated");
+            this.setBackground(c);
             this.setToolTipText("This phrase is set to Keep Original");
         } else {
-            Translation t = (Translation) currentPhrase.getChildByName("es-ES");
+            Translation t = (Translation) currentPhrase.getChildByName(localeName);
             if (t == null) {
-                st = new StringTokenizer(Kernel.settings.getString(Settings.TRNS_STATUS_COLOR
-                        + ".untranslated"),",");
-                this.setBackground(new Color(Integer.parseInt(st.nextToken()),
-                                             Integer.parseInt(st.nextToken()),
-                                             Integer.parseInt(st.nextToken())));
+                Color c = Kernel.settings.getColor(Settings.TRNS_STATUS_COLOR + ".untranslated");
+                this.setBackground(c);
                 this.setToolTipText("Translation status of this phrase is Untranslated");
             } else {
-                st = new StringTokenizer(Kernel.settings.getString(Settings.TRNS_STATUS_COLOR
-                        + "." + t.getStatus().toString().toLowerCase()),",");
-                this.setBackground(new Color(Integer.parseInt(st.nextToken()),
-                                             Integer.parseInt(st.nextToken()),
-                                             Integer.parseInt(st.nextToken())));
-                this.setToolTipText("Translation status of this phrase is "
-                                    + t.getStatus());
+                Color c = Kernel.settings.getColor(Settings.TRNS_STATUS_COLOR + "."
+                                                 + t.getStatus().toString().toLowerCase());
+                this.setBackground(c);
+                this.setToolTipText("Translation status of this phrase is " + t.getStatus());
             }
         }
         setText(currentPhrase.getName());
