@@ -123,34 +123,62 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="appearanceLabel" min="-2" max="-2" attributes="0"/>
-                          <Component id="behaviourLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Group type="102" attributes="0">
                               <EmptySpace min="12" pref="12" max="-2" attributes="0"/>
+                              <Component id="guiShowWhatCheck" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="behaviourLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="272" pref="272" max="-2" attributes="0"/>
+                              <Component id="tsColorsLabel" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="guiShowWhatCheck" min="-2" max="-2" attributes="0"/>
-                                  <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                                      <Group type="102" attributes="0">
-                                          <Component id="lookAndFeelLabel" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="32767" attributes="0"/>
-                                          <Component id="lookAndFeelCombo" min="-2" pref="131" max="-2" attributes="0"/>
+                                  <Component id="appearanceLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace min="12" pref="12" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                          <Group type="102" attributes="0">
+                                              <Component id="lookAndFeelLabel" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace max="32767" attributes="0"/>
+                                              <Component id="lookAndFeelCombo" min="-2" pref="131" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Group type="102" attributes="0">
+                                              <Group type="103" groupAlignment="1" attributes="0">
+                                                  <Component id="tableViewFontLabel" min="-2" pref="167" max="-2" attributes="0"/>
+                                                  <Component id="editPhraseFontLabel" min="-2" max="-2" attributes="0"/>
+                                              </Group>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Group type="103" groupAlignment="0" attributes="0">
+                                                  <Component id="editPhraseChooseButton" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="tableViewChooseButton" min="-2" max="-2" attributes="0"/>
+                                              </Group>
+                                          </Group>
                                       </Group>
-                                      <Group type="102" attributes="0">
-                                          <Group type="103" groupAlignment="1" attributes="0">
-                                              <Component id="tableViewFontLabel" min="-2" pref="167" max="-2" attributes="0"/>
-                                              <Component id="editPhraseFontLabel" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="editPhraseChooseButton" min="-2" max="-2" attributes="0"/>
-                                              <Component id="tableViewChooseButton" min="-2" max="-2" attributes="0"/>
-                                          </Group>
+                                  </Group>
+                              </Group>
+                              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Component id="tsclApproximated" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="tsclProposed" min="-2" pref="96" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" attributes="0">
+                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                          <Component id="tsclUntranslated" alignment="0" pref="96" max="32767" attributes="0"/>
+                                          <Component id="tsclCopied" alignment="0" max="32767" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="tsclModified" min="-2" pref="96" max="-2" attributes="0"/>
+                                          <Component id="tsclTranslated" alignment="0" min="-2" pref="96" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace pref="285" max="32767" attributes="0"/>
+                      <EmptySpace pref="78" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -158,27 +186,44 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="appearanceLabel" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="appearanceLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="tsColorsLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="editPhraseFontLabel" alignment="3" min="-2" pref="29" max="-2" attributes="0"/>
                           <Component id="editPhraseChooseButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="tsclUntranslated" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="tsclModified" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="tableViewFontLabel" alignment="3" min="-2" pref="29" max="-2" attributes="0"/>
-                          <Component id="tableViewChooseButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="tableViewFontLabel" alignment="3" min="-2" pref="29" max="-2" attributes="0"/>
+                              <Component id="tableViewChooseButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                              <Component id="tsclApproximated" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="tsclProposed" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="lookAndFeelLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="lookAndFeelCombo" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="tsclCopied" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="tsclTranslated" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                              <Component id="lookAndFeelLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lookAndFeelCombo" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
-                      <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="behaviourLabel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="guiShowWhatCheck" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="62" max="32767" attributes="0"/>
+                      <EmptySpace pref="66" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -252,6 +297,122 @@
                 <Property name="toolTipText" type="java.lang.String" value="Graphical appearance of the application"/>
               </Properties>
             </Component>
+            <Component class="javax.swing.JLabel" name="tsColorsLabel">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="DejaVu Sans" size="13" style="1"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Translation Status Colors"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="tsclUntranslated">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="0" green="0" id="red" palette="1" red="ff" type="palette"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Untranslated"/>
+                <Property name="toolTipText" type="java.lang.String" value="Click to change its color"/>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="org.netbeans.modules.form.compat2.border.SoftBevelBorderInfo">
+                    <BevelBorder/>
+                  </Border>
+                </Property>
+                <Property name="opaque" type="boolean" value="true"/>
+              </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tsclLabelMouseClicked"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="tsclModified">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="af" green="af" id="pink" palette="1" red="ff" type="palette"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Modified"/>
+                <Property name="toolTipText" type="java.lang.String" value="Click to change its color"/>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="org.netbeans.modules.form.compat2.border.SoftBevelBorderInfo">
+                    <BevelBorder/>
+                  </Border>
+                </Property>
+                <Property name="opaque" type="boolean" value="true"/>
+              </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tsclLabelMouseClicked"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="tsclApproximated">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="0" green="c8" id="orange" palette="1" red="ff" type="palette"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Approximated"/>
+                <Property name="toolTipText" type="java.lang.String" value="Click to change its color"/>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="org.netbeans.modules.form.compat2.border.SoftBevelBorderInfo">
+                    <BevelBorder/>
+                  </Border>
+                </Property>
+                <Property name="opaque" type="boolean" value="true"/>
+              </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tsclLabelMouseClicked"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="tsclProposed">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="0" green="ff" id="yellow" palette="1" red="ff" type="palette"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Proposed"/>
+                <Property name="toolTipText" type="java.lang.String" value="Click to change its color"/>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="org.netbeans.modules.form.compat2.border.SoftBevelBorderInfo">
+                    <BevelBorder/>
+                  </Border>
+                </Property>
+                <Property name="opaque" type="boolean" value="true"/>
+              </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tsclLabelMouseClicked"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="tsclCopied">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="0" green="ff" id="green" palette="1" red="0" type="palette"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Copied"/>
+                <Property name="toolTipText" type="java.lang.String" value="Click to change its color"/>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="org.netbeans.modules.form.compat2.border.SoftBevelBorderInfo">
+                    <BevelBorder/>
+                  </Border>
+                </Property>
+                <Property name="opaque" type="boolean" value="true"/>
+              </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tsclLabelMouseClicked"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="tsclTranslated">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="c0" green="c0" id="lightGray" palette="1" red="c0" type="palette"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Translated"/>
+                <Property name="toolTipText" type="java.lang.String" value="Click to change its color"/>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="org.netbeans.modules.form.compat2.border.SoftBevelBorderInfo">
+                    <BevelBorder/>
+                  </Border>
+                </Property>
+                <Property name="opaque" type="boolean" value="true"/>
+              </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tsclLabelMouseClicked"/>
+              </Events>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="prefIOPanel">
@@ -311,7 +472,7 @@
                                   </Group>
                                   <Group type="102" attributes="0">
                                       <Component id="exportOnlyModifFilesCheck" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace pref="26" max="32767" attributes="0"/>
+                                      <EmptySpace max="32767" attributes="0"/>
                                       <Component id="useOneFilePerProductCheck" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
@@ -454,8 +615,8 @@
             </Component>
             <Component class="javax.swing.JCheckBox" name="useOneFilePerProductCheck">
               <Properties>
-                <Property name="mnemonic" type="int" value="79"/>
-                <Property name="text" type="java.lang.String" value="On glossary save, use one file per product"/>
+                <Property name="mnemonic" type="int" value="87"/>
+                <Property name="text" type="java.lang.String" value="When saving glossary, use one file per product"/>
                 <Property name="toolTipText" type="java.lang.String" value="Use this to save memory while saving Glossary.zip"/>
               </Properties>
             </Component>
@@ -502,7 +663,7 @@
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace pref="133" max="32767" attributes="0"/>
+                      <EmptySpace pref="142" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -612,7 +773,7 @@
                                       </Group>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="ckeyPatternField" max="32767" attributes="0"/>
+                                          <Component id="ckeyPatternField" pref="311" max="32767" attributes="0"/>
                                           <Component id="labelPatternField" max="32767" attributes="0"/>
                                           <Component id="akeyPatternField" alignment="0" min="-2" pref="302" max="-2" attributes="0"/>
                                       </Group>
@@ -671,7 +832,11 @@
             </Component>
             <Component class="javax.swing.JLabel" name="labelPatternLabel">
               <Properties>
+                <Property name="displayedMnemonic" type="int" value="76"/>
                 <Property name="horizontalAlignment" type="int" value="4"/>
+                <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                  <ComponentRef name="labelPatternField"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Label suffixes:"/>
                 <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                   <Dimension value="[152, 17]"/>
@@ -705,7 +870,11 @@
             </Component>
             <Component class="javax.swing.JLabel" name="ckeyPatternLabel">
               <Properties>
+                <Property name="displayedMnemonic" type="int" value="67"/>
                 <Property name="horizontalAlignment" type="int" value="4"/>
+                <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                  <ComponentRef name="ckeyPatternField"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Commandkeys suffixes:"/>
               </Properties>
             </Component>
@@ -730,7 +899,11 @@
             </Component>
             <Component class="javax.swing.JLabel" name="akeyPatternLabel">
               <Properties>
+                <Property name="displayedMnemonic" type="int" value="65"/>
                 <Property name="horizontalAlignment" type="int" value="4"/>
+                <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                  <ComponentRef name="akeyPatternField"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Accesskeys suffixes:"/>
                 <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                   <Dimension value="[152, 17]"/>
@@ -827,7 +1000,7 @@
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace pref="15" max="32767" attributes="0"/>
+                      <EmptySpace pref="24" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>

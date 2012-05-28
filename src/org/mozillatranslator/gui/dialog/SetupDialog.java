@@ -24,13 +24,12 @@
 
 package org.mozillatranslator.gui.dialog;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ItemEvent;
 import java.io.File;
 import java.util.List;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 import org.mozillatranslator.kernel.Kernel;
 import org.mozillatranslator.kernel.Settings;
 import org.mozillatranslator.util.GuiTools;
@@ -76,6 +75,12 @@ public void showDialog() {
         tableViewFontLabel.repaint();
         guiShowWhatCheck.setSelected(set.getBoolean(Settings.GUI_SHOW_WHAT_DIALOG));
         lookAndFeelCombo.setSelectedItem(set.getString(Settings.GUI_LOOK_AND_FEEL));
+        tsclUntranslated.setBackground(set.getColor(Settings.TRNS_STATUS_COLOR + ".untranslated"));
+        tsclModified.setBackground(set.getColor(Settings.TRNS_STATUS_COLOR + ".modified"));
+        tsclApproximated.setBackground(set.getColor(Settings.TRNS_STATUS_COLOR + ".approximated"));
+        tsclProposed.setBackground(set.getColor(Settings.TRNS_STATUS_COLOR + ".proposed"));
+        tsclCopied.setBackground(set.getColor(Settings.TRNS_STATUS_COLOR + ".copied"));
+        tsclTranslated.setBackground(set.getColor(Settings.TRNS_STATUS_COLOR + ".translated"));
 
         // Input/Output Tab
         replaceEnUSCheck.setSelected(set.getBoolean(Settings.EXPORT_REPLACE_ENUS));
@@ -125,6 +130,12 @@ public void showDialog() {
             set.setInteger(Settings.FONT_TABLEVIEW_STYLE, f.getStyle());
             set.setBoolean(Settings.GUI_SHOW_WHAT_DIALOG, guiShowWhatCheck.isSelected());
             set.setString(Settings.GUI_LOOK_AND_FEEL, lookAndFeelCombo.getSelectedItem().toString());
+            set.setColor(Settings.TRNS_STATUS_COLOR + ".untranslated", tsclUntranslated.getBackground());
+            set.setColor(Settings.TRNS_STATUS_COLOR + ".modified", tsclModified.getBackground());
+            set.setColor(Settings.TRNS_STATUS_COLOR + ".approximated", tsclApproximated.getBackground());
+            set.setColor(Settings.TRNS_STATUS_COLOR + ".proposed", tsclProposed.getBackground());
+            set.setColor(Settings.TRNS_STATUS_COLOR + ".copied", tsclCopied.getBackground());
+            set.setColor(Settings.TRNS_STATUS_COLOR + ".translated", tsclTranslated.getBackground());
 
             // Input/Output Tab
             set.setBoolean(Settings.EXPORT_REPLACE_ENUS, replaceEnUSCheck.isSelected());
@@ -181,6 +192,13 @@ public void showDialog() {
         guiShowWhatCheck = new javax.swing.JCheckBox();
         lookAndFeelLabel = new javax.swing.JLabel();
         lookAndFeelCombo = new javax.swing.JComboBox();
+        tsColorsLabel = new javax.swing.JLabel();
+        tsclUntranslated = new javax.swing.JLabel();
+        tsclModified = new javax.swing.JLabel();
+        tsclApproximated = new javax.swing.JLabel();
+        tsclProposed = new javax.swing.JLabel();
+        tsclCopied = new javax.swing.JLabel();
+        tsclTranslated = new javax.swing.JLabel();
         prefIOPanel = new javax.swing.JPanel();
         importExportLabel = new javax.swing.JLabel();
         replaceEnUSCheck = new javax.swing.JCheckBox();
@@ -290,6 +308,75 @@ public void showDialog() {
         lookAndFeelCombo.setModel(new DefaultComboBoxModel(availableLafs.toArray()));
         lookAndFeelCombo.setToolTipText("Graphical appearance of the application");
 
+        tsColorsLabel.setFont(new java.awt.Font("DejaVu Sans", 1, 13)); // NOI18N
+        tsColorsLabel.setText("Translation Status Colors");
+
+        tsclUntranslated.setBackground(java.awt.Color.red);
+        tsclUntranslated.setText("Untranslated");
+        tsclUntranslated.setToolTipText("Click to change its color");
+        tsclUntranslated.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        tsclUntranslated.setOpaque(true);
+        tsclUntranslated.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tsclLabelMouseClicked(evt);
+            }
+        });
+
+        tsclModified.setBackground(java.awt.Color.pink);
+        tsclModified.setText("Modified");
+        tsclModified.setToolTipText("Click to change its color");
+        tsclModified.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        tsclModified.setOpaque(true);
+        tsclModified.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tsclLabelMouseClicked(evt);
+            }
+        });
+
+        tsclApproximated.setBackground(java.awt.Color.orange);
+        tsclApproximated.setText("Approximated");
+        tsclApproximated.setToolTipText("Click to change its color");
+        tsclApproximated.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        tsclApproximated.setOpaque(true);
+        tsclApproximated.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tsclLabelMouseClicked(evt);
+            }
+        });
+
+        tsclProposed.setBackground(java.awt.Color.yellow);
+        tsclProposed.setText("Proposed");
+        tsclProposed.setToolTipText("Click to change its color");
+        tsclProposed.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        tsclProposed.setOpaque(true);
+        tsclProposed.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tsclLabelMouseClicked(evt);
+            }
+        });
+
+        tsclCopied.setBackground(java.awt.Color.green);
+        tsclCopied.setText("Copied");
+        tsclCopied.setToolTipText("Click to change its color");
+        tsclCopied.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        tsclCopied.setOpaque(true);
+        tsclCopied.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tsclLabelMouseClicked(evt);
+            }
+        });
+
+        tsclTranslated.setBackground(java.awt.Color.lightGray);
+        tsclTranslated.setText("Translated");
+        tsclTranslated.setToolTipText("Click to change its color");
+        tsclTranslated.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        tsclTranslated.setOpaque(true);
+        tsclTranslated.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tsclLabelMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout prefDisplayPanelLayout = new javax.swing.GroupLayout(prefDisplayPanel);
         prefDisplayPanel.setLayout(prefDisplayPanelLayout);
         prefDisplayPanelLayout.setHorizontalGroup(
@@ -297,49 +384,81 @@ public void showDialog() {
             .addGroup(prefDisplayPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(prefDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(appearanceLabel)
-                    .addComponent(behaviourLabel)
                     .addGroup(prefDisplayPanelLayout.createSequentialGroup()
                         .addGap(12, 12, 12)
+                        .addComponent(guiShowWhatCheck))
+                    .addComponent(behaviourLabel)
+                    .addGroup(prefDisplayPanelLayout.createSequentialGroup()
+                        .addGap(272, 272, 272)
+                        .addComponent(tsColorsLabel))
+                    .addGroup(prefDisplayPanelLayout.createSequentialGroup()
                         .addGroup(prefDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(guiShowWhatCheck)
-                            .addGroup(prefDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(prefDisplayPanelLayout.createSequentialGroup()
-                                    .addComponent(lookAndFeelLabel)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(lookAndFeelCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(prefDisplayPanelLayout.createSequentialGroup()
-                                    .addGroup(prefDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(tableViewFontLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(editPhraseFontLabel))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addGroup(prefDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(editPhraseChooseButton)
-                                        .addComponent(tableViewChooseButton)))))))
-                .addContainerGap(285, Short.MAX_VALUE))
+                            .addComponent(appearanceLabel)
+                            .addGroup(prefDisplayPanelLayout.createSequentialGroup()
+                                .addGap(12, 12, 12)
+                                .addGroup(prefDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addGroup(prefDisplayPanelLayout.createSequentialGroup()
+                                        .addComponent(lookAndFeelLabel)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(lookAndFeelCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(prefDisplayPanelLayout.createSequentialGroup()
+                                        .addGroup(prefDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(tableViewFontLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(editPhraseFontLabel))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(prefDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(editPhraseChooseButton)
+                                            .addComponent(tableViewChooseButton))))))
+                        .addGap(18, 18, 18)
+                        .addGroup(prefDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(prefDisplayPanelLayout.createSequentialGroup()
+                                .addComponent(tsclApproximated)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(tsclProposed, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(prefDisplayPanelLayout.createSequentialGroup()
+                                .addGroup(prefDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(tsclUntranslated, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
+                                    .addComponent(tsclCopied, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(prefDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(tsclModified, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(tsclTranslated, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                .addContainerGap(78, Short.MAX_VALUE))
         );
         prefDisplayPanelLayout.setVerticalGroup(
             prefDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(prefDisplayPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(appearanceLabel)
+                .addGroup(prefDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(appearanceLabel)
+                    .addComponent(tsColorsLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(prefDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(editPhraseFontLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(editPhraseChooseButton))
+                    .addComponent(editPhraseChooseButton)
+                    .addComponent(tsclUntranslated)
+                    .addComponent(tsclModified))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(prefDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tableViewFontLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tableViewChooseButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(prefDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lookAndFeelLabel)
-                    .addComponent(lookAndFeelCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(10, 10, 10)
+                .addGroup(prefDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(prefDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(tableViewFontLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(tableViewChooseButton))
+                    .addGroup(prefDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(tsclApproximated)
+                        .addComponent(tsclProposed)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(prefDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(prefDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(tsclCopied)
+                        .addComponent(tsclTranslated))
+                    .addGroup(prefDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lookAndFeelLabel)
+                        .addComponent(lookAndFeelCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(behaviourLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(guiShowWhatCheck)
-                .addContainerGap(62, Short.MAX_VALUE))
+                .addContainerGap(66, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("", new javax.swing.ImageIcon(getClass().getResource("/org/mozillatranslator/resource/pref-display.png")), prefDisplayPanel, "Display"); // NOI18N
@@ -391,8 +510,8 @@ public void showDialog() {
         exportOnlyModifFilesCheck.setMnemonic('E');
         exportOnlyModifFilesCheck.setText("Export only modified files");
 
-        useOneFilePerProductCheck.setMnemonic('O');
-        useOneFilePerProductCheck.setText("On glossary save, use one file per product");
+        useOneFilePerProductCheck.setMnemonic('W');
+        useOneFilePerProductCheck.setText("When saving glossary, use one file per product");
         useOneFilePerProductCheck.setToolTipText("Use this to save memory while saving Glossary.zip");
 
         emptyTrnsAsOriginalCheck.setMnemonic('x');
@@ -435,7 +554,7 @@ public void showDialog() {
                                     .addComponent(unzipPathButton)))
                             .addGroup(prefIOPanelLayout.createSequentialGroup()
                                 .addComponent(exportOnlyModifFilesCheck)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(useOneFilePerProductCheck)))))
                 .addContainerGap(37, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -517,7 +636,7 @@ public void showDialog() {
                                 .addComponent(provideSuggFor2Label))
                             .addComponent(useSuggCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(autoTranslateCheck))))
-                .addContainerGap(133, Short.MAX_VALUE))
+                .addContainerGap(142, Short.MAX_VALUE))
         );
         prefTrnsAssistPanelLayout.setVerticalGroup(
             prefTrnsAssistPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -541,7 +660,9 @@ public void showDialog() {
         keyConnLabel.setFont(new java.awt.Font("DejaVu Sans", 1, 13)); // NOI18N
         keyConnLabel.setText("Key Connection");
 
+        labelPatternLabel.setDisplayedMnemonic('L');
         labelPatternLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        labelPatternLabel.setLabelFor(labelPatternField);
         labelPatternLabel.setText("Label suffixes:");
         labelPatternLabel.setMaximumSize(new java.awt.Dimension(152, 17));
         labelPatternLabel.setMinimumSize(new java.awt.Dimension(152, 17));
@@ -554,7 +675,9 @@ public void showDialog() {
         labelCaseCheck.setToolTipText("Check to make label suffixes case-sensitive.");
         labelCaseCheck.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
+        ckeyPatternLabel.setDisplayedMnemonic('C');
         ckeyPatternLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        ckeyPatternLabel.setLabelFor(ckeyPatternField);
         ckeyPatternLabel.setText("Commandkeys suffixes:");
 
         ckeyPatternField.setText("Commandkeys patterns");
@@ -564,7 +687,9 @@ public void showDialog() {
         ckeyCaseCheck.setToolTipText("Check to make commandkeys suffixes case-sensitive.");
         ckeyCaseCheck.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
+        akeyPatternLabel.setDisplayedMnemonic('A');
         akeyPatternLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        akeyPatternLabel.setLabelFor(akeyPatternField);
         akeyPatternLabel.setText("Accesskeys suffixes:");
         akeyPatternLabel.setMaximumSize(new java.awt.Dimension(152, 17));
         akeyPatternLabel.setMinimumSize(new java.awt.Dimension(152, 17));
@@ -603,7 +728,7 @@ public void showDialog() {
                                             .addComponent(ckeyPatternLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(prefKeyConnPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(ckeyPatternField)
+                                    .addComponent(ckeyPatternField, javax.swing.GroupLayout.DEFAULT_SIZE, 311, Short.MAX_VALUE)
                                     .addComponent(labelPatternField)
                                     .addComponent(akeyPatternField, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -699,7 +824,7 @@ public void showDialog() {
                                             .addComponent(pairedCharsListField, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addComponent(endingCheckedCharsField, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(endingCheckedCharsLabel))))))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
         prefAutoTestsPanelLayout.setVerticalGroup(
             prefAutoTestsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -835,6 +960,16 @@ public void showDialog() {
         this.percentCoincidenceTextField.setEnabled((evt.getStateChange() == ItemEvent.SELECTED));
     }//GEN-LAST:event_useSuggCheckBoxItemStateChanged
 
+    private void tsclLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tsclLabelMouseClicked
+        JLabel tsclLabel = (JLabel) evt.getSource();
+        Color newColor = JColorChooser.showDialog(this, "Choose Background Color marker for "
+                + tsclLabel.getText() + "Untranslated strings", tsclLabel.getBackground());
+
+        if (newColor != null) {
+            tsclLabel.setBackground(newColor);
+        }
+    }//GEN-LAST:event_tsclLabelMouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox akeyCaseCheck;
     private javax.swing.JTextField akeyPatternField;
@@ -886,6 +1021,13 @@ public void showDialog() {
     private javax.swing.JLabel tableViewFontLabel;
     private javax.swing.JLabel translationSuggestionsLabel;
     private javax.swing.JTextField trnsDTDEntField;
+    private javax.swing.JLabel tsColorsLabel;
+    private javax.swing.JLabel tsclApproximated;
+    private javax.swing.JLabel tsclCopied;
+    private javax.swing.JLabel tsclModified;
+    private javax.swing.JLabel tsclProposed;
+    private javax.swing.JLabel tsclTranslated;
+    private javax.swing.JLabel tsclUntranslated;
     private javax.swing.JButton unzipPathButton;
     private javax.swing.JLabel unzipPathLabel;
     private javax.swing.JTextField unzipPathTextField;

@@ -23,9 +23,11 @@
  */
 package org.mozillatranslator.kernel;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.io.*;
 import java.util.Properties;
+import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.mozillatranslator.datamodel.TrnsStatus;
@@ -357,6 +359,46 @@ public class Settings {
         return Integer.parseInt(current.getProperty(key, "" + defValue));
     }
 
+    /**
+     * Returns a setting as a color, using white as the default
+     * @param key the key to get
+     * @return the result
+     */
+    public Color getColor(String key) {
+        Color c;
+        String s = current.getProperty(key, "255,255,255");
+        StringTokenizer st = new StringTokenizer(s, ",");
+
+        c = new Color(Integer.parseInt(st.nextToken()),
+                      Integer.parseInt(st.nextToken()),
+                      Integer.parseInt(st.nextToken()));
+        return c;
+    }
+
+    /**
+     * Returns a setting as a color
+     * @param key the key to get
+     * @param defValue the default value
+     * @return the result
+     */
+    public Color getColor(String key, Color defValue) {
+        Color c;
+        String s = current.getProperty(key);
+
+        if (s != null) {
+            StringTokenizer st = new StringTokenizer(s, ",");
+
+            c = new Color(Integer.parseInt(st.nextToken()),
+                          Integer.parseInt(st.nextToken()),
+                          Integer.parseInt(st.nextToken()));
+        } else {
+            c = defValue;
+        }
+        return c;
+    }
+
+
+
     /** Set a setting to a string value
      * @param key the key to set
      * @param value The new value
@@ -379,6 +421,18 @@ public class Settings {
      */
     public void setInteger(String key, int value) {
         current.setProperty(key, "" + value);
+    }
+
+    /**
+     * Set a setting to a string representation of a color value
+     * @param key the key to set
+     * @param value the new value
+     */
+    public void setColor(String key, Color value) {
+        String s = Integer.toString(value.getRed()) + ","
+                 + Integer.toString(value.getGreen()) + ","
+                 + Integer.toString(value.getBlue());
+        current.setProperty(key, s);
     }
 
     /** Saves the settings */
