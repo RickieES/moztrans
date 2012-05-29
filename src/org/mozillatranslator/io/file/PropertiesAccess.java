@@ -56,7 +56,7 @@ public class PropertiesAccess extends FileAccessAdapter {
     private SortedProperties prop;
     private Enumeration enumeration;
     private String currentKey;
-    
+
     /** Creates new PropertiesAccess */
     public PropertiesAccess() {
     }
@@ -77,11 +77,11 @@ public class PropertiesAccess extends FileAccessAdapter {
         bw = new BufferedWriter(osw);
 
         MozFile datamodelFile = (MozFile) dataObject.getNode();
-        
+
         // PropertiesAccess also deals with INI files, so we flag if we're
         // processing an INI file instead of a regular Properties file
         isIniFile = datamodelFile.getName().endsWith(".ini");
-        
+
         MozLicense thisFileLicense = datamodelFile.getLicenseBlock();
         if (thisFileLicense != null) {
             try {
@@ -101,13 +101,24 @@ public class PropertiesAccess extends FileAccessAdapter {
     @Override
     public void writeLine(String key, String value) throws MozIOException {
         String line;
-        
+
+        if (!isIniFile) {
+            int index = 0;
+            StringBuilder sb = new StringBuilder();
+            while ((index < value.length()) && (value.charAt(index) == ' ')) {
+                sb.append("\\u0020");
+                index++;
+            }
+            sb.append(value.substring(index));
+            value = sb.toString();
+        }
+
         if (isIniFile && key.startsWith("section.")) {
             line = key.substring(key.indexOf('[')) + "\n";
         } else {
             line = key + ((isIniFile) ? "=" : " = ") + value + "\n";
         }
-        
+
         try {
             bw.write(line);
         } catch (IOException e) {
@@ -388,7 +399,7 @@ public class PropertiesAccess extends FileAccessAdapter {
                         keyDelimiter = line.indexOf('=');
                         keyDelimiter = (keyDelimiter == -1) ?
                             line.indexOf(':') : keyDelimiter;
-                        
+
                         // We may be dealing with INI files too, so we must manage
                         // INI section headers, converting
                         //   [Header]
@@ -437,7 +448,7 @@ public class PropertiesAccess extends FileAccessAdapter {
                             line.set(line.ltrim());
                             pos = 0;
                         }
-                        
+
                         while (pos < line.length()) {
                             c = line.charAt(pos++);
                             if (c == '\\') {
@@ -479,10 +490,10 @@ public class PropertiesAccess extends FileAccessAdapter {
                                 value.append(c);
                             }
                         }
-                        
+
                         if ((line.length() == 0) ||
                                 (line.charAt(line.length() - 1) != '\\')) {
-                            
+
                             put(key.toString(), value.toString());
                             currentStatus = STATUS_NULL;
                             key = null;
