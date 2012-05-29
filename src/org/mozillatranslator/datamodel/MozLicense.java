@@ -24,9 +24,10 @@
 
 package org.mozillatranslator.datamodel;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.mozillatranslator.kernel.Settings;
 import org.mozillatranslator.kernel.Kernel;
+import org.mozillatranslator.kernel.Settings;
 
 /**
  * This class implements license information attached to a file
@@ -36,31 +37,32 @@ import org.mozillatranslator.kernel.Kernel;
 public class MozLicense {
     private static final Logger fLogger = Logger.getLogger(MozLicense.class.getPackage().
             getName());
-    
+
     /**
      * Holds the original license block
      **/
     private String licenseBlock;
-    
+
     /**
      * Holds the string with the contributor; it may be empty to use a
      * "generic contributor"
      */
     private String licenseContributor;
-    
+
     /**
      * The character position in which the contributor is to be inserted
      */
     private int insertionPos;
-    
+
     /**
      * The MozFile holding this instance
      */
     MozFile parent;
-    
+
     /** Creates a new instance of MozLicense */
     public MozLicense(MozFile parent) {
         this.parent = parent;
+        this.insertionPos = -1;
     }
 
     public String getLicenseBlock() {
@@ -86,7 +88,7 @@ public class MozLicense {
     public void setInsertionPos(int insertionPos) {
         this.insertionPos = insertionPos;
     }
-    
+
     /**
      * Returns a string with the license adapted to the translated file.
      * If the original license is empty, then an empty string ("") will
@@ -96,29 +98,30 @@ public class MozLicense {
      */
     public String getTranslatedLicense() {
         Settings set = Kernel.settings;
-        MozFile parent;
-        String result = null;
-        
+        StringBuilder result = new StringBuilder();
+
         // If the license block is not empty
-        if (licenseBlock!=null && licenseBlock.length() > 0) {
+        if (licenseBlock != null && licenseBlock.length() > 0) {
             // If the license contributor specific is empty, then take
             // the general contributor value
-            if (licenseContributor == null || licenseContributor.length()==0) {
+            if (licenseContributor == null || licenseContributor.length() == 0) {
                 licenseContributor = set.getString(Settings.LICENSE_CONTRIBUTOR);
             }
-            
+
             try {
-                result = licenseBlock.substring(0, insertionPos) + 
-                        ((this.parent instanceof PropertiesFile) ? "#   " : "   -   ") +
-                        licenseContributor + "\n" + licenseBlock.substring(insertionPos);
+                if (this.getInsertionPos() != -1) {
+                    result.append(licenseBlock.substring(0, insertionPos));
+                    result.append((this.parent instanceof PropertiesFile) ? "#   " : "   -   ");
+                    result.append(licenseContributor);
+                    result.append("\n");
+                }
+                result.append(licenseBlock.substring(Math.max(0, insertionPos)));
             } catch (StringIndexOutOfBoundsException ex) {
-                fLogger.info("MozLicense parent (" + this.parent.getName() +
-                        ") has no valid license");
-                fLogger.info("Additional info: license len   " + this.licenseBlock.length());
-                fLogger.info("                 insertion pos " + this.insertionPos);
+                fLogger.log(Level.INFO, "MozLicense parent ({0}) has no valid license", this.parent.getName());
+                fLogger.log(Level.INFO, "Additional info: license len   {0}", this.licenseBlock.length());
+                fLogger.log(Level.INFO, "                 insertion pos {0}", this.insertionPos);
             }
-            
-            return result;
+            return result.toString();
         } else {
             return "";
         }

@@ -27,8 +27,8 @@ package org.mozillatranslator.runner;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import org.mozillatranslator.dataobjects.FileTransferDialogDataObject;
-import org.mozillatranslator.io.common.FileUtils;
 import org.mozillatranslator.dataobjects.ImportExportDataObject;
+import org.mozillatranslator.io.common.FileUtils;
 import org.mozillatranslator.kernel.MozException;
 import org.mozillatranslator.kernel.MozTask;
 

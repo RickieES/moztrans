@@ -181,9 +181,9 @@ public class PropertiesAccess extends FileAccessAdapter {
         BufferedReader reader = new BufferedReader(new InputStreamReader(bais, "UTF-8"));
 
         while (((line = reader.readLine()) != null) && (!hasIt)) {
-            hasIt = (line.indexOf("*** BEGIN LICENSE BLOCK ***") > -1);
+            hasIt = (line.indexOf("*** BEGIN LICENSE BLOCK ***") > -1) // Any block-delimited license header
+                 || (line.indexOf("http://mozilla.org/MPL/2.0/") > -1);// MPL2 license header
         }
-
         bais.reset();
         return hasIt;
     }
@@ -199,39 +199,50 @@ public class PropertiesAccess extends FileAccessAdapter {
             throws IOException {
         String line;
         String theLicense;
-        int insertingPos;
         BufferedReader reader = new BufferedReader(new InputStreamReader(bais, "UTF-8"));
         boolean contribSectionFound = false;
         boolean contribEndLocated = false;
+        boolean licenseEndFound = false;
 
         // Let's find the license block start
-        while (((line = reader.readLine()) != null) &&
-                (line.indexOf("*** BEGIN LICENSE BLOCK ***") == -1)) {
+        while (((line = reader.readLine()) != null)
+                && (line.indexOf("*** BEGIN LICENSE BLOCK ***") == -1)
+                && (line.indexOf("This Source Code Form is subject to the ") == -1)) {
         }
 
+        // Since we're replacing the license, the current insertion pos is not valid anymore
+        thisFileLicense.setInsertionPos(-1);
+
+        // We add newlines to restore them in the license block, since readLine() removes them
         theLicense = line + "\n";
 
         // Now, let's find the license block end, and while we are at it, locate
         // the start and end of Contributor(s) section
-        while ((line != null) && (line.indexOf("*** END LICENSE BLOCK ***") == -1)) {
-             line = reader.readLine();
-
-             // We have found the Contributor(s) section start
+        while (((line = reader.readLine()) != null) && (!licenseEndFound)) {
+             // Have we found the Contributor(s) section start?
              if (!contribSectionFound && line.indexOf("Contributor") > -1) {
                  contribSectionFound = true;
              }
 
-             // If the Contributor(s) section has been found, let's find its end
-             if (contribSectionFound && !contribEndLocated && line.trim().equals("#")) {
+             // If the Contributor(s) section has been found, let's find where it ends
+             if (contribSectionFound && !contribEndLocated
+                     && (line.trim().equals("#") || line.trim().equals(";"))) {
                  contribEndLocated = true;
                  thisFileLicense.setInsertionPos(theLicense.length());
              }
 
-             // Add this line to the license
-             theLicense += line + "\n";
+             licenseEndFound = (line.length() == 0) || ((line.charAt(0) != '#') && (line.charAt(0) != ';'))
+                            || (line.indexOf("***** END LICENSE BLOCK *****") != -1);
+
+             // We want to add the END LICENSE BLOCK line even though it marks the license header end
+             if (!licenseEndFound || (line.indexOf("***** END LICENSE BLOCK *****") != -1)) {
+                // Add this line to the license, including the newline terminator
+                theLicense += line + "\n";
+             }
         }
 
-        thisFileLicense.setLicenseBlock(theLicense);
+        // We add the license with an extra newline to separate the license header from the rest of the file
+        thisFileLicense.setLicenseBlock(theLicense + "\n");
         bais.reset();
     }
 
@@ -282,7 +293,7 @@ public class PropertiesAccess extends FileAccessAdapter {
                 IOException {
             Matcher m;
             Pattern p;
-            // The spec says that the file must be encoded using ISO-8859-1, but
+            // The Java spec says that the file must be encoded using ISO-8859-1, but
             // we really need to read UTF-8. :-)
             BufferedReader reader = new BufferedReader(new InputStreamReader(
                     inStream, "UTF-8"));
@@ -292,7 +303,6 @@ public class PropertiesAccess extends FileAccessAdapter {
             final int STATUS_L10N_COMMENT = 2;
             final int STATUS_KEY = 3;
             final int STATUS_VALUE = 4;
-            final int STATUS_EOF = 99;
             int currentStatus = STATUS_NULL;
             int keyDelimiter;
             int pos;

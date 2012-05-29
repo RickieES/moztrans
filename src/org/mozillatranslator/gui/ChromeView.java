@@ -207,6 +207,7 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
         infoPane = new javax.swing.JScrollPane();
         infoPanel = new javax.swing.JPanel();
         staticInfoPanel = new javax.swing.JPanel();
+        fileInfoTitleLabel = new javax.swing.JLabel();
         productLabel = new javax.swing.JLabel();
         productValueLabel = new javax.swing.JLabel();
         pcLabel = new javax.swing.JLabel();
@@ -236,6 +237,17 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
         koStPctLabel = new javax.swing.JLabel();
         untrnsPctLabel = new javax.swing.JLabel();
         fuzzyPctLabel = new javax.swing.JLabel();
+        licenseSeparator = new javax.swing.JSeparator();
+        licensePanel = new javax.swing.JPanel();
+        licenseTitleLabel = new javax.swing.JLabel();
+        licenseScrollPane = new javax.swing.JScrollPane();
+        licenseTextArea = new javax.swing.JTextArea();
+        contributorLabel = new javax.swing.JLabel();
+        contributorTextField = new javax.swing.JTextField();
+        setToMPL2Button = new javax.swing.JButton();
+        importFromOriginalButton = new javax.swing.JButton();
+        importFromTranslatedButton = new javax.swing.JButton();
+        clearButton = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -267,18 +279,28 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
 
         staticInfoPanel.setLayout(new java.awt.GridBagLayout());
 
-        productLabel.setFont(new java.awt.Font("Dialog", 0, 12));
+        fileInfoTitleLabel.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        fileInfoTitleLabel.setText("File Info");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridwidth = 2;
+        staticInfoPanel.add(fileInfoTitleLabel, gridBagConstraints);
+
+        productLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         productLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         productLabel.setText("Product:");
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         staticInfoPanel.add(productLabel, gridBagConstraints);
 
-        productValueLabel.setFont(new java.awt.Font("Dialog", 0, 12));
+        productValueLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         productValueLabel.setText("(product name)");
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
@@ -289,36 +311,36 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
         pcLabel.setText("Platform/region:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         staticInfoPanel.add(pcLabel, gridBagConstraints);
 
-        pcValueLabel.setFont(new java.awt.Font("Dialog", 0, 12));
+        pcValueLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         pcValueLabel.setText("(platform/region)");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         staticInfoPanel.add(pcValueLabel, gridBagConstraints);
 
-        pathLabel.setFont(new java.awt.Font("Dialog", 0, 12));
+        pathLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         pathLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         pathLabel.setText("Path:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         staticInfoPanel.add(pathLabel, gridBagConstraints);
 
-        pathValueLabel.setFont(new java.awt.Font("Dialog", 0, 12));
+        pathValueLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         pathValueLabel.setText("(path)");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
@@ -329,17 +351,17 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
         fileLabel.setText("File name:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         staticInfoPanel.add(fileLabel, gridBagConstraints);
 
-        fileValueLabel.setFont(new java.awt.Font("Dialog", 0, 12));
+        fileValueLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         fileValueLabel.setText("(name of file)");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
@@ -349,7 +371,7 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
         exportToLabel.setText("On Export SCM, export to:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         staticInfoPanel.add(exportToLabel, gridBagConstraints);
 
@@ -366,7 +388,7 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
@@ -384,7 +406,7 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         staticInfoPanel.add(dontExportCheckBox, gridBagConstraints);
@@ -396,27 +418,29 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         infoPanel.add(staticInfoPanel, gridBagConstraints);
 
+        infoSeparator.setOrientation(javax.swing.SwingConstants.VERTICAL);
         infoSeparator.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         infoPanel.add(infoSeparator, gridBagConstraints);
 
         statsPanel.setLayout(new java.awt.GridBagLayout());
 
-        statsTitleLabel.setFont(new java.awt.Font("Dialog", 1, 18));
+        statsTitleLabel.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        statsTitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         statsTitleLabel.setText("Translation Statistics");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 10, 5);
         statsPanel.add(statsTitleLabel, gridBagConstraints);
 
-        calculateButton.setFont(new java.awt.Font("Dialog", 0, 12));
+        calculateButton.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         calculateButton.setMnemonic('C');
         calculateButton.setText("Calculate");
         calculateButton.addActionListener(new java.awt.event.ActionListener() {
@@ -426,12 +450,12 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 10, 5);
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         statsPanel.add(calculateButton, gridBagConstraints);
 
-        totalStLabel.setFont(new java.awt.Font("Dialog", 0, 12));
+        totalStLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         totalStLabel.setText("Total strings:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -440,7 +464,7 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         statsPanel.add(totalStLabel, gridBagConstraints);
 
-        totalStValueLabel.setFont(new java.awt.Font("Dialog", 0, 12));
+        totalStValueLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         totalStValueLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         totalStValueLabel.setText(this.CLICK_CALCULATE);
         totalStValueLabel.setMaximumSize(new java.awt.Dimension(97, 15));
@@ -453,7 +477,7 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         statsPanel.add(totalStValueLabel, gridBagConstraints);
 
-        trnsStLabel.setFont(new java.awt.Font("Dialog", 0, 12));
+        trnsStLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         trnsStLabel.setText("Translated strings:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -462,7 +486,7 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         statsPanel.add(trnsStLabel, gridBagConstraints);
 
-        trnsStValueLabel.setFont(new java.awt.Font("Dialog", 0, 12));
+        trnsStValueLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         trnsStValueLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         trnsStValueLabel.setText(this.CLICK_CALCULATE);
         trnsStValueLabel.setMaximumSize(new java.awt.Dimension(97, 15));
@@ -475,7 +499,7 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         statsPanel.add(trnsStValueLabel, gridBagConstraints);
 
-        koStLabel.setFont(new java.awt.Font("Dialog", 0, 12));
+        koStLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         koStLabel.setText("Keep Original strings:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -484,7 +508,7 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         statsPanel.add(koStLabel, gridBagConstraints);
 
-        koStValueLabel.setFont(new java.awt.Font("Dialog", 0, 12));
+        koStValueLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         koStValueLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         koStValueLabel.setText(this.CLICK_CALCULATE);
         koStValueLabel.setMaximumSize(new java.awt.Dimension(97, 15));
@@ -496,7 +520,7 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         statsPanel.add(koStValueLabel, gridBagConstraints);
 
-        untrnsStLabel.setFont(new java.awt.Font("Dialog", 0, 12));
+        untrnsStLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         untrnsStLabel.setText("Untranslated strings:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -505,7 +529,7 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         statsPanel.add(untrnsStLabel, gridBagConstraints);
 
-        untrnStValueLabel.setFont(new java.awt.Font("Dialog", 0, 12));
+        untrnStValueLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         untrnStValueLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         untrnStValueLabel.setText(this.CLICK_CALCULATE);
         untrnStValueLabel.setMaximumSize(new java.awt.Dimension(97, 15));
@@ -518,7 +542,7 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         statsPanel.add(untrnStValueLabel, gridBagConstraints);
 
-        fuzzyStLabel.setFont(new java.awt.Font("Dialog", 0, 12));
+        fuzzyStLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         fuzzyStLabel.setText("Fuzzy strings:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -527,7 +551,7 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         statsPanel.add(fuzzyStLabel, gridBagConstraints);
 
-        fuzzyStValueLabel.setFont(new java.awt.Font("Dialog", 0, 12));
+        fuzzyStValueLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         fuzzyStValueLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         fuzzyStValueLabel.setText(this.CLICK_CALCULATE);
         fuzzyStValueLabel.setMaximumSize(new java.awt.Dimension(97, 15));
@@ -540,7 +564,7 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         statsPanel.add(fuzzyStValueLabel, gridBagConstraints);
 
-        trnsStPctLabel.setFont(new java.awt.Font("Dialog", 0, 12));
+        trnsStPctLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         trnsStPctLabel.setText(this.NULL_PCT);
         trnsStPctLabel.setMaximumSize(new java.awt.Dimension(66, 15));
         trnsStPctLabel.setMinimumSize(new java.awt.Dimension(66, 15));
@@ -552,7 +576,7 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         statsPanel.add(trnsStPctLabel, gridBagConstraints);
 
-        koStPctLabel.setFont(new java.awt.Font("Dialog", 0, 12));
+        koStPctLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         koStPctLabel.setText(this.NULL_PCT);
         koStPctLabel.setMaximumSize(new java.awt.Dimension(66, 15));
         koStPctLabel.setMinimumSize(new java.awt.Dimension(66, 15));
@@ -564,7 +588,7 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         statsPanel.add(koStPctLabel, gridBagConstraints);
 
-        untrnsPctLabel.setFont(new java.awt.Font("Dialog", 0, 12));
+        untrnsPctLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         untrnsPctLabel.setText(this.NULL_PCT);
         untrnsPctLabel.setMaximumSize(new java.awt.Dimension(66, 15));
         untrnsPctLabel.setMinimumSize(new java.awt.Dimension(66, 15));
@@ -576,7 +600,7 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         statsPanel.add(untrnsPctLabel, gridBagConstraints);
 
-        fuzzyPctLabel.setFont(new java.awt.Font("Dialog", 0, 12));
+        fuzzyPctLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         fuzzyPctLabel.setText(this.NULL_PCT);
         fuzzyPctLabel.setMaximumSize(new java.awt.Dimension(66, 15));
         fuzzyPctLabel.setMinimumSize(new java.awt.Dimension(66, 15));
@@ -589,11 +613,112 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
         statsPanel.add(fuzzyPctLabel, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         infoPanel.add(statsPanel, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        infoPanel.add(licenseSeparator, gridBagConstraints);
+
+        licensePanel.setLayout(new java.awt.GridBagLayout());
+
+        licenseTitleLabel.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        licenseTitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        licenseTitleLabel.setText("License Info");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
+        licensePanel.add(licenseTitleLabel, gridBagConstraints);
+
+        licenseTextArea.setColumns(20);
+        licenseTextArea.setRows(5);
+        licenseScrollPane.setViewportView(licenseTextArea);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridheight = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
+        licensePanel.add(licenseScrollPane, gridBagConstraints);
+
+        contributorLabel.setDisplayedMnemonic('C');
+        contributorLabel.setLabelFor(contributorTextField);
+        contributorLabel.setText("Contributor:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
+        licensePanel.add(contributorLabel, gridBagConstraints);
+
+        contributorTextField.setText("...");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
+        licensePanel.add(contributorTextField, gridBagConstraints);
+
+        setToMPL2Button.setMnemonic('M');
+        setToMPL2Button.setText("Set to MPL2");
+        setToMPL2Button.setToolTipText("Reset license to MPL2");
+        setToMPL2Button.setEnabled(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
+        licensePanel.add(setToMPL2Button, gridBagConstraints);
+
+        importFromOriginalButton.setMnemonic('e');
+        importFromOriginalButton.setText("Import from en-US");
+        importFromOriginalButton.setToolTipText("Import license from en-US file");
+        importFromOriginalButton.setEnabled(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
+        licensePanel.add(importFromOriginalButton, gridBagConstraints);
+
+        importFromTranslatedButton.setMnemonic('m');
+        importFromTranslatedButton.setText("Import from translation");
+        importFromTranslatedButton.setToolTipText("Import from existing translated file (if available)");
+        importFromTranslatedButton.setEnabled(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
+        licensePanel.add(importFromTranslatedButton, gridBagConstraints);
+
+        clearButton.setMnemonic('l');
+        clearButton.setText("Clear");
+        clearButton.setToolTipText("Clear existing license and contributor");
+        clearButton.setEnabled(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
+        licensePanel.add(clearButton, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        infoPanel.add(licensePanel, gridBagConstraints);
 
         infoPane.setViewportView(infoPanel);
 
@@ -666,7 +791,8 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
     }//GEN-LAST:event_calculateButtonActionPerformed
 
     /**
-     * listens to node selection event in the tree
+     * Listens to node selection event in the tree and populates the right side of Chrome View as needed
+     * (a product, a product child, a component, a file...)
      * @param evt event
      */
   private void treeValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_treeValueChanged
@@ -706,15 +832,13 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
               this.model = newModel;
           }
 
-          if (ourObject instanceof BinaryFile) { // image file
+          if (ourObject instanceof BinaryFile) { // Image file
               createPhraseTable();
-              table.setRowSelectionInterval(0, 0); //for getSelectedPhrases()
-              //put edit image dialog in right pane of splitter
-              showFileContent(new EditImagePanel((BinaryFile) ourObject, tree,
-                      model));
-              setTitle(ChromeView.CV4 + currentLocalization + " (" +
-                      ourObject + ")");
-          } else if (ourObject instanceof GenericFile) { //any other file
+              table.setRowSelectionInterval(0, 0); // For getSelectedPhrases()
+              // Put edit image dialog in right pane of splitter
+              showFileContent(new EditImagePanel((BinaryFile) ourObject, tree, model));
+              setTitle(ChromeView.CV4 + currentLocalization + " (" + ourObject + ")");
+          } else if (ourObject instanceof GenericFile) { // Any other file
               if (oldLoadedFile != null) {
                   oldLoadedFile.decreaseReferenceCount();
               }
@@ -734,9 +858,8 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
                       }
                   }
               }
-              setTitle(ChromeView.CV4 + currentLocalization + " (" +
-                      ourObject + ")");
-          } else { //not a file
+              setTitle(ChromeView.CV4 + currentLocalization + " (" + ourObject + ")");
+          } else { // Not a file
               JPanel dummy = new JPanel();
               dummy.setBorder(BorderFactory.createLoweredBevelBorder());
               showFileContent(dummy); //new JPanel());
@@ -754,8 +877,18 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
           fileValueLabel.setText(parentList[TreeNode.LEVEL_FILE]);
 
           if (ourObject instanceof GenericFile) {
+              GenericFile ourFile = (GenericFile) ourObject;
               dontExportCheckBox.setEnabled(true);
-              dontExportCheckBox.setSelected(((GenericFile) ourObject).isDontExport());
+              dontExportCheckBox.setSelected(ourFile.isDontExport());
+
+              MozLicense ml = ourFile.getLicenseBlock();
+              if (ml != null) {
+                this.licenseTextArea.setText(ml.getTranslatedLicense());
+                this.contributorTextField.setText(ml.getLicenseContributor());
+              } else {
+                this.licenseTextArea.setText("");
+                this.contributorTextField.setText("");
+              }
           } else {
               dontExportCheckBox.setSelected(false);
               dontExportCheckBox.setEnabled(false);
@@ -936,28 +1069,40 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton calculateButton;
+    private javax.swing.JButton clearButton;
     private javax.swing.JScrollPane contentPane;
+    private javax.swing.JLabel contributorLabel;
+    private javax.swing.JTextField contributorTextField;
     private javax.swing.JCheckBox dontExportCheckBox;
     private javax.swing.JTextField exportToField;
     private javax.swing.JLabel exportToLabel;
+    private javax.swing.JLabel fileInfoTitleLabel;
     private javax.swing.JLabel fileLabel;
     private javax.swing.JTabbedPane fileTabbedPane;
     private javax.swing.JLabel fileValueLabel;
     private javax.swing.JLabel fuzzyPctLabel;
     private javax.swing.JLabel fuzzyStLabel;
     private javax.swing.JLabel fuzzyStValueLabel;
+    private javax.swing.JButton importFromOriginalButton;
+    private javax.swing.JButton importFromTranslatedButton;
     private javax.swing.JScrollPane infoPane;
     private javax.swing.JPanel infoPanel;
     private javax.swing.JSeparator infoSeparator;
     private javax.swing.JLabel koStLabel;
     private javax.swing.JLabel koStPctLabel;
     private javax.swing.JLabel koStValueLabel;
+    private javax.swing.JPanel licensePanel;
+    private javax.swing.JScrollPane licenseScrollPane;
+    private javax.swing.JSeparator licenseSeparator;
+    private javax.swing.JTextArea licenseTextArea;
+    private javax.swing.JLabel licenseTitleLabel;
     private javax.swing.JLabel pathLabel;
     private javax.swing.JLabel pathValueLabel;
     private javax.swing.JLabel pcLabel;
     private javax.swing.JLabel pcValueLabel;
     private javax.swing.JLabel productLabel;
     private javax.swing.JLabel productValueLabel;
+    private javax.swing.JButton setToMPL2Button;
     private javax.swing.JSplitPane split;
     private javax.swing.JPanel staticInfoPanel;
     private javax.swing.JPanel statsPanel;

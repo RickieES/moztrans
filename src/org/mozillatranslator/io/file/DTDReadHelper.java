@@ -27,17 +27,24 @@
 
 package org.mozillatranslator.io.file;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.xml.parsers.*;
-import org.xml.sax.*;
-import org.xml.sax.ext.*;
-import org.mozillatranslator.io.common.*;
-import org.mozillatranslator.datamodel.*;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import org.mozillatranslator.datamodel.ExternalEntity;
+import org.mozillatranslator.datamodel.MozLicense;
+import org.mozillatranslator.io.common.MozIOException;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.ext.DefaultHandler2;
 
 
 /**
@@ -67,6 +74,7 @@ public class DTDReadHelper extends DefaultHandler2 {
     }
 
 
+    @Override
     public InputSource resolveEntity(java.lang.String name, java.lang.String publicId,
             java.lang.String baseURI, java.lang.String systemId) {
 
@@ -78,31 +86,36 @@ public class DTDReadHelper extends DefaultHandler2 {
     }
 
 
+    @Override
 public void externalEntityDecl(String name, String publicId, String systemId) {
     fLogger.info("We have found an external entity decl. with these values:");
-    fLogger.info("Name: " + name + " - Public ID: " + publicId + " - System ID: "
-            + systemId);
+    fLogger.log(Level.INFO, "Name: {0} - Public ID: {1} - System ID: {2}", new Object[]{name, publicId, systemId});
 
     this.externalEntities.add(new ExternalEntity(name, publicId, systemId));
 }
 
 
+    @Override
     public void comment(char ch [], int start, int length) throws SAXException	{
         String thisComment = new String(ch, start, length);
         String entityName = null;
-        int contribLine = 0;
-        int blankLine = 0;
+        int contribLine;
+        int blankLine;
         Pattern p;
         Matcher m;
 
 
-        // Have we found the license block?
+        // Have we found the MPL1 license block?
         if (thisComment.indexOf("*** BEGIN LICENSE BLOCK ***") > -1) {
             contribLine = thisComment.indexOf("Contributor");
             blankLine = thisComment.indexOf("   -\n", contribLine);
             thisFileLicense = new MozLicense(null);
             thisFileLicense.setLicenseBlock(thisComment);
             thisFileLicense.setInsertionPos(blankLine);
+        } else if (thisComment.indexOf("http://mozilla.org/MPL/2.0/") > -1) {
+            thisFileLicense = new MozLicense(null);
+            thisFileLicense.setLicenseBlock(thisComment);
+            thisFileLicense.setInsertionPos(-1); // No contributors to be added in this license
         } else if (thisComment.toUpperCase().indexOf("LOCALIZATION NOTE") > -1) {
             /* The localization note format should be:
              *   LOCALIZATION NOTE (entity): comment
@@ -165,10 +178,10 @@ public void externalEntityDecl(String name, String publicId, String systemId) {
         } catch (Exception e) {
             throw new MozIOException("DTD load original",e);
         }
-        is = null;
     }
 
 
+    @Override
     public void internalEntityDecl(String name, String value) {
         map.put(name, value);
 

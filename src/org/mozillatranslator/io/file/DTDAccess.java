@@ -24,12 +24,14 @@
 
 package org.mozillatranslator.io.file;
 
-import org.mozillatranslator.dataobjects.ImportExportDataObject;
-import org.mozillatranslator.io.common.*;
-import org.mozillatranslator.datamodel.*;
 import java.io.*;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import org.mozillatranslator.datamodel.DTDFile;
+import org.mozillatranslator.datamodel.ExternalEntity;
+import org.mozillatranslator.datamodel.MozLicense;
+import org.mozillatranslator.dataobjects.ImportExportDataObject;
+import org.mozillatranslator.io.common.MozIOException;
 
 /** This class is used to read/write a DTD file from/to the disk using its
  * native format
@@ -49,8 +51,6 @@ public class DTDAccess extends FileAccessAdapter {
 
     // loading variables
     private ByteArrayInputStream bais;
-    private String key;
-    private String value;
 
     /** Creates new DTDAccess */
     public DTDAccess() {
@@ -79,6 +79,7 @@ public class DTDAccess extends FileAccessAdapter {
             if (thisFileLicense != null) {
                 bw.write("<!--" + thisFileLicense.getTranslatedLicense() + "-->");
                 bw.newLine();
+                bw.newLine(); // We add an extra newline to separate the license header from the rest of the file
             }
 
             // Save the external entities, if the file has anyone
