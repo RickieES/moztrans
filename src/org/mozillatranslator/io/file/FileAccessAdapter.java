@@ -259,8 +259,6 @@ public abstract class FileAccessAdapter implements FileAccess {
                                 }
                             }
                         }
-                    } else {
-                        currentPhrase.setKeepOriginal(true);
                     }
                 }
             }
