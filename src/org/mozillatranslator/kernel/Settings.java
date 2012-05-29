@@ -169,7 +169,7 @@ public class Settings {
 
         // system setting
         startup.setProperty(SETTINGS_FILENAME, "mozillatranslator.properties");
-        startup.setProperty(SYSTEM_VERSION, "5.30");
+        startup.setProperty(SYSTEM_VERSION, "5.31");
         // logging settings
         startup.setProperty(LOGGING_SOUT, "true");
         startup.setProperty(LOGGING_SERR, "false");

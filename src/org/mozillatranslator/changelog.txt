@@ -1,4 +1,25 @@
 --------------------------------------------------------------------------
+Version 5.31
+--------------------------------------------------------------------------
+* Export option for empty translations added in bug 4610 has now a
+  preference GUI (bug 5219).
+* Translation status colors have a preference GUI now (bug 5220).
+* Non standard Unicode escape sequences don't make MozillaTranslator hang
+  anymore (bug 5222).
+* MT now handles properly both MPL1 tri-license and MPL2 license headers
+  (bug 5224). At this moment, changes in headers are catched, but don't
+  mark the file as modified if there is no actual changes in entities or
+  keys. This is on purpose, so MT localizers can export first only files
+  with L10n changes by keeping "Export only modified files" flag checked,
+  or all the files (thus, dumping the new license headers) unchecking that
+  flag.
+* There was an "es-ES" literal hardcoded that should prevent other locales
+  from seeing coloured translation status colors (bug 5226).
+* Leading and trailing whitespaces in translated values are now escaped to
+  their Unicode sequence (\0020) to avoid the spaces being trimmed by
+  Mozilla properties parser (bug 5227).
+
+--------------------------------------------------------------------------
 Version 5.30
 --------------------------------------------------------------------------
 * New values and meaning for Translation Status field (bug 3642) and

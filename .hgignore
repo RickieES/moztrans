@@ -1,11 +1,8 @@
 #
 # HG ignore file for moztrans
-#
 # This file lists the files and folder not to be tracked by Mercurial
-#
 ^build/
 ^dist/
 ^nbproject/configs/
 ^nbproject/private/
-
 
