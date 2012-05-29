@@ -102,14 +102,29 @@ public class PropertiesAccess extends FileAccessAdapter {
     public void writeLine(String key, String value) throws MozIOException {
         String line;
 
-        if (!isIniFile) {
-            int index = 0;
+        if (!isIniFile && (value.length() != value.trim().length())) {
+            int leadingWhiteSpaces, trailingWhiteSpaces;
             StringBuilder sb = new StringBuilder();
-            while ((index < value.length()) && (value.charAt(index) == ' ')) {
+
+            leadingWhiteSpaces = 0;
+            while ((leadingWhiteSpaces < value.length()) && (value.charAt(leadingWhiteSpaces) == ' ')) {
                 sb.append("\\u0020");
-                index++;
+                leadingWhiteSpaces++;
             }
-            sb.append(value.substring(index));
+            // Now, leadingWhiteSpaces points to the first non-whitespace character in value
+
+            trailingWhiteSpaces = value.length() - 1;
+            while ((trailingWhiteSpaces >= 0) && (value.charAt(trailingWhiteSpaces) == ' ')) {
+                trailingWhiteSpaces--;
+            }
+            // Now, trailingWhiteSpaces points to the last non-whitespace character in value
+
+            sb.append(value.substring(leadingWhiteSpaces, trailingWhiteSpaces));
+            trailingWhiteSpaces++;
+            while (trailingWhiteSpaces < value.length()) {
+                sb.append("\\u0020");
+                trailingWhiteSpaces++;
+            }
             value = sb.toString();
         }
 
