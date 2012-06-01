@@ -119,8 +119,10 @@ public class PropertiesAccess extends FileAccessAdapter {
             }
             // Now, trailingWhiteSpaces points to the last non-whitespace character in value
 
-            sb.append(value.substring(leadingWhiteSpaces, trailingWhiteSpaces));
+            // As in <string>.substring(a, b), b marks the first non-included character, we need to
+            // increment trailingWhiteSpaces
             trailingWhiteSpaces++;
+            sb.append(value.substring(leadingWhiteSpaces, trailingWhiteSpaces));
             while (trailingWhiteSpaces < value.length()) {
                 sb.append("\\u0020");
                 trailingWhiteSpaces++;
