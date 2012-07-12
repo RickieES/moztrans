@@ -254,7 +254,6 @@ public class PropertiesPersistance implements GlossaryAccess {
      * @param   currentNode     the component to be saved
      * @param   exportFile      the real file in which the partial glossary will
      *                          be saved
-     * @author  Ricardo
      */
     public void savePartialGlossary(Component currentNode, File exportFile) {
         Properties model = new Properties();
@@ -693,7 +692,6 @@ public class PropertiesPersistance implements GlossaryAccess {
      * @param   currentNode     the component to be loaded
      * @param   importFile      the real file from which the partial glossary
      *                          will be loaded
-     * @author  Ricardo
      */
     public void loadPartialGlossary(Component currentNode, File importFile) {
         Properties model = new Properties();
