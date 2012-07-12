@@ -32,7 +32,7 @@ import org.mozillatranslator.util.GuiTools;
 /**
  *
  * @author  Serhiy Brytskyy
- * @version
+ * @version 1.0
  */
 public class AdvancedSearchDialog extends javax.swing.JDialog {
     private boolean okay;
