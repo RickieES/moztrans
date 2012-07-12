@@ -23,9 +23,10 @@
  */
 package org.mozillatranslator.filter;
 
-import java.util.*;
-import org.mozillatranslator.kernel.*;
-import org.mozillatranslator.datamodel.*;
+import java.util.ArrayList;
+import java.util.List;
+import org.mozillatranslator.datamodel.GenericFile;
+import org.mozillatranslator.kernel.EmptyTraverseCommand;
 
 /**
  * Adds each and every phrase in the datamodel to a List
@@ -48,7 +49,7 @@ public class RedundantCollectTraverse extends EmptyTraverseCommand {
 
     /**
      * Returns the list with all phrases
-     * @return
+     * @return a list with all phrases
      */
     public List getResultList() {
         return resultList;
