@@ -51,7 +51,7 @@ public class WriteXPITableModelRow {
     /**
      * WriteXPITableModelRow
      *
-     * @param product Product
+     * @param n Product
      * @param b boolean
      */
     public WriteXPITableModelRow(Product n, boolean b) {
