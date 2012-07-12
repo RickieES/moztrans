@@ -55,11 +55,13 @@ public class DTDReadHelper extends DefaultHandler2 {
     private LinkedHashMap map;
     private LinkedHashMap commentMap;
     private InputStream is;
-    private boolean hasLicense;
     private MozLicense thisFileLicense;
     private ArrayList externalEntities = new ArrayList();
     private String tempCommentHolder = null;
-    private static String xml="<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+
+    // In order to get the SAXParser work properly with a DTD file not bound to any XML, we need to trick it into
+    // believing it is working with an XML file
+    private static String dummyXml="<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
             "<!DOCTYPE dialog SYSTEM \"MozillaTranslator\">" +
             "<dialog></dialog>";
     private static final Logger fLogger = Logger.getLogger(DTDReadHelper.class.getPackage().
@@ -69,7 +71,6 @@ public class DTDReadHelper extends DefaultHandler2 {
     /** Creates a new instance of DTDReadHelper */
     public DTDReadHelper() {
         super();
-        hasLicense = false;
         thisFileLicense = null;
     }
 
@@ -174,7 +175,7 @@ public void externalEntityDecl(String name, String publicId, String systemId) {
             xmlread.setProperty("http://xml.org/sax/properties/lexical-handler", this );
             xmlread.setProperty("http://xml.org/sax/properties/declaration-handler", this);
 
-            saxParser.parse(new ByteArrayInputStream(xml.getBytes()), this);
+            saxParser.parse(new ByteArrayInputStream(dummyXml.getBytes()), this);
         } catch (Exception e) {
             throw new MozIOException("DTD load original",e);
         }
