@@ -104,7 +104,7 @@ public class SimpleFontChooser extends javax.swing.JDialog {
     /**
      * Returns the user-selected font, including size and style; this works
      * in a similar way to JFileChooser.getSelectedFile()
-     * @return
+     * @return a Font object with the user-selected font in the dialog
      */
     public Font getSelectedFont() {
         return selectedFont;
