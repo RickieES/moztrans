@@ -32,9 +32,9 @@ import org.mozillatranslator.filter.*;
 import org.mozillatranslator.kernel.*;
 
 /**
- *
+ * Performs an advanced search
  * @author  Henrik
- * @version
+ * @version 1.0
  */
 public class AdvancedSearchAction extends AbstractAction {
     private int rule;

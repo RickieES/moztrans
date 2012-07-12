@@ -32,13 +32,13 @@ import org.mozillatranslator.kernel.*;
  * @version 1.0
  */
 public class ViewIdentical extends DialogAction {
-    /** Creates new NoopAction
-     * @param text The text to appear in the menu
+    /** Creates new ViewIdentical action
      */
     public ViewIdentical() {
         super(Kernel.translate("menu.edit.qa.identical_strings.label"));
     }
     
+    @Override
     protected Filter getFilter(String localeName) {
         return new Identical(localeName);
     }

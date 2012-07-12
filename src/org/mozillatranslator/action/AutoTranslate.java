@@ -45,8 +45,7 @@ public class AutoTranslate extends AbstractAction {
     private static final Logger fLogger = Logger.getLogger(AutoTranslate.class.getPackage().
             getName());
 
-    /** Creates new NoopAction
-     * @param text The text to appear in the menu
+    /** Creates new AutoTranslate action
      */
     public AutoTranslate() {
         super(Kernel.translate("menu.edit.auto_translate.label"));

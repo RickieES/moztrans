@@ -32,8 +32,7 @@ import javax.swing.*;
  * @version 1.0
  */
 public class SaveSettingsAction extends AbstractAction {
-    /** Creates new NoopAction
-     * @param text The text to appear in the menu
+    /** Creates new SaveSettingsAction
      */
     public SaveSettingsAction() {
         super(Kernel.translate("menu.file.save_settings.label"), null);

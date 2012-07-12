@@ -31,13 +31,13 @@ import org.mozillatranslator.kernel.*;
  * @version 1.0
  */
 public class ViewBinary extends DialogAction {
-    /** Creates new NoopAction
-     * @param text The text to appear in the menu
+    /** Creates new ViewBinary action
      */
     public ViewBinary() {
         super(Kernel.translate("menu.edit.binary_strings.label"));
     }
     
+    @Override
     protected Filter getFilter(String localeName) {
         return new Binary(localeName);
     }

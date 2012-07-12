@@ -32,13 +32,13 @@ import org.mozillatranslator.kernel.*;
  */
 public class ViewFuzzy extends DialogAction {
 
-    /** Creates new NoopAction
-     * @param text The text to appear in the menu
+    /** Creates new ViewFuzzy action
      */
     public ViewFuzzy() {
         super(Kernel.translate("menu.edit.fuzzy_strings.label"));
     }
 
+    @Override
     protected Filter getFilter(String localeName) {
         return new Fuzzy(localeName);
     }
