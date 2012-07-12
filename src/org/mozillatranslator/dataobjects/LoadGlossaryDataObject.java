@@ -49,7 +49,7 @@ public class LoadGlossaryDataObject implements FileDataObject {
     }
 
     /** Setter for property filename.
-     * @param filename New value of property filename.
+     * @param fileName New value of property filename.
      *
      */
     @Override
