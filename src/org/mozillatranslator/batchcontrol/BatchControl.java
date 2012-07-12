@@ -66,7 +66,7 @@ public class BatchControl {
     }
 
     /** Runs a set of batch commands
-     * @param commands The commands to run
+     * @param args The commands to run
      */
     public void run(String[] args) {
         try {
