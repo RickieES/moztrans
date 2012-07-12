@@ -24,12 +24,12 @@
 
 package org.mozillatranslator.datamodel;
 
-import org.mozillatranslator.dataobjects.ImportExportDataObject;
 import java.util.ArrayList;
 import java.util.Iterator;
-import org.mozillatranslator.io.file.*;
-import org.mozillatranslator.io.common.*;
-import org.mozillatranslator.kernel.*;
+import org.mozillatranslator.dataobjects.ImportExportDataObject;
+import org.mozillatranslator.io.file.DTDAccess;
+import org.mozillatranslator.io.file.FileAccess;
+import org.mozillatranslator.io.file.FileToXmlAccess;
 
 public class DTDFile extends MozFile {
     private static FileAccess dtdaccess = new DTDAccess();
@@ -41,6 +41,7 @@ public class DTDFile extends MozFile {
         super(n, p);
     }
     
+    @Override
     public void load(ImportExportDataObject dataObject) {
         super.load(dataObject);
         
@@ -54,6 +55,7 @@ public class DTDFile extends MozFile {
         }
     }
     
+    @Override
     public void save(ImportExportDataObject dataObject) {
         super.save(dataObject);
         
@@ -67,6 +69,7 @@ public class DTDFile extends MozFile {
         }
     }
     
+    @Override
     public String getTypeName() {
         return "DTD";
     }
@@ -79,6 +82,7 @@ public class DTDFile extends MozFile {
         this.externalEntities = externalEntities;
     }
     
+    @Override
     public void removeChildren() {
         Iterator itChildren = children.iterator();
         while (itChildren.hasNext()) {
@@ -88,7 +92,6 @@ public class DTDFile extends MozFile {
             }
             child.setParent(null);
         }
-        itChildren = null;
 
         while (children.size() > 0) {
             children.remove(0);
@@ -100,5 +103,4 @@ public class DTDFile extends MozFile {
             }
         }
     }
-
 }

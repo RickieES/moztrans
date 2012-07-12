@@ -39,15 +39,15 @@ public class ExternalEntity {
     private String name;
     private String publicId;
     private String systemId;
-    
+
     /** Creates a new instance of ExternalEntity */
     public ExternalEntity() {
     }
-    
+
     public ExternalEntity(String name, String publicId, String systemId) {
-        this.setName(name);
-        this.setPublicId(publicId);
-        this.setSystemId(systemId);
+        this.name = name;
+        this.publicId = publicId;
+        this.systemId = systemId;
     }
 
     public String getName() {
@@ -73,5 +73,5 @@ public class ExternalEntity {
     public void setSystemId(String systemId) {
         this.systemId = systemId;
     }
-    
+
 }

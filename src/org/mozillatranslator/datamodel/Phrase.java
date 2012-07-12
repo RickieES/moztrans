@@ -211,7 +211,7 @@ public class Phrase extends MozTreeNode {
      * that has been identified as the accesskey for the label represented by
      * this phrase. Only useful for phrases representing labels.
      *
-     * @see isLabel()
+     * @see #isLabel()
      * @return null if no access connection exists, or the Phrase object pointing
      *              to the accesskey for this label
      */
@@ -233,7 +233,7 @@ public class Phrase extends MozTreeNode {
      * that has been identified as the commandkey for the label represented by
      * this phrase. Only useful for phrases representing labels.
      *
-     * @see isLabel()
+     * @see #isLabel()
      * @return null if no command connection exists, or the Phrase object pointing
      *              to the commandkey for this label
      */
@@ -256,8 +256,8 @@ public class Phrase extends MozTreeNode {
      * represented by this phrase. Only useful for phrases representing accesskeys
      * or commandkeys.
      *
-     * @see isAccesskey()
-     * @see isCommandkey()
+     * @see #isAccesskey()
+     * @see #isCommandkey()
      * @return null if no label connection exists, or the Phrase object pointing
      *              to the label for this accesskey/commandkey
      */
