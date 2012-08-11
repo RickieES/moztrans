@@ -33,11 +33,11 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 import javax.swing.JOptionPane;
 import org.mozillatranslator.datamodel.*;
+import org.mozillatranslator.dataobjects.LoadGlossaryDataObject;
 import org.mozillatranslator.io.StructureAccess;
 import org.mozillatranslator.io.common.FileUtils;
 import org.mozillatranslator.kernel.Kernel;
 import org.mozillatranslator.kernel.Settings;
-import org.mozillatranslator.dataobjects.LoadGlossaryDataObject;
 
 /** This classs load and saves the datamodel in a properties file
  *
@@ -107,7 +107,7 @@ public class PropertiesPersistance implements GlossaryAccess {
         int productCount = 0;
         Iterator productIterator;
         Properties model = new Properties();
-        File bkf = new File("Glossary.bkf");
+        File bkf = new File(Kernel.settings.getString(Settings.DATAMODEL_FILENAME, "Glossary.zip").replaceFirst("\\.zip$", "\\.bkf"));
         File gls = new File(Kernel.settings.getString(Settings.DATAMODEL_FILENAME, "Glossary.zip"));
         FileOutputStream fos;
         ZipOutputStream zos;
@@ -229,17 +229,12 @@ public class PropertiesPersistance implements GlossaryAccess {
         store.setProperty(productPrefix + ALTERED, "" + currentProduct.getAlteredTime());
 
         // Product CVS Import original path
-        // TODO: next version should include "." into the CVS properties literals
         store.setProperty(productPrefix  + PRODUCT_CVSIMPORTORIGINAL,
                 "" + currentProduct.getCVSImportOriginalPath());
 
-        // Product CVS Import Translation path
-        store.setProperty(productPrefix + PRODUCT_CVSIMPORTTRANSLATION,
-                "" + currentProduct.getCVSImportTranslationPath());
-
-        // Product CVS Export translation path
+        // Product CVS Imoprt/Export translation path
         store.setProperty(productPrefix + PRODUCT_CVSEXPORTTRANSLATION,
-                "" + currentProduct.getCVSExportTranslationPath());
+                "" + currentProduct.getCVSImpExpTranslationPath());
 
         // Product Consider files under /locale/ab-CD only (currently used only in JAR mode)
         store.setProperty(productPrefix  + PRODUCT_LOCALE_ABCD_ONLY,
@@ -573,14 +568,12 @@ public class PropertiesPersistance implements GlossaryAccess {
     @Override
     public void loadEntireGlossary(LoadGlossaryDataObject data) {
         Properties model = new Properties();
-        FileInputStream fis;
         InputStream is;
         ZipFile zipfile;
         ZipEntry ze;
         File testing;
         HashMap<String, ZipEntry> entryList = new HashMap<String, ZipEntry>();
         int productMax;
-        String name;
         String productGlossaryFile;
 
         model.clear();
@@ -589,7 +582,6 @@ public class PropertiesPersistance implements GlossaryAccess {
             testing = data.getRealFile();
             if (testing.exists()) {
                 Kernel.feedback.progress("Loading glossary file into memory");
-                fis = new FileInputStream(data.getFileName());
                 zipfile = new ZipFile(data.getFileName());
 
                 // We load the ZipEntries into the HashMap
@@ -609,7 +601,7 @@ public class PropertiesPersistance implements GlossaryAccess {
 
                 productMax = Integer.parseInt(model.getProperty(PRODUCT_COUNT));
                 for (int productCount = 0; productCount < productMax; productCount++) {
-                    // We try to read the product's individual glossary filename property
+                    // We try to read each product individual glossary filename property
                     productGlossaryFile = model.getProperty("" + productCount + PRODUCT_GLOSSARY_FILENAME, null);
                     if (productGlossaryFile != null) {
                         if (entryList.get(productGlossaryFile) == null) {
@@ -632,10 +624,11 @@ public class PropertiesPersistance implements GlossaryAccess {
     }
 
     private void loadProduct(Properties model, int productCount) {
-        int platformMax;
         Product currentProduct;
-        String name;
+        int platformMax;
         long alteredTime;
+        String name;
+        String oldImportTranslationPath;
 
         name = model.getProperty("" + productCount + NAME);
         Kernel.feedback.progress("Loading product: " + name);
@@ -650,22 +643,17 @@ public class PropertiesPersistance implements GlossaryAccess {
         currentProduct.setCVSImportOriginalPath(model.getProperty(""
                 + productCount + PRODUCT_CVSIMPORTORIGINAL));
 
-        // Product CVS Import Translation path
-        if (model.getProperty("" + productCount + PRODUCT_CVSIMPORTTRANSLATION) != null) {
-            currentProduct.setCVSImportTranslationPath(model.getProperty(""
-                    + productCount + PRODUCT_CVSIMPORTTRANSLATION));
-        } else {
-            currentProduct.setCVSImportTranslationPath(model.getProperty(""
-                    + productCount + "." + PRODUCT_CVSIMPORTTRANSLATION));
-        }
+        // Product CVS Import/Export translation path
+        currentProduct.setCVSImpExpTranslationPath(model.getProperty(""
+                + productCount + PRODUCT_CVSEXPORTTRANSLATION));
 
-        // Product CVS Export translation path
-        if (model.getProperty("" + productCount + PRODUCT_CVSEXPORTTRANSLATION) != null) {
-            currentProduct.setCVSExportTranslationPath(model.getProperty(""
-                    + productCount + PRODUCT_CVSEXPORTTRANSLATION));
-        } else {
-            currentProduct.setCVSExportTranslationPath(model.getProperty(""
-                    + productCount + "." + PRODUCT_CVSEXPORTTRANSLATION));
+        oldImportTranslationPath = model.getProperty("" + productCount
+                + PRODUCT_CVSIMPORTTRANSLATION);
+        if ((oldImportTranslationPath != null)
+                && (currentProduct.getCVSImpExpTranslationPath().compareTo(oldImportTranslationPath) != 0)) {
+            Logger.getLogger(PropertiesPersistance.class.getName()).log(Level.WARNING,
+                    "{0}" + " import and export translation paths were different, "
+                    + "discarding the import path value", currentProduct.getName());
         }
 
         currentProduct.setOnlyLocaleAbCD(Boolean.valueOf(
@@ -901,6 +889,7 @@ public class PropertiesPersistance implements GlossaryAccess {
     /**
      * Read a file from the glossary
      *
+     * @param model      a Properties object containing the glossary database
      * @param parent     the MozTreeNode of which this file is a child
      * @param filePrefix the property key prefix that identifies the file to be
      *        read

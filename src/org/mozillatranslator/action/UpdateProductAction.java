@@ -37,6 +37,7 @@ import org.mozillatranslator.dataobjects.ProductUpdateDataObject;
 import org.mozillatranslator.gui.ComplexTableWindow;
 import org.mozillatranslator.gui.dialog.ProductImportExport;
 import org.mozillatranslator.gui.dialog.ShowWhatDialog;
+import org.mozillatranslator.io.common.FileUtils;
 import org.mozillatranslator.kernel.Kernel;
 import org.mozillatranslator.runner.ImportFromCvsRunner;
 import org.mozillatranslator.runner.UpdateProductRunner;
@@ -95,7 +96,7 @@ public class UpdateProductAction extends AbstractAction {
                 // else traditional JAR Product Update
                 if (p.getCVSImportOriginalPath().trim().length() > 0) {
                     File selectedDir = new File((prodList.length == 1) ? piePanel.getImpExpPath()
-                                                                       : p.getCVSImportOriginalPath());
+                                                                       : FileUtils.getFullRepoDir(p.getCVSImportOriginalPath()));
                     puDO.setImportDir(selectedDir);
                     runner = new ImportFromCvsRunner(puDO);
                 } else {

@@ -89,8 +89,8 @@ public void showDialog() {
         unzipPathTextField.setText(set.getString(Settings.EXTERNAL_UNZIP_PATH));
         defContributorTextField.setText(set.getString(Settings.LICENSE_CONTRIBUTOR));
         exportOnlyModifFilesCheck.setSelected(set.getBoolean(Settings.EXPORT_ONLY_MODIFIED));
-        useOneFilePerProductCheck.setSelected(set.getBoolean(Settings.DATAMODEL_ONE_FILE_PER_PRODUCT));
         emptyTrnsAsOriginalCheck.setSelected(set.getBoolean(Settings.EXPORT_ENUS_VALUE_ON_EMPTY_TRANSLATIONS));
+        baseDirForReposField.setText(set.getString(Settings.REPOSITORIES_BASE));
 
         // Translation Assistance Tab
         useSuggCheckBox.setSelected(set.getBoolean(Settings.USE_SUGGESTIONS));
@@ -111,6 +111,10 @@ public void showDialog() {
         endingCheckedCharsField.setText(set.getString(Settings.QA_ENDING_CHECKED_CHARS));
         useSuggCheckBox.setSelected(set.getBoolean(Settings.USE_SUGGESTIONS));
         pairedCharsListField.setText(set.getString(Settings.QA_PAIRED_CHARS_LIST));
+
+        // Data Store tab
+        pathGlossaryTextField.setText(set.getString(Settings.DATAMODEL_FILENAME));
+        useOneFilePerProductCheck.setSelected(set.getBoolean(Settings.DATAMODEL_ONE_FILE_PER_PRODUCT));
 
         setVisible(true);
 
@@ -145,7 +149,7 @@ public void showDialog() {
             set.setString(Settings.LICENSE_CONTRIBUTOR, defContributorTextField.getText());
             set.setBoolean(Settings.EXPORT_ONLY_MODIFIED, exportOnlyModifFilesCheck.isSelected());
             set.setBoolean(Settings.DATAMODEL_ONE_FILE_PER_PRODUCT, useOneFilePerProductCheck.isSelected());
-            set.setBoolean(Settings.EXPORT_ENUS_VALUE_ON_EMPTY_TRANSLATIONS, emptyTrnsAsOriginalCheck.isSelected());
+            set.setString(Settings.REPOSITORIES_BASE, baseDirForReposField.getText());
 
             // Translation Assistance Tab
             set.setBoolean(Settings.USE_SUGGESTIONS, useSuggCheckBox.isSelected());
@@ -166,6 +170,10 @@ public void showDialog() {
             set.setString(Settings.QA_ENDING_CHECKED_CHARS, endingCheckedCharsField.getText());
             set.setBoolean(Settings.USE_SUGGESTIONS, useSuggCheckBox.isSelected());
             set.setString(Settings.QA_PAIRED_CHARS_LIST, pairedCharsListField.getText());
+
+            // Data Store tab
+            set.setString(Settings.DATAMODEL_FILENAME, pathGlossaryTextField.getText());
+            set.setBoolean(Settings.EXPORT_ENUS_VALUE_ON_EMPTY_TRANSLATIONS, emptyTrnsAsOriginalCheck.isSelected());
         }
         dispose();
     }
@@ -212,8 +220,10 @@ public void showDialog() {
         defContributorLabel = new javax.swing.JLabel();
         defContributorTextField = new javax.swing.JTextField();
         exportOnlyModifFilesCheck = new javax.swing.JCheckBox();
-        useOneFilePerProductCheck = new javax.swing.JCheckBox();
         emptyTrnsAsOriginalCheck = new javax.swing.JCheckBox();
+        baseDirForReposLabel = new javax.swing.JLabel();
+        baseDirForReposField = new javax.swing.JTextField();
+        baseDirForReposButton = new javax.swing.JButton();
         prefTrnsAssistPanel = new javax.swing.JPanel();
         translationSuggestionsLabel = new javax.swing.JLabel();
         useSuggCheckBox = new javax.swing.JCheckBox();
@@ -244,6 +254,12 @@ public void showDialog() {
         pairedCharsListLabel = new javax.swing.JLabel();
         pairedCharsListField = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        prefDataStorePanel = new javax.swing.JPanel();
+        locationAndStructureLabel = new javax.swing.JLabel();
+        pathGlossaryLabel = new javax.swing.JLabel();
+        pathGlossaryTextField = new javax.swing.JTextField();
+        pathGlossaryButton = new javax.swing.JButton();
+        useOneFilePerProductCheck = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -412,11 +428,11 @@ public void showDialog() {
                         .addGap(18, 18, 18)
                         .addGroup(prefDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(tsclApproximated, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
-                            .addComponent(tsclUntranslated, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
+                            .addComponent(tsclUntranslated, javax.swing.GroupLayout.DEFAULT_SIZE, 92, Short.MAX_VALUE)
                             .addComponent(tsclCopied, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(prefDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tsclModified, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)
+                            .addComponent(tsclModified, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
                             .addComponent(tsclProposed, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(tsclTranslated, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(78, 78, 78))
@@ -428,14 +444,15 @@ public void showDialog() {
                 .addGroup(prefDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(appearanceLabel)
                     .addComponent(tsColorsLabel))
-                .addGroup(prefDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(editPhraseFontLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(editPhraseChooseButton)
+                .addGroup(prefDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(prefDisplayPanelLayout.createSequentialGroup()
                         .addGap(6, 6, 6)
-                        .addGroup(prefDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(prefDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(tsclUntranslated)
-                            .addComponent(tsclModified))))
+                            .addComponent(tsclModified)))
+                    .addGroup(prefDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(editPhraseFontLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(editPhraseChooseButton)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(prefDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(prefDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -507,12 +524,20 @@ public void showDialog() {
         exportOnlyModifFilesCheck.setMnemonic('E');
         exportOnlyModifFilesCheck.setText("Export only modified files");
 
-        useOneFilePerProductCheck.setMnemonic('W');
-        useOneFilePerProductCheck.setText("When saving glossary, use one file per product");
-        useOneFilePerProductCheck.setToolTipText("Use this to save memory while saving Glossary.zip");
-
         emptyTrnsAsOriginalCheck.setMnemonic('x');
         emptyTrnsAsOriginalCheck.setText("Export empty translations as original (en-US) value");
+
+        baseDirForReposLabel.setDisplayedMnemonic('B');
+        baseDirForReposLabel.setLabelFor(baseDirForReposField);
+        baseDirForReposLabel.setText("Base directory for repositories:");
+
+        baseDirForReposButton.setMnemonic('o');
+        baseDirForReposButton.setText("Choose...");
+        baseDirForReposButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                baseDirForReposButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout prefIOPanelLayout = new javax.swing.GroupLayout(prefIOPanel);
         prefIOPanel.setLayout(prefIOPanelLayout);
@@ -521,38 +546,48 @@ public void showDialog() {
             .addGroup(prefIOPanelLayout.createSequentialGroup()
                 .addGroup(prefIOPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(prefIOPanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(importExportLabel))
-                    .addGroup(prefIOPanelLayout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addComponent(useExtZipCheck, javax.swing.GroupLayout.PREFERRED_SIZE, 461, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(prefIOPanelLayout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addComponent(replaceEnUSCheck, javax.swing.GroupLayout.PREFERRED_SIZE, 461, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(prefIOPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(prefIOPanelLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(importExportLabel))
+                            .addGroup(prefIOPanelLayout.createSequentialGroup()
+                                .addGap(24, 24, 24)
+                                .addComponent(replaceEnUSCheck, javax.swing.GroupLayout.PREFERRED_SIZE, 461, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 45, Short.MAX_VALUE))
                     .addGroup(prefIOPanelLayout.createSequentialGroup()
                         .addGap(24, 24, 24)
                         .addGroup(prefIOPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(prefIOPanelLayout.createSequentialGroup()
-                                .addComponent(emptyTrnsAsOriginalCheck)
-                                .addGap(0, 0, Short.MAX_VALUE))
+                                .addGap(12, 12, 12)
+                                .addGroup(prefIOPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(prefIOPanelLayout.createSequentialGroup()
+                                        .addComponent(zipPathLabel)
+                                        .addGap(31, 31, 31)
+                                        .addComponent(zipPathTextField)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(zipPathButton))
+                                    .addGroup(prefIOPanelLayout.createSequentialGroup()
+                                        .addComponent(unzipPathLabel)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(unzipPathTextField)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(unzipPathButton))))
+                            .addGroup(prefIOPanelLayout.createSequentialGroup()
+                                .addComponent(defContributorLabel)
+                                .addGap(14, 14, 14)
+                                .addComponent(defContributorTextField))
+                            .addGroup(prefIOPanelLayout.createSequentialGroup()
+                                .addComponent(baseDirForReposLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(baseDirForReposField)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(baseDirForReposButton))
                             .addGroup(prefIOPanelLayout.createSequentialGroup()
                                 .addGroup(prefIOPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(zipPathLabel)
-                                    .addComponent(unzipPathLabel)
-                                    .addComponent(defContributorLabel))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(prefIOPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(unzipPathTextField)
-                                    .addComponent(defContributorTextField)
-                                    .addComponent(zipPathTextField))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(prefIOPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(zipPathButton)
-                                    .addComponent(unzipPathButton)))
-                            .addGroup(prefIOPanelLayout.createSequentialGroup()
-                                .addComponent(exportOnlyModifFilesCheck)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(useOneFilePerProductCheck)))))
+                                    .addComponent(exportOnlyModifFilesCheck)
+                                    .addComponent(useExtZipCheck, javax.swing.GroupLayout.PREFERRED_SIZE, 461, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(emptyTrnsAsOriginalCheck))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap(37, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         prefIOPanelLayout.setVerticalGroup(
@@ -564,12 +599,11 @@ public void showDialog() {
                 .addComponent(replaceEnUSCheck)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(useExtZipCheck)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(prefIOPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(prefIOPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(zipPathLabel)
-                        .addComponent(zipPathButton))
-                    .addComponent(zipPathTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(prefIOPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(zipPathLabel)
+                    .addComponent(zipPathTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(zipPathButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(prefIOPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(unzipPathTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -580,12 +614,15 @@ public void showDialog() {
                     .addComponent(defContributorTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(defContributorLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(prefIOPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(exportOnlyModifFilesCheck)
-                    .addComponent(useOneFilePerProductCheck))
+                .addComponent(exportOnlyModifFilesCheck)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(emptyTrnsAsOriginalCheck)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(prefIOPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(baseDirForReposLabel)
+                    .addComponent(baseDirForReposField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(baseDirForReposButton))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         prefIOPanelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {defContributorTextField, unzipPathTextField, zipPathTextField});
@@ -633,7 +670,7 @@ public void showDialog() {
                                 .addComponent(provideSuggFor2Label))
                             .addComponent(useSuggCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(autoTranslateCheck))))
-                .addContainerGap(142, Short.MAX_VALUE))
+                .addContainerGap(138, Short.MAX_VALUE))
         );
         prefTrnsAssistPanelLayout.setVerticalGroup(
             prefTrnsAssistPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -649,7 +686,7 @@ public void showDialog() {
                     .addComponent(percentCoincidenceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(autoTranslateCheck)
-                .addContainerGap(138, Short.MAX_VALUE))
+                .addContainerGap(183, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("", new javax.swing.ImageIcon(getClass().getResource("/org/mozillatranslator/resource/pref-trns-asist.png")), prefTrnsAssistPanel, "Translation Assistance"); // NOI18N
@@ -725,9 +762,9 @@ public void showDialog() {
                                             .addComponent(ckeyPatternLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(prefKeyConnPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(ckeyPatternField, javax.swing.GroupLayout.DEFAULT_SIZE, 311, Short.MAX_VALUE)
+                                    .addComponent(ckeyPatternField, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
                                     .addComponent(labelPatternField)
-                                    .addComponent(akeyPatternField, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(akeyPatternField))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(prefKeyConnPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(ckeyCaseCheck)
@@ -757,7 +794,7 @@ public void showDialog() {
                     .addComponent(akeyPatternLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(akeyCaseCheck))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(suffixInfoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE))
+                .addComponent(suffixInfoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("", new javax.swing.ImageIcon(getClass().getResource("/org/mozillatranslator/resource/autoassign-ak.png")), prefKeyConnPanel, "Key Connections"); // NOI18N
@@ -821,7 +858,7 @@ public void showDialog() {
                                             .addComponent(pairedCharsListField, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addComponent(endingCheckedCharsField, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(endingCheckedCharsLabel))))))
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         prefAutoTestsPanelLayout.setVerticalGroup(
             prefAutoTestsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -846,10 +883,65 @@ public void showDialog() {
                 .addGroup(prefAutoTestsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(pairedCharsListField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(pairedCharsListLabel))
-                .addContainerGap(77, Short.MAX_VALUE))
+                .addContainerGap(122, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("", new javax.swing.ImageIcon(getClass().getResource("/org/mozillatranslator/resource/pref-qa-tests.png")), prefAutoTestsPanel, "Automated Tests"); // NOI18N
+
+        locationAndStructureLabel.setFont(new java.awt.Font("DejaVu Sans", 1, 13)); // NOI18N
+        locationAndStructureLabel.setText("Glossary.zip location and structure");
+
+        pathGlossaryLabel.setLabelFor(pathGlossaryTextField);
+        pathGlossaryLabel.setText("Path to Glossary.zip:");
+
+        pathGlossaryButton.setMnemonic('C');
+        pathGlossaryButton.setText("Choose...");
+        pathGlossaryButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pathGlossaryButtonActionPerformed(evt);
+            }
+        });
+
+        useOneFilePerProductCheck.setMnemonic('W');
+        useOneFilePerProductCheck.setText("When saving glossary, use one file per product");
+        useOneFilePerProductCheck.setToolTipText("Use this to save memory while saving Glossary.zip");
+
+        javax.swing.GroupLayout prefDataStorePanelLayout = new javax.swing.GroupLayout(prefDataStorePanel);
+        prefDataStorePanel.setLayout(prefDataStorePanelLayout);
+        prefDataStorePanelLayout.setHorizontalGroup(
+            prefDataStorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(prefDataStorePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(prefDataStorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(locationAndStructureLabel)
+                    .addGroup(prefDataStorePanelLayout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addGroup(prefDataStorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(prefDataStorePanelLayout.createSequentialGroup()
+                                .addComponent(pathGlossaryLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(pathGlossaryTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(pathGlossaryButton))
+                            .addComponent(useOneFilePerProductCheck))))
+                .addContainerGap(47, Short.MAX_VALUE))
+        );
+        prefDataStorePanelLayout.setVerticalGroup(
+            prefDataStorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(prefDataStorePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(locationAndStructureLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(prefDataStorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(pathGlossaryLabel)
+                    .addComponent(pathGlossaryTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pathGlossaryButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(useOneFilePerProductCheck)
+                .addContainerGap(210, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("", new javax.swing.ImageIcon(getClass().getResource("/org/mozillatranslator/resource/pref-db.png")), prefDataStorePanel, "Data Store"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -859,17 +951,17 @@ public void showDialog() {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTabbedPane1)
-                    .addComponent(buttonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(buttonPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jTabbedPane1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -967,12 +1059,49 @@ public void showDialog() {
         }
     }//GEN-LAST:event_tsclLabelMouseClicked
 
+    private void baseDirForReposButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_baseDirForReposButtonActionPerformed
+        File defaultFile;
+        JFileChooser chooser;
+        int result;
+
+        defaultFile = new File(baseDirForReposField.getText());
+        chooser = new JFileChooser(".");
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        chooser.setDialogTitle("Select the directory storing all the repositories used by SCM-based products");
+        chooser.setSelectedFile(defaultFile);
+        result = chooser.showDialog(this, "Choose");
+        if (result == JFileChooser.APPROVE_OPTION) {
+            defaultFile = chooser.getSelectedFile();
+            this.baseDirForReposField.setText(defaultFile.toString());
+        }
+    }//GEN-LAST:event_baseDirForReposButtonActionPerformed
+
+    private void pathGlossaryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pathGlossaryButtonActionPerformed
+        File defaultFile;
+        JFileChooser chooser;
+        int result;
+
+        defaultFile = new File(pathGlossaryTextField.getText());
+        chooser = new JFileChooser(".");
+        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        chooser.setDialogTitle("Select the path to Glossary.zip");
+        chooser.setSelectedFile(defaultFile);
+        result = chooser.showDialog(this, "Choose");
+        if (result == JFileChooser.APPROVE_OPTION) {
+            defaultFile = chooser.getSelectedFile();
+            pathGlossaryTextField.setText(defaultFile.toString());
+        }
+    }//GEN-LAST:event_pathGlossaryButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox akeyCaseCheck;
     private javax.swing.JTextField akeyPatternField;
     private javax.swing.JLabel akeyPatternLabel;
     private javax.swing.JLabel appearanceLabel;
     private javax.swing.JCheckBox autoTranslateCheck;
+    private javax.swing.JButton baseDirForReposButton;
+    private javax.swing.JTextField baseDirForReposField;
+    private javax.swing.JLabel baseDirForReposLabel;
     private javax.swing.JLabel behaviourLabel;
     private javax.swing.JPanel buttonPanel;
     private javax.swing.JButton cancelButton;
@@ -998,14 +1127,19 @@ public void showDialog() {
     private javax.swing.JCheckBox labelCaseCheck;
     private javax.swing.JTextField labelPatternField;
     private javax.swing.JLabel labelPatternLabel;
+    private javax.swing.JLabel locationAndStructureLabel;
     private javax.swing.JComboBox lookAndFeelCombo;
     private javax.swing.JLabel lookAndFeelLabel;
     private javax.swing.JButton okButton;
     private javax.swing.JTextField origDTDEntField;
     private javax.swing.JTextField pairedCharsListField;
     private javax.swing.JLabel pairedCharsListLabel;
+    private javax.swing.JButton pathGlossaryButton;
+    private javax.swing.JLabel pathGlossaryLabel;
+    private javax.swing.JTextField pathGlossaryTextField;
     private javax.swing.JSpinner percentCoincidenceTextField;
     private javax.swing.JPanel prefAutoTestsPanel;
+    private javax.swing.JPanel prefDataStorePanel;
     private javax.swing.JPanel prefDisplayPanel;
     private javax.swing.JPanel prefIOPanel;
     private javax.swing.JPanel prefKeyConnPanel;

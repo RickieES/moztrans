@@ -32,6 +32,7 @@ import org.mozillatranslator.datamodel.Product;
 import org.mozillatranslator.dataobjects.ProductUpdateDataObject;
 import org.mozillatranslator.gui.dialog.ProductImportExport;
 import org.mozillatranslator.gui.dialog.ShowWhatDialog;
+import org.mozillatranslator.io.common.FileUtils;
 import org.mozillatranslator.kernel.Kernel;
 import org.mozillatranslator.kernel.Settings;
 import org.mozillatranslator.runner.ImportFromCvsRunner;
@@ -67,6 +68,7 @@ public class ImportProductTranslationFromCvsAction extends AbstractAction {
             // Initialize the DataObject used to pass the parameters to runners
             ProductUpdateDataObject puDO = new ProductUpdateDataObject();
 
+            // In the following sentence, we're reusing the "Export only modified" checkbox as "Auto-translate"
             puDO.setRunAutoTranslate(piePanel.isExportOnlyModified());
             Kernel.settings.setString(Settings.GUI_IMPORT_FILE_CHOOSER_PATH, "");
             prodList = piePanel.getSelectedProducts();
@@ -75,8 +77,9 @@ public class ImportProductTranslationFromCvsAction extends AbstractAction {
                 puDO.setL10n(swd.getSelectedLocale());
 
                 if (p.getCVSImportOriginalPath().trim().length() > 0) {
-                    File selectedDir = new File((prodList.length == 1) ? piePanel.getImpExpPath()
-                                                                       : p.getCVSImportOriginalPath());
+                    File selectedDir = new File((prodList.length == 1) ?
+                            piePanel.getImpExpPath()
+                            : FileUtils.getFullRepoDir(p.getCVSImportOriginalPath()));
                     puDO.setImportDir(selectedDir);
                     ImportFromCvsRunner runner = new ImportFromCvsRunner(puDO);
                     runner.start();

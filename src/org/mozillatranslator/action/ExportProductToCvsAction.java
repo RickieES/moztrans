@@ -30,6 +30,7 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import org.mozillatranslator.datamodel.Product;
 import org.mozillatranslator.gui.dialog.ProductImportExport;
+import org.mozillatranslator.io.common.FileUtils;
 import org.mozillatranslator.kernel.Kernel;
 import org.mozillatranslator.kernel.Settings;
 import org.mozillatranslator.runner.ExportToCvsRunner;
@@ -67,7 +68,9 @@ public class ExportProductToCvsAction extends AbstractAction {
                 Kernel.settings.setString(Settings.GUI_EXPORT_FILE_CHOOSER_PATH, "");
                 prodList = piePanel.getSelectedProducts();
                 for(Product p : prodList) {
-                    File selectedDir = new File((prodList.length == 1) ?  piePanel.getImpExpPath() : p.getCVSExportTranslationPath());
+                    File selectedDir = new File((prodList.length == 1) ?
+                            piePanel.getImpExpPath() :
+                            FileUtils.getFullRepoDir(p.getCVSImpExpTranslationPath()));
                     ExportToCvsRunner runner = new ExportToCvsRunner(p, selectedDir, l10n, piePanel.isExportOnlyModified());
                     runner.start();
                     try {

@@ -26,10 +26,12 @@ package org.mozillatranslator.io.common;
 
 import java.io.*;
 import java.util.Random;
-import java.util.logging.*;
-import org.mozillatranslator.datamodel.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.mozillatranslator.datamodel.GenericFile;
 import org.mozillatranslator.dataobjects.JarXpiDataObject;
-import org.mozillatranslator.kernel.*;
+import org.mozillatranslator.kernel.Kernel;
+import org.mozillatranslator.kernel.Settings;
 
 /** This is a utility class for file handling
  *
@@ -162,7 +164,6 @@ public class FileUtils {
             dumpCmdOutput(p.getErrorStream(), Level.FINE);
             
             p.waitFor();
-            p = null;
             dao.getRealFile().delete();
             tempDir = new File(workDir);
             p = Runtime.getRuntime().exec(Kernel.settings.getString(
@@ -171,7 +172,6 @@ public class FileUtils {
             dumpCmdOutput(p.getErrorStream(), Level.FINE);
 
             p.waitFor();
-            p = null;
             FileUtils.removeDir(tempDir);
         } catch (InterruptedException ex) {
             fLogger.log(Level.WARNING,
@@ -205,7 +205,7 @@ public class FileUtils {
     public static String getRandomDir() {
         StringBuilder result = new StringBuilder(8);
         Random r = new Random();
-        boolean fileExists = false;
+        boolean fileExists;
         File currentDir;
 
         do {
@@ -215,7 +215,6 @@ public class FileUtils {
 
             currentDir = new File("./" + result.toString());
             fileExists = currentDir.exists();
-            currentDir = null;
         } while (fileExists);
 
         return result.toString();
@@ -257,6 +256,25 @@ public class FileUtils {
             result = result && dir.delete();
         }
         return result;
+    }
+
+    /**
+     * Builds and returns a product repository dir, prepending the user
+     * specific repositories base dir (if it is set) to the path passed
+     * as a parameter
+     * @param path a path, usually an import original or import/export translation path from a SCM-based product
+     * @return the above path with the repo base dir and a separator, if applicable
+     */
+    public static String getFullRepoDir(String path) {
+        StringBuilder fullPath = new StringBuilder();
+        if (Kernel.settings.getString(Settings.REPOSITORIES_BASE).trim().length() > 0) {
+            fullPath.append(Kernel.settings.getString(Settings.REPOSITORIES_BASE).trim());
+            if (path.substring(path.length() - 1, path.length()).equals(File.separator)) {
+                fullPath.append(File.separator);
+            }
+        }
+        fullPath.append(path);
+        return fullPath.toString();
     }
 
 }

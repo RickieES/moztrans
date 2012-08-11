@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.5" maxVersion="1.8" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
+<Form version="1.8" maxVersion="1.8" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
   </Properties>
@@ -26,7 +26,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jTabbedPane1" max="32767" attributes="0"/>
-                  <Component id="buttonPanel" max="32767" attributes="0"/>
+                  <Component id="buttonPanel" alignment="1" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -36,10 +36,10 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jTabbedPane1" min="-2" pref="313" max="-2" attributes="0"/>
+              <Component id="jTabbedPane1" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="buttonPanel" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -160,12 +160,12 @@
                               <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="tsclApproximated" pref="0" max="32767" attributes="0"/>
-                                  <Component id="tsclUntranslated" alignment="0" pref="93" max="32767" attributes="0"/>
+                                  <Component id="tsclUntranslated" alignment="0" pref="92" max="32767" attributes="0"/>
                                   <Component id="tsclCopied" alignment="0" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="tsclModified" pref="99" max="32767" attributes="0"/>
+                                  <Component id="tsclModified" pref="96" max="32767" attributes="0"/>
                                   <Component id="tsclProposed" max="32767" attributes="0"/>
                                   <Component id="tsclTranslated" alignment="0" max="32767" attributes="0"/>
                               </Group>
@@ -183,15 +183,17 @@
                           <Component id="appearanceLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="tsColorsLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="editPhraseFontLabel" alignment="3" min="-2" pref="29" max="-2" attributes="0"/>
-                          <Component id="editPhraseChooseButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="tsclUntranslated" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="tsclModified" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
+                          </Group>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="editPhraseFontLabel" alignment="3" min="-2" pref="29" max="-2" attributes="0"/>
+                              <Component id="editPhraseChooseButton" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
@@ -429,47 +431,60 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="importExportLabel" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="importExportLabel" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" attributes="0">
+                                      <EmptySpace min="24" pref="24" max="-2" attributes="0"/>
+                                      <Component id="replaceEnUSCheck" min="-2" pref="461" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <EmptySpace min="0" pref="45" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">
                               <EmptySpace min="24" pref="24" max="-2" attributes="0"/>
-                              <Component id="useExtZipCheck" min="-2" pref="461" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="24" pref="24" max="-2" attributes="0"/>
-                              <Component id="replaceEnUSCheck" min="-2" pref="461" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
-                                      <Component id="emptyTrnsAsOriginalCheck" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="12" pref="12" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Group type="102" attributes="0">
+                                              <Component id="zipPathLabel" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+                                              <Component id="zipPathTextField" max="32767" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="zipPathButton" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Group type="102" attributes="0">
+                                              <Component id="unzipPathLabel" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="unzipPathTextField" max="32767" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="unzipPathButton" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                  </Group>
+                                  <Group type="102" attributes="0">
+                                      <Component id="defContributorLabel" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+                                      <Component id="defContributorTextField" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" attributes="0">
+                                      <Component id="baseDirForReposLabel" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="baseDirForReposField" max="32767" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="baseDirForReposButton" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" attributes="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="exportOnlyModifFilesCheck" min="-2" max="-2" attributes="0"/>
+                                          <Component id="useExtZipCheck" min="-2" pref="461" max="-2" attributes="0"/>
+                                          <Component id="emptyTrnsAsOriginalCheck" min="-2" max="-2" attributes="0"/>
+                                      </Group>
                                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="zipPathLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="unzipPathLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="defContributorLabel" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="unzipPathTextField" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="defContributorTextField" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="zipPathTextField" alignment="0" max="32767" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="zipPathButton" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="unzipPathButton" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                                  <Group type="102" attributes="0">
-                                      <Component id="exportOnlyModifFilesCheck" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="32767" attributes="0"/>
-                                      <Component id="useOneFilePerProductCheck" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -487,13 +502,11 @@
                       <Component id="replaceEnUSCheck" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="useExtZipCheck" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="zipPathLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="zipPathButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Component id="zipPathTextField" linkSize="1" alignment="1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="zipPathLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="zipPathTextField" linkSize="1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="zipPathButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -507,13 +520,16 @@
                           <Component id="defContributorLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="exportOnlyModifFilesCheck" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="useOneFilePerProductCheck" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="exportOnlyModifFilesCheck" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="emptyTrnsAsOriginalCheck" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="15" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="baseDirForReposLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="baseDirForReposField" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="baseDirForReposButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace pref="31" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -609,18 +625,31 @@
                 <Property name="text" type="java.lang.String" value="Export only modified files"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JCheckBox" name="useOneFilePerProductCheck">
-              <Properties>
-                <Property name="mnemonic" type="int" value="87"/>
-                <Property name="text" type="java.lang.String" value="When saving glossary, use one file per product"/>
-                <Property name="toolTipText" type="java.lang.String" value="Use this to save memory while saving Glossary.zip"/>
-              </Properties>
-            </Component>
             <Component class="javax.swing.JCheckBox" name="emptyTrnsAsOriginalCheck">
               <Properties>
                 <Property name="mnemonic" type="int" value="120"/>
                 <Property name="text" type="java.lang.String" value="Export empty translations as original (en-US) value"/>
               </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="baseDirForReposLabel">
+              <Properties>
+                <Property name="displayedMnemonic" type="int" value="66"/>
+                <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                  <ComponentRef name="baseDirForReposField"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Base directory for repositories:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="baseDirForReposField">
+            </Component>
+            <Component class="javax.swing.JButton" name="baseDirForReposButton">
+              <Properties>
+                <Property name="mnemonic" type="int" value="111"/>
+                <Property name="text" type="java.lang.String" value="Choose..."/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="baseDirForReposButtonActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -659,7 +688,7 @@
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace pref="142" max="32767" attributes="0"/>
+                      <EmptySpace pref="138" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -678,7 +707,7 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="autoTranslateCheck" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="138" max="32767" attributes="0"/>
+                      <EmptySpace pref="183" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -769,9 +798,9 @@
                                       </Group>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="ckeyPatternField" pref="311" max="32767" attributes="0"/>
+                                          <Component id="ckeyPatternField" pref="307" max="32767" attributes="0"/>
                                           <Component id="labelPatternField" max="32767" attributes="0"/>
-                                          <Component id="akeyPatternField" alignment="0" min="-2" pref="302" max="-2" attributes="0"/>
+                                          <Component id="akeyPatternField" alignment="0" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
@@ -812,7 +841,7 @@
                           <Component id="akeyCaseCheck" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="suffixInfoLabel" pref="123" max="32767" attributes="0"/>
+                      <Component id="suffixInfoLabel" pref="168" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -996,7 +1025,7 @@
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace pref="24" max="32767" attributes="0"/>
+                      <EmptySpace pref="20" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -1027,7 +1056,7 @@
                           <Component id="pairedCharsListField" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="pairedCharsListLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="77" max="32767" attributes="0"/>
+                      <EmptySpace pref="122" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -1092,6 +1121,99 @@
                   <Font name="DejaVu Sans" size="13" style="1"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Parameters for other automated tests"/>
+              </Properties>
+            </Component>
+          </SubComponents>
+        </Container>
+        <Container class="javax.swing.JPanel" name="prefDataStorePanel">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+              <JTabbedPaneConstraints tabName="" toolTip="Data Store">
+                <Property name="tabTitle" type="java.lang.String" value=""/>
+                <Property name="tabIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/org/mozillatranslator/resource/pref-db.png"/>
+                </Property>
+                <Property name="tabToolTip" type="java.lang.String" value="Data Store"/>
+              </JTabbedPaneConstraints>
+            </Constraint>
+          </Constraints>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="locationAndStructureLabel" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="12" pref="12" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Component id="pathGlossaryLabel" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="pathGlossaryTextField" min="-2" pref="275" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="pathGlossaryButton" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="useOneFilePerProductCheck" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                      </Group>
+                      <EmptySpace pref="47" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="locationAndStructureLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="pathGlossaryLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="pathGlossaryTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="pathGlossaryButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="useOneFilePerProductCheck" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="210" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Component class="javax.swing.JLabel" name="locationAndStructureLabel">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="DejaVu Sans" size="13" style="1"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Glossary.zip location and structure"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="pathGlossaryLabel">
+              <Properties>
+                <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                  <ComponentRef name="pathGlossaryTextField"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Path to Glossary.zip:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="pathGlossaryTextField">
+            </Component>
+            <Component class="javax.swing.JButton" name="pathGlossaryButton">
+              <Properties>
+                <Property name="mnemonic" type="int" value="67"/>
+                <Property name="text" type="java.lang.String" value="Choose..."/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="pathGlossaryButtonActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JCheckBox" name="useOneFilePerProductCheck">
+              <Properties>
+                <Property name="mnemonic" type="int" value="87"/>
+                <Property name="text" type="java.lang.String" value="When saving glossary, use one file per product"/>
+                <Property name="toolTipText" type="java.lang.String" value="Use this to save memory while saving Glossary.zip"/>
               </Properties>
             </Component>
           </SubComponents>

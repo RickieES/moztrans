@@ -25,11 +25,16 @@
 package org.mozillatranslator.gui.dialog;
 
 import java.awt.CardLayout;
-import java.io.*;
-import javax.swing.*;
-import org.mozillatranslator.kernel.*;
+import java.io.File;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
 import org.mozillatranslator.datamodel.*;
-import org.mozillatranslator.util.*;
+import org.mozillatranslator.io.common.FileUtils;
+import org.mozillatranslator.kernel.Kernel;
+import org.mozillatranslator.kernel.Settings;
+import org.mozillatranslator.util.GuiTools;
 
 /**
  *
@@ -39,7 +44,9 @@ import org.mozillatranslator.util.*;
 public class EditProduct extends JDialog {
     private Product prod;
     
-    /** Creates new form ManageProducts */
+    /** Creates new form ManageProducts
+     * @param p the product to edit
+     */
     public EditProduct(Product p) {
         super(Kernel.mainWindow, "Edit Product", true);
         prod = p;
@@ -87,14 +94,13 @@ public class EditProduct extends JDialog {
         justLocaleAbCDCheck = new javax.swing.JCheckBox();
         cvsPanel = new javax.swing.JPanel();
         cvsImportOriginalLabel = new javax.swing.JLabel();
-        cvsExportTranslationLabel = new javax.swing.JLabel();
-        cvsImportTranslationLabel = new javax.swing.JLabel();
+        cvsImpExpTranslationLabel = new javax.swing.JLabel();
         cvsImportOriginalField = new javax.swing.JTextField();
-        cvsExportTranslationField = new javax.swing.JTextField();
-        cvsImportTranslationField = new javax.swing.JTextField();
+        cvsImpExpTranslationField = new javax.swing.JTextField();
         cvsImportOriginalFilechoose = new javax.swing.JButton();
-        cvsImportTranslationFilechoose = new javax.swing.JButton();
-        cvsExportTranslationFilechoose = new javax.swing.JButton();
+        cvsImpExpTranslationFilechoose = new javax.swing.JButton();
+        usingRepoBaseDir = new javax.swing.JLabel();
+        repoBaseDirField = new javax.swing.JTextField();
         buttonPanel = new javax.swing.JPanel();
         okButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
@@ -113,7 +119,7 @@ public class EditProduct extends JDialog {
         basicPanel.setPreferredSize(new java.awt.Dimension(441, 96));
         basicPanel.setLayout(new java.awt.GridBagLayout());
 
-        nameLabel.setFont(new java.awt.Font("Dialog", 0, 12));
+        nameLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         nameLabel.setLabelFor(basicNameField);
         nameLabel.setText("Name");
         nameLabel.setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
@@ -140,7 +146,7 @@ public class EditProduct extends JDialog {
         basicPanel.add(basicNameField, gridBagConstraints);
 
         productTypeRG.add(typeJarRadio);
-        typeJarRadio.setFont(new java.awt.Font("Dialog", 0, 12));
+        typeJarRadio.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         typeJarRadio.setMnemonic('b');
         typeJarRadio.setText("JAR based");
         typeJarRadio.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
@@ -157,7 +163,7 @@ public class EditProduct extends JDialog {
         basicPanel.add(typeJarRadio, gridBagConstraints);
 
         productTypeRG.add(typeCvsRadio);
-        typeCvsRadio.setFont(new java.awt.Font("Dialog", 0, 12));
+        typeCvsRadio.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         typeCvsRadio.setMnemonic('V');
         typeCvsRadio.setSelected(true);
         typeCvsRadio.setText("SCM based");
@@ -194,7 +200,7 @@ public class EditProduct extends JDialog {
         jarPanel.setLayout(new java.awt.GridBagLayout());
 
         neutralJarfileLabel.setDisplayedMnemonic('N');
-        neutralJarfileLabel.setFont(new java.awt.Font("Dialog", 0, 12));
+        neutralJarfileLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         neutralJarfileLabel.setLabelFor(neutralJarfileField);
         neutralJarfileLabel.setText("Platform Neutral JAR file");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -216,7 +222,7 @@ public class EditProduct extends JDialog {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         jarPanel.add(neutralJarfileField, gridBagConstraints);
 
-        neutralJarfileFilechose.setFont(new java.awt.Font("Dialog", 0, 12));
+        neutralJarfileFilechose.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         neutralJarfileFilechose.setText("Choose");
         neutralJarfileFilechose.setMaximumSize(new java.awt.Dimension(80, 25));
         neutralJarfileFilechose.setMinimumSize(new java.awt.Dimension(80, 25));
@@ -234,7 +240,7 @@ public class EditProduct extends JDialog {
         jarPanel.add(neutralJarfileFilechose, gridBagConstraints);
 
         platformPlatformLabel.setDisplayedMnemonic('P');
-        platformPlatformLabel.setFont(new java.awt.Font("Dialog", 0, 12));
+        platformPlatformLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         platformPlatformLabel.setLabelFor(platform_platformList);
         platformPlatformLabel.setText("Platform JAR files");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -260,7 +266,7 @@ public class EditProduct extends JDialog {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         jarPanel.add(platformListScroll, gridBagConstraints);
 
-        platformAddButton.setFont(new java.awt.Font("Dialog", 0, 12));
+        platformAddButton.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         platformAddButton.setText("Add");
         platformAddButton.setMaximumSize(new java.awt.Dimension(80, 25));
         platformAddButton.setMinimumSize(new java.awt.Dimension(80, 25));
@@ -277,7 +283,7 @@ public class EditProduct extends JDialog {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         jarPanel.add(platformAddButton, gridBagConstraints);
 
-        platformEditButton.setFont(new java.awt.Font("Dialog", 0, 12));
+        platformEditButton.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         platformEditButton.setText("Edit");
         platformEditButton.setMaximumSize(new java.awt.Dimension(80, 25));
         platformEditButton.setMinimumSize(new java.awt.Dimension(80, 25));
@@ -294,7 +300,7 @@ public class EditProduct extends JDialog {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         jarPanel.add(platformEditButton, gridBagConstraints);
 
-        platformRemoveButton.setFont(new java.awt.Font("Dialog", 0, 12));
+        platformRemoveButton.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         platformRemoveButton.setText("Remove");
         platformRemoveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -310,7 +316,7 @@ public class EditProduct extends JDialog {
         jarPanel.add(platformRemoveButton, gridBagConstraints);
 
         regionJarLabel.setDisplayedMnemonic('R');
-        regionJarLabel.setFont(new java.awt.Font("Dialog", 0, 12));
+        regionJarLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         regionJarLabel.setLabelFor(regionJarField);
         regionJarLabel.setText("Regional JAR file");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -333,7 +339,7 @@ public class EditProduct extends JDialog {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jarPanel.add(regionJarField, gridBagConstraints);
 
-        regionRegioncChoose.setFont(new java.awt.Font("Dialog", 0, 12));
+        regionRegioncChoose.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         regionRegioncChoose.setText("Choose");
         regionRegioncChoose.setMaximumSize(new java.awt.Dimension(80, 25));
         regionRegioncChoose.setMinimumSize(new java.awt.Dimension(80, 25));
@@ -352,7 +358,7 @@ public class EditProduct extends JDialog {
         jarPanel.add(regionRegioncChoose, gridBagConstraints);
 
         customFilesLabel.setDisplayedMnemonic('u');
-        customFilesLabel.setFont(new java.awt.Font("Dialog", 0, 12));
+        customFilesLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         customFilesLabel.setLabelFor(custom_customList);
         customFilesLabel.setText("Custom files");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -377,7 +383,7 @@ public class EditProduct extends JDialog {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         jarPanel.add(customListScroll, gridBagConstraints);
 
-        customAddButton.setFont(new java.awt.Font("Dialog", 0, 12));
+        customAddButton.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         customAddButton.setText("Add");
         customAddButton.setMaximumSize(new java.awt.Dimension(80, 25));
         customAddButton.setMinimumSize(new java.awt.Dimension(80, 25));
@@ -394,7 +400,7 @@ public class EditProduct extends JDialog {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         jarPanel.add(customAddButton, gridBagConstraints);
 
-        customEditButton.setFont(new java.awt.Font("Dialog", 0, 12));
+        customEditButton.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         customEditButton.setText("Edit");
         customEditButton.setMaximumSize(new java.awt.Dimension(80, 25));
         customEditButton.setMinimumSize(new java.awt.Dimension(80, 25));
@@ -411,7 +417,7 @@ public class EditProduct extends JDialog {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         jarPanel.add(customEditButton, gridBagConstraints);
 
-        customRemoveButton.setFont(new java.awt.Font("Dialog", 0, 12));
+        customRemoveButton.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         customRemoveButton.setText("Remove");
         customRemoveButton.setMaximumSize(new java.awt.Dimension(80, 25));
         customRemoveButton.setMinimumSize(new java.awt.Dimension(80, 25));
@@ -428,7 +434,7 @@ public class EditProduct extends JDialog {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         jarPanel.add(customRemoveButton, gridBagConstraints);
 
-        justLocaleAbCDCheck.setFont(new java.awt.Font("Dialog", 0, 12));
+        justLocaleAbCDCheck.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         justLocaleAbCDCheck.setMnemonic('C');
         justLocaleAbCDCheck.setText("Consider files just under /locale/ab-CD/");
         justLocaleAbCDCheck.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
@@ -449,47 +455,33 @@ public class EditProduct extends JDialog {
         cvsPanel.setPreferredSize(new java.awt.Dimension(441, 120));
         cvsPanel.setLayout(new java.awt.GridBagLayout());
 
-        cvsImportOriginalLabel.setFont(new java.awt.Font("Dialog", 0, 12));
-        cvsImportOriginalLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        cvsImportOriginalLabel.setDisplayedMnemonic('I');
         cvsImportOriginalLabel.setLabelFor(cvsImportOriginalField);
         cvsImportOriginalLabel.setText("Import original");
         cvsImportOriginalLabel.setToolTipText("The path to be proposed when invoking Import -> CVS Directory");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
-        cvsPanel.add(cvsImportOriginalLabel, gridBagConstraints);
-
-        cvsExportTranslationLabel.setFont(new java.awt.Font("Dialog", 0, 12));
-        cvsExportTranslationLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        cvsExportTranslationLabel.setLabelFor(cvsExportTranslationField);
-        cvsExportTranslationLabel.setText("Export translation");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
-        cvsPanel.add(cvsExportTranslationLabel, gridBagConstraints);
-
-        cvsImportTranslationLabel.setFont(new java.awt.Font("Dialog", 0, 12));
-        cvsImportTranslationLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        cvsImportTranslationLabel.setLabelFor(cvsImportTranslationField);
-        cvsImportTranslationLabel.setText("Import translation");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
-        cvsPanel.add(cvsImportTranslationLabel, gridBagConstraints);
+        cvsPanel.add(cvsImportOriginalLabel, gridBagConstraints);
+
+        cvsImpExpTranslationLabel.setDisplayedMnemonic('m');
+        cvsImpExpTranslationLabel.setLabelFor(cvsImpExpTranslationField);
+        cvsImpExpTranslationLabel.setText("Import/Export translation");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
+        cvsPanel.add(cvsImpExpTranslationLabel, gridBagConstraints);
 
         cvsImportOriginalField.setText("/path/to/import");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
@@ -498,7 +490,7 @@ public class EditProduct extends JDialog {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         cvsPanel.add(cvsImportOriginalField, gridBagConstraints);
 
-        cvsExportTranslationField.setText("/path/to/export");
+        cvsImpExpTranslationField.setText("/path/to/export");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 5;
@@ -508,46 +500,16 @@ public class EditProduct extends JDialog {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
-        cvsPanel.add(cvsExportTranslationField, gridBagConstraints);
+        cvsPanel.add(cvsImpExpTranslationField, gridBagConstraints);
 
-        cvsImportTranslationField.setText("/path/to/import");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
-        cvsPanel.add(cvsImportTranslationField, gridBagConstraints);
-
-        cvsImportOriginalFilechoose.setFont(new java.awt.Font("Dialog", 0, 12));
+        cvsImportOriginalFilechoose.setMnemonic('C');
         cvsImportOriginalFilechoose.setText("Choose");
         cvsImportOriginalFilechoose.setMaximumSize(new java.awt.Dimension(80, 25));
         cvsImportOriginalFilechoose.setMinimumSize(new java.awt.Dimension(80, 25));
         cvsImportOriginalFilechoose.setPreferredSize(new java.awt.Dimension(80, 25));
         cvsImportOriginalFilechoose.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cvsImportOriginalFilechooseActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
-        cvsPanel.add(cvsImportOriginalFilechoose, gridBagConstraints);
-
-        cvsImportTranslationFilechoose.setFont(new java.awt.Font("Dialog", 0, 12));
-        cvsImportTranslationFilechoose.setText("Choose");
-        cvsImportTranslationFilechoose.setMaximumSize(new java.awt.Dimension(80, 25));
-        cvsImportTranslationFilechoose.setMinimumSize(new java.awt.Dimension(80, 25));
-        cvsImportTranslationFilechoose.setPreferredSize(new java.awt.Dimension(80, 25));
-        cvsImportTranslationFilechoose.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cvsImportTranslationFilechooseActionPerformed(evt);
+                cvsPathChooseActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -556,16 +518,16 @@ public class EditProduct extends JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
-        cvsPanel.add(cvsImportTranslationFilechoose, gridBagConstraints);
+        cvsPanel.add(cvsImportOriginalFilechoose, gridBagConstraints);
 
-        cvsExportTranslationFilechoose.setFont(new java.awt.Font("Dialog", 0, 12));
-        cvsExportTranslationFilechoose.setText("Choose");
-        cvsExportTranslationFilechoose.setMaximumSize(new java.awt.Dimension(80, 25));
-        cvsExportTranslationFilechoose.setMinimumSize(new java.awt.Dimension(80, 25));
-        cvsExportTranslationFilechoose.setPreferredSize(new java.awt.Dimension(80, 25));
-        cvsExportTranslationFilechoose.addActionListener(new java.awt.event.ActionListener() {
+        cvsImpExpTranslationFilechoose.setMnemonic('h');
+        cvsImpExpTranslationFilechoose.setText("Choose");
+        cvsImpExpTranslationFilechoose.setMaximumSize(new java.awt.Dimension(80, 25));
+        cvsImpExpTranslationFilechoose.setMinimumSize(new java.awt.Dimension(80, 25));
+        cvsImpExpTranslationFilechoose.setPreferredSize(new java.awt.Dimension(80, 25));
+        cvsImpExpTranslationFilechoose.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cvsExportTranslationFilechooseActionPerformed(evt);
+                cvsPathChooseActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -574,7 +536,27 @@ public class EditProduct extends JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
-        cvsPanel.add(cvsExportTranslationFilechoose, gridBagConstraints);
+        cvsPanel.add(cvsImpExpTranslationFilechoose, gridBagConstraints);
+
+        usingRepoBaseDir.setText("Repositories base dir will be used");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
+        cvsPanel.add(usingRepoBaseDir, gridBagConstraints);
+
+        repoBaseDirField.setEditable(false);
+        repoBaseDirField.setEnabled(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
+        cvsPanel.add(repoBaseDirField, gridBagConstraints);
 
         prodPropPanel.add(cvsPanel, "cvsPanel");
 
@@ -582,7 +564,7 @@ public class EditProduct extends JDialog {
 
         getContentPane().add(productPanel, java.awt.BorderLayout.CENTER);
 
-        okButton.setFont(new java.awt.Font("Dialog", 0, 12));
+        okButton.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         okButton.setText("OK");
         okButton.setMaximumSize(new java.awt.Dimension(80, 25));
         okButton.setMinimumSize(new java.awt.Dimension(80, 25));
@@ -594,7 +576,7 @@ public class EditProduct extends JDialog {
         });
         buttonPanel.add(okButton);
 
-        cancelButton.setFont(new java.awt.Font("Dialog", 0, 12));
+        cancelButton.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         cancelButton.setText("Cancel");
         cancelButton.setMaximumSize(new java.awt.Dimension(80, 25));
         cancelButton.setMinimumSize(new java.awt.Dimension(80, 25));
@@ -618,91 +600,57 @@ public class EditProduct extends JDialog {
     private void typeJarRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typeJarRadioActionPerformed
         enableJarPanelFields(true);
     }//GEN-LAST:event_typeJarRadioActionPerformed
-    
-    private void cvsExportTranslationFilechooseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cvsExportTranslationFilechooseActionPerformed
+            
+    private void cvsPathChooseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cvsPathChooseActionPerformed
         File defaultFile;
         File f;
         JFileChooser chooser;
         int result;
-        
-        defaultFile = new File(cvsExportTranslationField.getText());
+        boolean isImportOriginal;
+
+        isImportOriginal = (evt.getSource() == cvsImportOriginalFilechoose);
+
+        defaultFile = new File((isImportOriginal) ? cvsImportOriginalField.getText() : cvsImpExpTranslationField.getText());
+
         if (defaultFile.isDirectory()) {
             f = defaultFile;
         } else {
-            try {
-                f = new File(prod.getCVSExportTranslationPath());
-            } catch (java.lang.NullPointerException e) {
-                f = new File("");
+            defaultFile = new File(repoBaseDirField.getText() + File.separator
+                    + ((isImportOriginal) ? cvsImportOriginalField.getText() : cvsImpExpTranslationField.getText()));
+            if (defaultFile.isDirectory()) {
+                f = defaultFile;
+            } else {
+                try {
+                    f = new File(FileUtils.getFullRepoDir(prod.getCVSImportOriginalPath()));
+                } catch (java.lang.NullPointerException e) {
+                    f = new File("");
+                }
             }
         }
         
         chooser = new JFileChooser(f);
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        chooser.setDialogTitle("Select directory to export to");
+        chooser.setDialogTitle((isImportOriginal) ? "Select directory to import from"
+                                                  : "Select directory to import from / export to");
         
         result = chooser.showDialog(this, "Choose directory");
         if (result == JFileChooser.APPROVE_OPTION) {
-            cvsExportTranslationField.setText(chooser.getSelectedFile().
-                    getAbsolutePath());
-        }
-    }//GEN-LAST:event_cvsExportTranslationFilechooseActionPerformed
-    
-    private void cvsImportTranslationFilechooseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cvsImportTranslationFilechooseActionPerformed
-        File defaultFile;
-        File f;
-        JFileChooser chooser;
-        int result;
-        
-        defaultFile = new File(cvsImportTranslationField.getText());
-        if (defaultFile.isDirectory()) {
-            f = defaultFile;
-        } else {
-            try {
-                f = new File(prod.getCVSImportTranslationPath());
-            } catch (java.lang.NullPointerException e) {
-                f = new File("");
+            int repoBaseDirLength = repoBaseDirField.getText().length();
+            String chosenPath = chooser.getSelectedFile().getAbsolutePath();
+            String definitivePath;
+            if (chosenPath.substring(0, repoBaseDirLength).equalsIgnoreCase(repoBaseDirField.getText())) {
+                definitivePath = chosenPath.substring(repoBaseDirLength);
+            } else {
+                definitivePath = chosenPath;
+            }
+
+            if (isImportOriginal) {
+                cvsImportOriginalField.setText(definitivePath);
+            } else {
+                cvsImpExpTranslationField.setText(definitivePath);
             }
         }
-        
-        chooser = new JFileChooser(f);
-        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        chooser.setDialogTitle("Select directory to import from");
-        
-        result = chooser.showDialog(this, "Choose directory");
-        if (result == JFileChooser.APPROVE_OPTION) {
-            cvsImportTranslationField.setText(chooser.getSelectedFile().
-                    getAbsolutePath());
-        }
-        
-    }//GEN-LAST:event_cvsImportTranslationFilechooseActionPerformed
-    
-    private void cvsImportOriginalFilechooseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cvsImportOriginalFilechooseActionPerformed
-        File defaultFile;
-        File f;
-        JFileChooser chooser;
-        int result;
-        
-        defaultFile = new File(cvsImportOriginalField.getText());
-        if (defaultFile.isDirectory()) {
-            f = defaultFile;
-        } else {
-            try {
-                f = new File(prod.getCVSImportOriginalPath());
-            } catch (java.lang.NullPointerException e) {
-                f = new File("");
-            }
-        }
-        
-        chooser = new JFileChooser(f);
-        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        chooser.setDialogTitle("Select directory to import from");
-        
-        result = chooser.showDialog(this, "Choose directory");
-        if (result == JFileChooser.APPROVE_OPTION) {
-            cvsImportOriginalField.setText(chooser.getSelectedFile().
-                    getAbsolutePath());
-        }
-    }//GEN-LAST:event_cvsImportOriginalFilechooseActionPerformed
+    }//GEN-LAST:event_cvsPathChooseActionPerformed
     
     private void customRemoveButtonPressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customRemoveButtonPressed
         GenericFile cfile = (GenericFile) custom_customList.getSelectedValue();
@@ -813,8 +761,10 @@ public class EditProduct extends JDialog {
     }//GEN-LAST:event_cancelButtonPressed
     
      private void okButtonPressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonPressed
-         okay = true;
-         setVisible(false);
+         if (this.validateFields()) {
+            okay = true;
+            setVisible(false);
+         }
      }//GEN-LAST:event_okButtonPressed
      
      private void neutralJarfileFilechosePressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_neutralJarfileFilechosePressed
@@ -871,10 +821,8 @@ public class EditProduct extends JDialog {
         cvsPanel.setEnabled(enableFields);
         cvsImportOriginalField.setEnabled(enableFields);
         cvsImportOriginalFilechoose.setEnabled(enableFields);
-        cvsImportTranslationField.setEnabled(enableFields);
-        cvsImportTranslationFilechoose.setEnabled(enableFields);
-        cvsExportTranslationField.setEnabled(enableFields);
-        cvsExportTranslationFilechoose.setEnabled(enableFields);
+        cvsImpExpTranslationField.setEnabled(enableFields);
+        cvsImpExpTranslationFilechoose.setEnabled(enableFields);
     }
      
     public boolean showDialog() {
@@ -882,14 +830,17 @@ public class EditProduct extends JDialog {
                               (prod.getNeutralPlatform().getJarFile().length() > 0));
         okay = false;
         
-        // Setup dialog
+        // Setup Dialog
         basicNameField.setText(prod.getName());
         neutralJarfileField.setText(prod.getNeutralPlatform().getJarFile());
         regionJarField.setText(prod.getRegional().getJarFile());
         cusCon = prod.getCustomContainer();
+        repoBaseDirField.setText(Kernel.settings.getString(Settings.REPOSITORIES_BASE));
+        usingRepoBaseDir.setText("Repositories base dir will "
+                + ((repoBaseDirField.getText().trim().length() > 0) ? "" : "NOT")
+                + " be used");
         cvsImportOriginalField.setText(prod.getCVSImportOriginalPath());
-        cvsImportTranslationField.setText(prod.getCVSImportTranslationPath());
-        cvsExportTranslationField.setText(prod.getCVSExportTranslationPath());
+        cvsImpExpTranslationField.setText(prod.getCVSImpExpTranslationPath());
         justLocaleAbCDCheck.setSelected(prod.isOnlyLocaleAbCD());
         
         typeJarRadio.setSelected(isJarBased);
@@ -903,12 +854,51 @@ public class EditProduct extends JDialog {
             prod.getNeutralPlatform().setJarFile(neutralJarfileField.getText());
             prod.getRegional().setJarFile(regionJarField.getText());
             prod.setCVSImportOriginalPath(cvsImportOriginalField.getText());
-            prod.setCVSImportTranslationPath(cvsImportTranslationField.getText());
-            prod.setCVSExportTranslationPath(cvsExportTranslationField.getText());
+            prod.setCVSImpExpTranslationPath(cvsImpExpTranslationField.getText());
             prod.setOnlyLocaleAbCD(justLocaleAbCDCheck.isSelected());
         }
         dispose();
         return okay;
+    }
+
+    private boolean validateFields() {
+        StringBuilder textValidationResult = new StringBuilder();
+        boolean result = true;
+        File dummy;
+
+        if (basicNameField.getText().trim().length() == 0) {
+            result = false;
+            textValidationResult.append("- The product name can't be empty\n");
+        }
+
+        if (typeJarRadio.isSelected()) {
+            if (neutralJarfileField.getText().trim().length() == 0) {
+                textValidationResult.append("- At least the neutral JAR file must be defined\n");
+                result = false;
+            }
+            dummy = new File(neutralJarfileField.getText());
+            if (!(dummy.exists() && dummy.isFile())) {
+                textValidationResult.append("- The neutral JAR file must exist\n");
+                result = false;
+            }
+        } else {
+            dummy = new File(repoBaseDirField.getText() + File.separator + cvsImportOriginalField.getText());
+            if (!(dummy.exists() && dummy.isDirectory())) {
+                textValidationResult.append("- The Import Original path does not point to a valid directory\n");
+                result = false;
+            }
+            dummy = new File(repoBaseDirField.getText() + File.separator + cvsImpExpTranslationField.getText());
+            if (!(dummy.exists() && dummy.isDirectory())) {
+                textValidationResult.append("- The Import/Export Translation path does not point to a valid directory\n");
+                result = false;
+            }
+        }
+
+        if (!result) {
+            JOptionPane.showMessageDialog(this, textValidationResult.toString(), "Error in " + prod.getName()
+                    + " product definition", JOptionPane.ERROR_MESSAGE);
+        }
+        return result;
     }
      
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -922,15 +912,12 @@ public class EditProduct extends JDialog {
     private javax.swing.JScrollPane customListScroll;
     private javax.swing.JButton customRemoveButton;
     private javax.swing.JList custom_customList;
-    private javax.swing.JTextField cvsExportTranslationField;
-    private javax.swing.JButton cvsExportTranslationFilechoose;
-    private javax.swing.JLabel cvsExportTranslationLabel;
+    private javax.swing.JTextField cvsImpExpTranslationField;
+    private javax.swing.JButton cvsImpExpTranslationFilechoose;
+    private javax.swing.JLabel cvsImpExpTranslationLabel;
     private javax.swing.JTextField cvsImportOriginalField;
     private javax.swing.JButton cvsImportOriginalFilechoose;
     private javax.swing.JLabel cvsImportOriginalLabel;
-    private javax.swing.JTextField cvsImportTranslationField;
-    private javax.swing.JButton cvsImportTranslationFilechoose;
-    private javax.swing.JLabel cvsImportTranslationLabel;
     private javax.swing.JPanel cvsPanel;
     private javax.swing.JPanel jarPanel;
     private javax.swing.JCheckBox justLocaleAbCDCheck;
@@ -951,8 +938,10 @@ public class EditProduct extends JDialog {
     private javax.swing.JTextField regionJarField;
     private javax.swing.JLabel regionJarLabel;
     private javax.swing.JButton regionRegioncChoose;
+    private javax.swing.JTextField repoBaseDirField;
     private javax.swing.JRadioButton typeCvsRadio;
     private javax.swing.JRadioButton typeJarRadio;
+    private javax.swing.JLabel usingRepoBaseDir;
     // End of variables declaration//GEN-END:variables
     private boolean okay;
     private CustomContainer cusCon;

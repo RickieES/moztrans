@@ -24,7 +24,9 @@
 
 package org.mozillatranslator.datamodel;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  *
@@ -38,8 +40,7 @@ public class Product extends MozTreeNode {
     private CustomContainer custom;
     private String version;
     private String CVSImportOriginalPath;
-    private String CVSImportTranslationPath;
-    private String CVSExportTranslationPath;
+    private String CVSImpExpTranslationPath;
     private boolean onlyLocaleAbCD;
     
     /** Creates new Product
@@ -145,7 +146,7 @@ public class Product extends MozTreeNode {
     }
     
     public ProductChild getChildByType(int type) {
-        ProductChild current = null;
+        ProductChild current;
         ProductChild result = null;
         boolean done = false;
         Iterator childIterator = children.iterator();
@@ -169,20 +170,12 @@ public class Product extends MozTreeNode {
         this.CVSImportOriginalPath = CVSImportOriginalPath;
     }
     
-    public String getCVSImportTranslationPath() {
-        return CVSImportTranslationPath;
+    public String getCVSImpExpTranslationPath() {
+        return CVSImpExpTranslationPath;
     }
     
-    public void setCVSImportTranslationPath(String CVSImportTranslationPath) {
-        this.CVSImportTranslationPath = CVSImportTranslationPath;
-    }
-    
-    public String getCVSExportTranslationPath() {
-        return CVSExportTranslationPath;
-    }
-    
-    public void setCVSExportTranslationPath(String CVSExportTranslationPath) {
-        this.CVSExportTranslationPath = CVSExportTranslationPath;
+    public void setCVSImpExpTranslationPath(String CVSImpExpTranslationPath) {
+        this.CVSImpExpTranslationPath = CVSImpExpTranslationPath;
     }
     
     public boolean isOnlyLocaleAbCD() {

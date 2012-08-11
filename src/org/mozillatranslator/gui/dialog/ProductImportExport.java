@@ -30,6 +30,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import org.mozillatranslator.datamodel.Product;
+import org.mozillatranslator.io.common.FileUtils;
 import org.mozillatranslator.kernel.Kernel;
 import org.mozillatranslator.kernel.Settings;
 
@@ -392,10 +393,16 @@ public class ProductImportExport extends javax.swing.JPanel {
         if (defaultFile.isDirectory()) {
             f = defaultFile;
         } else {
-            try {
-                f = new File(prod.getCVSImportOriginalPath());
-            } catch (java.lang.NullPointerException e) {
-                f = new File("");
+            defaultFile = new File(Kernel.settings.getString(Settings.REPOSITORIES_BASE) + File.separator
+                    + impExpPathTextField.getText());
+            if (defaultFile.isDirectory()) {
+                f = defaultFile;
+            } else {
+                try {
+                    f = new File(FileUtils.getFullRepoDir(prod.getCVSImportOriginalPath()));
+                } catch (java.lang.NullPointerException e) {
+                    f = new File("");
+                }
             }
         }
 
@@ -450,13 +457,11 @@ public class ProductImportExport extends javax.swing.JPanel {
                     } else {
                         switch (typeAction) {
                             case TYPE_IMPORT_ORIGINAL:
-                                impExpPathTextField.setText(prod.getCVSImportOriginalPath());
+                                impExpPathTextField.setText(FileUtils.getFullRepoDir(prod.getCVSImportOriginalPath()));
                                 break;
                             case TYPE_IMPORT_TRANSLATION:
-                                impExpPathTextField.setText(prod.getCVSImportTranslationPath());
-                                break;
                             case TYPE_EXPORT_TRANSLATION:
-                                impExpPathTextField.setText(prod.getCVSExportTranslationPath());
+                                impExpPathTextField.setText(FileUtils.getFullRepoDir(prod.getCVSImpExpTranslationPath()));
                                 break;
                         }
                     }

@@ -131,6 +131,9 @@ public class Settings {
     public static final String EXTERNAL_UNZIP_PATH = "export.unzip.path";
     // Encodings to use when reading/writing files other than DTDs/.properties
     public static final String ENCODING_OTHERFILES = "encoding.otherfiles";
+    // Specify a base directory for repositories
+    public static final String REPOSITORIES_BASE = "repositories.base";
+
     // Batch control
     public static final String BATCH_COMMAND_COUNT = "batch.command.count";
     public static final String BATCH_COMMAND_PREFIX = "batch.command.";
@@ -206,8 +209,11 @@ public class Settings {
         // Encodings
         startup.setProperty(ENCODING_OTHERFILES, "UTF-8");
 
+        // Repositories base directory
+        startup.setProperty(REPOSITORIES_BASE, "");
+
         // Datamodel persistance
-        startup.setProperty(DATAMODEL_FILENAME, "Glossary.zip");
+        startup.setProperty(DATAMODEL_FILENAME, "./Glossary.zip");
         startup.setProperty(DATAMODEL_PCLASS,
                 "org.mozillatranslator.io.glossary.PropertiesPersistance");
         startup.setProperty(DATAMODEL_ONE_FILE_PER_PRODUCT, "false");
