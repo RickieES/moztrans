@@ -178,7 +178,7 @@
                 <Property name="columns" type="int" value="15"/>
                 <Property name="editable" type="boolean" value="false"/>
                 <Property name="rows" type="int" value="12"/>
-                <Property name="text" type="java.lang.String" value="&#xa;MozillaTranslator is released under MPL &#xa;and PostCardWare&#xa;&#xa;MPL (Mozilla Public Licence 1.1)&#xa;http://www.mozilla.org&#xa;&#xa;PostCardWare:&#xa;If you like this program,&#xa;you are encouraged to send a postcard&#xa;(snail mail) to the author.&#xa;&#xa;Light bulb image taken from public domain clipart site&#xa;(http://openclipart.org/media/files/Romanov/3529)"/>
+                <Property name="text" type="java.lang.String" value="&#xa;MozillaTranslator is released under MPL &#xa;and PostCardWare&#xa;&#xa;MPL (Mozilla Public Licence 1.1)&#xa;http://www.mozilla.org&#xa;&#xa;PostCardWare:&#xa;If you like this program,&#xa;you are encouraged to send a postcard&#xa;(snail mail) to the author.&#xa;&#xa;Graphic art taken or derived from Tango Icon Theme,&#xa;and from Open Clip Art:&#xa;(http://openclipart.org/detail/94723/database-symbol-by-rg1024)"/>
                 <Property name="opaque" type="boolean" value="false"/>
               </Properties>
               <Constraints>

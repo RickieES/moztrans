@@ -149,7 +149,7 @@ public class AboutDialog extends javax.swing.JDialog {
         licenceArea.setColumns(15);
         licenceArea.setEditable(false);
         licenceArea.setRows(12);
-        licenceArea.setText("\nMozillaTranslator is released under MPL \nand PostCardWare\n\nMPL (Mozilla Public Licence 1.1)\nhttp://www.mozilla.org\n\nPostCardWare:\nIf you like this program,\nyou are encouraged to send a postcard\n(snail mail) to the author.\n\nLight bulb image taken from public domain clipart site\n(http://openclipart.org/media/files/Romanov/3529)");
+        licenceArea.setText("\nMozillaTranslator is released under MPL \nand PostCardWare\n\nMPL (Mozilla Public Licence 1.1)\nhttp://www.mozilla.org\n\nPostCardWare:\nIf you like this program,\nyou are encouraged to send a postcard\n(snail mail) to the author.\n\nGraphic art taken or derived from Tango Icon Theme,\nand from Open Clip Art:\n(http://openclipart.org/detail/94723/database-symbol-by-rg1024)");
         licenceArea.setOpaque(false);
         licencePanel.add(licenceArea, java.awt.BorderLayout.CENTER);
 
