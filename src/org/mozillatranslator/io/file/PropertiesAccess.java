@@ -472,6 +472,10 @@ public class PropertiesAccess extends FileAccessAdapter {
                                 if (pos != line.length()) {
                                     c = line.charAt(pos++);
                                     switch (c) {
+                                        case '\\':
+                                            // We've found an actual double slash sequence
+                                            value.append("\\\\");
+                                            break;
                                         case 'n':
                                             value.append("\\n");
                                             break;
