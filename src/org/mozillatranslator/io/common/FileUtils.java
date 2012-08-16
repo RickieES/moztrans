@@ -97,7 +97,7 @@ public class FileUtils {
             }
             bos.close();
         } catch (IOException e) {
-            Kernel.appLog.log(Level.SEVERE, "could not extract file");
+            fLogger.log(Level.SEVERE, "could not extract file");
             throw new IOException("Could not extract file");
         }
         return bos.toByteArray();
@@ -115,7 +115,7 @@ public class FileUtils {
             fos.write(content);
             fos.close();
         } catch (Exception e) {
-            Kernel.appLog.log(Level.SEVERE, "cannot save file", e);
+            fLogger.log(Level.SEVERE, "cannot save file", e);
             throw new IOException("Could not save file " + realName);
         }
     }
@@ -135,7 +135,7 @@ public class FileUtils {
             //fos.write(content);
             fos.close();
         } catch (Exception e) {
-            Kernel.appLog.log(Level.SEVERE, "cannot save file", e);
+            fLogger.log(Level.SEVERE, "cannot save file", e);
             throw new IOException("Could not save file " + realName);
         }
     }
@@ -266,15 +266,35 @@ public class FileUtils {
      * @return the above path with the repo base dir and a separator, if applicable
      */
     public static String getFullRepoDir(String path) {
+        File testDir;
         StringBuilder fullPath = new StringBuilder();
+        boolean tryingRepoBase = false;
+
         if (Kernel.settings.getString(Settings.REPOSITORIES_BASE).trim().length() > 0) {
             fullPath.append(Kernel.settings.getString(Settings.REPOSITORIES_BASE).trim());
             if (path.substring(path.length() - 1, path.length()).equals(File.separator)) {
                 fullPath.append(File.separator);
             }
+            tryingRepoBase = true;
         }
+        
         fullPath.append(path);
-        return fullPath.toString();
+        testDir = new File(fullPath.toString());
+        if (testDir.exists() && testDir.isDirectory()) {
+            return fullPath.toString();
+        }
+
+        testDir = new File(path);
+        if (testDir.exists() && testDir.isDirectory()) {
+            if (tryingRepoBase) {
+                fLogger.log(Level.WARNING, "Repositories base dir pref and passed path together ({0}) didn''t point to a valid directory, using just the passed path ({1})",
+                        new Object[]{fullPath.toString(), path});
+            }
+            return path;
+        } else {
+            fLogger.log(Level.WARNING, "Passed path was not valid, with and without repositories base dir");
+            return ".";
+        }
     }
 
 }
