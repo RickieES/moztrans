@@ -34,7 +34,7 @@ import org.mozillatranslator.kernel.Kernel;
 import org.mozillatranslator.kernel.Settings;
 
 /**
- * This runner will update a product
+ * This runner will import/update a product from a directory
  *
  * @author Henrik Lynggaard
  * @version 1.0

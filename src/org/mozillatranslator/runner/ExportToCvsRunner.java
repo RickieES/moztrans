@@ -29,7 +29,7 @@ import java.io.File;
 import org.mozillatranslator.datamodel.Product;
 import org.mozillatranslator.io.common.CvsTransfer;
 
-/** This runner will update a product
+/** This runner will export a product to a directory and its subdirectories
  * @author Henrik Lynggaard
  * @version 1.0
  */
@@ -39,8 +39,11 @@ public class ExportToCvsRunner extends Thread {
     private String l10n;
     private boolean exportOnlyModified;
 
-    /** Creates new UpdateProductRunner
-     * @param p The product to update
+    /** Creates new ExportToCvsRunner
+     * @param p The product to export
+     * @param id the directory to export from
+     * @param l10n the locale to exported
+     * @param exportOnlyModified true if only files with modified strings should be exported
      */
     public ExportToCvsRunner(Product p, File id, String l10n,
                              boolean exportOnlyModified) {
