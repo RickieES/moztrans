@@ -837,8 +837,8 @@ public class EditProduct extends JDialog {
         cusCon = prod.getCustomContainer();
         repoBaseDirField.setText(Kernel.settings.getString(Settings.REPOSITORIES_BASE));
         usingRepoBaseDir.setText("Repositories base dir will "
-                + ((repoBaseDirField.getText().trim().length() > 0) ? "" : "NOT")
-                + " be used");
+                + ((repoBaseDirField.getText().trim().length() > 0) ? "" : "NOT ")
+                + "be used");
         cvsImportOriginalField.setText(prod.getCVSImportOriginalPath());
         cvsImpExpTranslationField.setText(prod.getCVSImpExpTranslationPath());
         justLocaleAbCDCheck.setSelected(prod.isOnlyLocaleAbCD());
