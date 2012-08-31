@@ -267,10 +267,15 @@ public class FileUtils {
      */
     public static String getFullRepoDir(String path) {
         File testDir;
+        String repoBase = Kernel.settings.getString(Settings.REPOSITORIES_BASE).trim();
         StringBuilder fullPath = new StringBuilder();
         boolean tryingRepoBase = false;
 
-        if (Kernel.settings.getString(Settings.REPOSITORIES_BASE).trim().length() > 0) {
+        // Adjust path structure to the underlying OS format
+        repoBase = repoBase.replace((File.separator.equals("\\") ? "/" : "\\"), File.separator);
+        path = path.replace((File.separator.equals("\\") ? "/" : "\\"), File.separator);
+
+        if (repoBase.length() > 0) {
             fullPath.append(Kernel.settings.getString(Settings.REPOSITORIES_BASE).trim());
             if (path.substring(path.length() - 1, path.length()).equals(File.separator)) {
                 fullPath.append(File.separator);
