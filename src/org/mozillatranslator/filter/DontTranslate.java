@@ -24,7 +24,8 @@
 
 package org.mozillatranslator.filter;
 
-import org.mozillatranslator.datamodel.*;
+import org.mozillatranslator.datamodel.Phrase;
+import org.mozillatranslator.datamodel.Translation;
 
 /**
  *
@@ -33,14 +34,16 @@ import org.mozillatranslator.datamodel.*;
 public class DontTranslate implements Filter {
     private String localeName;
     
-    /** Creates a new instance of DontTranslate */
+    /** Creates a new instance of DontTranslate
+     * @param ln Locale code
+     */
     public DontTranslate(String ln) {
         this.localeName = ln;
     }
 
     @Override
     public boolean check(Phrase ph) {
-        boolean result = false;
+        boolean result;
         
         result = (ph.getLocalizationNote() != null);
         result = result && (ph.getLocalizationNote().indexOf("DONT_TRANSLATE") > -1);

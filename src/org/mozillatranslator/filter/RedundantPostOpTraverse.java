@@ -21,50 +21,46 @@
  * Henrik Lynggaard Hansen (Initial Code)
  *
  */
-
 package org.mozillatranslator.filter;
 
-import java.util.*;
-
-import org.mozillatranslator.kernel.*;
-import org.mozillatranslator.datamodel.*;
+import java.util.Iterator;
+import java.util.List;
+import org.mozillatranslator.datamodel.GenericFile;
+import org.mozillatranslator.datamodel.TreeNode;
+import org.mozillatranslator.kernel.EmptyTraverseCommand;
 
 /**
  *
- * @author  henrik
+ * @author henrik
  */
-public class RedundantPostOpTraverse extends EmptyTraverseCommand
-{
+public class RedundantPostOpTraverse extends EmptyTraverseCommand {
     private List collectedList;
-    
-    /** Creates a new instance of FilterTraverse */
-     public RedundantPostOpTraverse(List colList)
-    {
+
+    /**
+     * Creates a new instance of FilterTraverse
+     *
+     * @param colList List of Phrase rows selected by the filter(s)
+     */
+    public RedundantPostOpTraverse(List colList) {
         collectedList = colList;
     }
-    
-    public boolean action(GenericFile currentNode)
-    {
+
+    @Override
+    public boolean action(GenericFile currentNode) {
         boolean found = false;
-        
+
         Iterator colIterator = collectedList.iterator();
-        
-        while (!found && colIterator.hasNext())
-        {
+
+        while (!found && colIterator.hasNext()) {
             TreeNode colNode = (TreeNode) colIterator.next();
             GenericFile colParent = (GenericFile) colNode.getParent();
-            if (colParent.getName().equals(currentNode.getName()))
-            {            
+            if (colParent.getName().equals(currentNode.getName())) {
                 found = true;
             }
         }
-        if (!found)
-        {
+        if (!found) {
             currentNode.decreaseReferenceCount();
         }
-            
-            
         return true;
     }
-   
 }

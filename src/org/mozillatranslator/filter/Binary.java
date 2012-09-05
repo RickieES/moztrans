@@ -21,30 +21,26 @@
  * Henrik Lynggaard Hansen (Initial Code)
  *
  */
-
 package org.mozillatranslator.filter;
 
-import org.mozillatranslator.datamodel.*;
+import org.mozillatranslator.datamodel.BinaryFile;
+import org.mozillatranslator.datamodel.Phrase;
+
 /**
- *
- * @author  Serhiy Brytskyy
+ * Filter to identify binary files
+ * @author Serhiy Brytskyy
  * @version 1.0
  */
-public class Binary implements Filter
-{
-
-    private String localeName;
-
-    /** Creates new FetchUntranslated */
-    public Binary(String ln)
-    {
-        localeName = ln;
+public class Binary implements Filter {
+    /**
+     * Creates new Binary
+     */
+    public Binary() {
     }
 
-    public boolean check(Phrase ph)
-    {
-      // HACK: instanceof is a bad design, binary support must be refactored.
-      return (ph != null && ph.getParent() instanceof BinaryFile);
+    @Override
+    public boolean check(Phrase ph) {
+        // HACK: instanceof is a bad design, binary support must be refactored.
+        return (ph != null && ph.getParent() instanceof BinaryFile);
     }
-
 }

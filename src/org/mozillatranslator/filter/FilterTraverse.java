@@ -24,9 +24,11 @@
 
 package org.mozillatranslator.filter;
 
-import java.util.*;
-import org.mozillatranslator.kernel.*;
-import org.mozillatranslator.datamodel.*;
+import java.util.ArrayList;
+import java.util.List;
+import org.mozillatranslator.datamodel.GenericFile;
+import org.mozillatranslator.datamodel.Phrase;
+import org.mozillatranslator.kernel.EmptyTraverseCommand;
 
 /**
  *
@@ -38,7 +40,9 @@ public class FilterTraverse extends EmptyTraverseCommand {
     private boolean currentFileDirty;
     private List<Phrase> resultList;
     
-    /** Creates a new instance of FilterTraverse */
+    /** Creates a new instance of FilterTraverse
+     * @param currentFilter The filter that is being executed
+     */
     public FilterTraverse(Filter currentFilter) {
         this.currentFilter = currentFilter;
         resultList = new ArrayList<Phrase>();

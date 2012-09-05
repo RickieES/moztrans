@@ -24,7 +24,8 @@
 
 package org.mozillatranslator.filter;
 
-import org.mozillatranslator.datamodel.*;
+import org.mozillatranslator.datamodel.Phrase;
+import org.mozillatranslator.datamodel.Translation;
 
 /**
  *
@@ -32,14 +33,16 @@ import org.mozillatranslator.datamodel.*;
  * @version 1.0
  */
 public class KeepOriginal implements Filter {
-
     private String localeName;
 
-    /** Creates new FetchUntranslated */
+    /** Creates new KeepOriginal
+     * @param ln Locale code
+     */
     public KeepOriginal(String ln) {
         localeName = ln;
     }
 
+    @Override
     public boolean check(Phrase ph) {
         boolean result;
 

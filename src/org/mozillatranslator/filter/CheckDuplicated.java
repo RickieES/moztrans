@@ -48,6 +48,7 @@ public class CheckDuplicated implements Filter {
      * @param ph the Phrase to check
      * @return true if duplicated words were found
      */
+    @Override
     public boolean check(Phrase ph) {
         boolean result = false;
         String text;

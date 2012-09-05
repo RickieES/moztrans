@@ -23,8 +23,9 @@
  */
 package org.mozillatranslator.action;
 
-import org.mozillatranslator.filter.*;
-import org.mozillatranslator.kernel.*;
+import org.mozillatranslator.filter.Binary;
+import org.mozillatranslator.filter.Filter;
+import org.mozillatranslator.kernel.Kernel;
 
 /**
  * @author Serhiy Brytskyy
@@ -39,6 +40,6 @@ public class ViewBinary extends DialogAction {
     
     @Override
     protected Filter getFilter(String localeName) {
-        return new Binary(localeName);
+        return new Binary();
     }
 }

@@ -24,7 +24,8 @@
 
 package org.mozillatranslator.filter;
 
-import org.mozillatranslator.datamodel.*;
+import org.mozillatranslator.datamodel.Phrase;
+import org.mozillatranslator.datamodel.Translation;
 
 /**
  * Implements a filter to select strings to be replaced
@@ -39,13 +40,12 @@ public class ReplaceFilter implements Filter {
     private int origRule;
     private boolean caseSense;
     private boolean exactMatch;
-    
-    private static final int OR_RUL_DONTCARE = 0;
+
     private static final int OR_RUL_CONTAINS = 1;
     private static final int OR_RUL_NOT_CONT = 2;
     private static final int OR_RUL_IS_EQUAL = 3;
     private static final int OR_RUL_ISNT_EQU = 4;
-    
+
     /**
      * Creates a new instance of a replace filter, which provides the needed tests
      * to search & replace strings in the translation
@@ -63,7 +63,7 @@ public class ReplaceFilter implements Filter {
      */
     public ReplaceFilter(String ln, String what, String to, int origRule,
             String orText, boolean cs, boolean exact) {
-        
+
         this.localeName = ln;
         this.replaceWhat = what;
         this.replaceTo = to;
@@ -82,10 +82,11 @@ public class ReplaceFilter implements Filter {
         this.localeName = localeName;
     }
 
+    @Override
     public boolean check(Phrase phrase) {
         Translation tn = (Translation) phrase.getChildByName(localeName);
         boolean result = (tn != null);
-        
+
         // First, we check that the rules applied to the original text apply
         switch (origRule) {
             case OR_RUL_CONTAINS:
@@ -120,10 +121,10 @@ public class ReplaceFilter implements Filter {
                     (tn.getText().indexOf(replaceWhat) > -1) :
                     (tn.getText().toLowerCase().indexOf(replaceWhat.toLowerCase()) > -1);
             }
-            
+
             if (result) {
                 String transText = tn.getText();
-                
+
                 tn.setText(transText.replace(replaceWhat, replaceTo));
                 phrase.addFilterResult("Original value [" + transText + "]");
             }

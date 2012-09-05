@@ -27,7 +27,8 @@ import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
-import org.mozillatranslator.datamodel.*;
+import org.mozillatranslator.datamodel.Phrase;
+import org.mozillatranslator.datamodel.Translation;
 import org.mozillatranslator.kernel.Kernel;
 
 /**

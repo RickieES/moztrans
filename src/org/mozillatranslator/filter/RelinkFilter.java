@@ -25,7 +25,7 @@
 
 package org.mozillatranslator.filter;
 
-import org.mozillatranslator.datamodel.*;
+import org.mozillatranslator.datamodel.Phrase;
 
 /**
  *
@@ -34,7 +34,7 @@ import org.mozillatranslator.datamodel.*;
 public class RelinkFilter implements Filter {
     private String localeName;
     private boolean keepExisting;
-    
+
     /**
      * Creates a new instance of a relink filter, which provides the needed tests
      * to relinks between labels, accesskeys and commandkeys
@@ -46,7 +46,7 @@ public class RelinkFilter implements Filter {
         this.localeName = ln;
         this.keepExisting = keep;
     }
-    
+
     /**
      * This will return true if the phrase qualifies as a label and its connections
      * to accesskeys and commandkeys have been modified
@@ -57,10 +57,10 @@ public class RelinkFilter implements Filter {
     @Override
     public boolean check(Phrase phrase) {
         boolean result = false;
-        String currentAKey = null;
-        String currentCKey = null;
-        String newAKey = null;
-        String newCKey = null;
+        String currentAKey;
+        String currentCKey;
+        String newAKey;
+        String newCKey;
 
         try {
             Phrase p = phrase.getAccessConnection();
@@ -98,7 +98,7 @@ public class RelinkFilter implements Filter {
                     phrase.addFilterResult("Accesskey changed from [" +
                             currentAKey + "] to [" + newAKey + "]");
                 }
-                
+
                 if (!currentCKey.equals(newCKey)) {
                     phrase.addFilterResult("Commandkey changed from [" +
                             currentCKey + "] to [" + newCKey + "]");

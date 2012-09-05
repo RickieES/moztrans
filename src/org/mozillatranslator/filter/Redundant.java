@@ -21,38 +21,37 @@
  * Henrik Lynggaard Hansen (Initial Code)
  *
  */
-
 package org.mozillatranslator.filter;
 
-import org.mozillatranslator.datamodel.*;
+import org.mozillatranslator.datamodel.Phrase;
+import org.mozillatranslator.datamodel.Translation;
+
 /**
  *
- * @author  Henrik Lynggaard
+ * @author Henrik Lynggaard
  * @version 1.0
  */
-public class Redundant implements Filter
-{
-    
+public class Redundant implements Filter {
+
     private String localeName;
-    /** Creates new FetchUntranslated */
-    public Redundant(String ln)
-    {
+
+    /**
+     * Creates new Redundant
+     * @param ln Locale code
+     */
+    public Redundant(String ln) {
         localeName = ln;
     }
-    
-    public boolean check(Phrase ph)
-    {
+
+    @Override
+    public boolean check(Phrase ph) {
         boolean result;
         Translation currentTranslation;
-        
+
         currentTranslation = (Translation) ph.getChildByName(localeName);
-        
-        if ((currentTranslation == null) && (!ph.isKeepOriginal()))
-        {
+        if ((currentTranslation == null) && (!ph.isKeepOriginal())) {
             result = true;
-        }
-        else
-        {
+        } else {
             result = false;
         }
         return result;

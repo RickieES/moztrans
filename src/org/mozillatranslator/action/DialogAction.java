@@ -59,6 +59,7 @@ public abstract class DialogAction extends AbstractAction {
         title = str;
     }
     
+    @Override
     public void actionPerformed(ActionEvent evt) {
         List collectedList;
         String localeName;

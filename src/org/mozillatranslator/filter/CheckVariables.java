@@ -29,7 +29,10 @@ import java.util.Iterator;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.mozillatranslator.datamodel.*;
+import org.mozillatranslator.datamodel.DTDFile;
+import org.mozillatranslator.datamodel.Phrase;
+import org.mozillatranslator.datamodel.PropertiesFile;
+import org.mozillatranslator.datamodel.Translation;
 import org.mozillatranslator.kernel.Kernel;
 import org.mozillatranslator.kernel.Settings;
 
@@ -40,20 +43,23 @@ import org.mozillatranslator.kernel.Settings;
 public class CheckVariables implements Filter {
     private String localeName;
 
-    /** Creates a new instance of CheckVariables */
+    /** Creates a new instance of CheckVariables
+     * @param ln Locale code
+     */
     public CheckVariables(String ln) {
         this.localeName = ln;
     }
 
+    @Override
     public boolean check(Phrase ph) {
         final String PARAMETER = "Parameter [";
         final String MORE_ERRORS_COULD_HAPPEN = "] not found, more errors could happen";
         final String NUMBER_OF = "Number of ";
         final String DIFFERS_BETWEEN = " differs between original and translation";
         boolean result = true; // This tests %S check and holds global result
-        boolean result2 = true; // This tests %1$S, %2$S, etc.
-        boolean result3 = true; // This tests ${[:word:]}
-        boolean result4 = true; // This tests %name%
+        boolean result2; // This tests %1$S, %2$S, etc.
+        boolean result3; // This tests ${[:word:]}
+        boolean result4; // This tests %name%
         Pattern p;
         Matcher mOrig;
         Matcher mTrns;
@@ -89,7 +95,6 @@ public class CheckVariables implements Filter {
                 }
                 
                 // Test for %n$S coincidence
-                p = null; mOrig = null; mTrns = null;
                 p = Pattern.compile("%\\d\\$S");
                 mOrig = p.matcher(txtOrig);
                 mTrns = p.matcher(txtTrns);
@@ -127,7 +132,6 @@ public class CheckVariables implements Filter {
                 result = result && result2;
                 
                 // Test for ${word} coincidence
-                p = null; mOrig = null; mTrns = null;
                 p = Pattern.compile("\\$\\{\\w+\\}");
                 mOrig = p.matcher(txtOrig);
                 mTrns = p.matcher(txtTrns);
@@ -165,7 +169,6 @@ public class CheckVariables implements Filter {
                 result = result && result3;
 
                 // Test for %word% coincidence
-                p = null; mOrig = null; mTrns = null;
                 p = Pattern.compile("%\\w+%");
                 mOrig = p.matcher(txtOrig);
                 mTrns = p.matcher(txtTrns);
@@ -209,7 +212,6 @@ public class CheckVariables implements Filter {
                 txtTrns = ((Translation) ph.getChildByName(localeName)).getText();
                 
                 // Test for &entityName.maybe.With.dots; coincidences
-                p = null; mOrig = null; mTrns = null;
                 p = Pattern.compile("&[\\w\\.]+;");
                 mOrig = p.matcher(txtOrig);
                 mTrns = p.matcher(txtTrns);

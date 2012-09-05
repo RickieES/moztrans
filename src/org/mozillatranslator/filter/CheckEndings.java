@@ -46,19 +46,29 @@ public class CheckEndings implements Filter {
         endingCheckedChars = Kernel.settings.getString(Settings.QA_ENDING_CHECKED_CHARS);
     }
     
+    @Override
     public boolean check(Phrase ph) {
         boolean result;
         char endingOriginalChar;
-        
-        if (ph.getText().length() > 0) {
-            endingOriginalChar = ph.getText().charAt(ph.getText().length() - 1);
-        
-            if ((endingCheckedChars.indexOf(endingOriginalChar) != -1)
-                    && (ph.hasChildren()) && (!ph.isKeepOriginal())) {
-                String translatedText = ((Translation) ph.getChildByName(localeName)).getText();
-                char endingTranslatedChar = translatedText.charAt(translatedText.length() - 1);
 
+        // We first check if all pre-requisites are satissfied
+        result = (ph.getText().length() > 0);
+        result = result && (!ph.isKeepOriginal());
+        result = result && (ph.hasChildren());
+        result = result && (ph.getChildByName(localeName) != null);
+        result = result && (((Translation) ph.getChildByName(localeName)).getText() != null);
+        result = result && (((Translation) ph.getChildByName(localeName)).getText().length() > 0);
+
+        if (result) {
+            endingOriginalChar = ph.getText().charAt(ph.getText().length() - 1);
+
+            if (endingCheckedChars.indexOf(endingOriginalChar) != -1) {
+                char endingTranslatedChar;
+                Translation t = (Translation) ph.getChildByName(localeName);
+                String translatedText = t.getText();
+                endingTranslatedChar = translatedText.charAt(translatedText.length() - 1);
                 result = (endingOriginalChar != endingTranslatedChar);
+
                 if (result) {
                     ph.addFilterResult("Original and translation have different "
                             + "ending chars ([" + endingOriginalChar + "] vs. ["
@@ -67,8 +77,6 @@ public class CheckEndings implements Filter {
             } else {
                 result = false;
             }
-        } else {
-            result = false;
         }
         
         return result;

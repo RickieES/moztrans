@@ -32,18 +32,6 @@ import org.mozillatranslator.datamodel.Phrase;
  */
 public class AdvancedSearch implements Filter {
     private String localeName;
-    private int rule1;
-    private int field1;
-    private String value1;
-    private boolean caseCheck1;
-    private int rule2;
-    private int field2;
-    private String value2;
-    private boolean caseCheck2;
-    private int rule3;
-    private int field3;
-    private String value3;
-    private boolean caseCheck3;
     private Search s1;
     private Search s2;
     private Search s3;
@@ -78,10 +66,6 @@ public class AdvancedSearch implements Filter {
                           String v3, boolean cc3) {
         this.all = all;
         this.localeName = ln;
-        this.rule1 = r1; this.field1 = f1; this.value1 = v1; this.caseCheck1 = cc1;
-        this.rule2 = r2; this.field2 = f2; this.value2 = v2; this.caseCheck2 = cc2;
-        this.rule3 = r3; this.field3 = f3; this.value3 = v3; this.caseCheck3 = cc3;
-
         this.b1 = b1; this.b2 = b2; this.b3 = b3;
 
         s1 = new Search(ln, r1, f1, v1, cc1, false);

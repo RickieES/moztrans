@@ -21,35 +21,34 @@
  * Henrik Lynggaard Hansen (Initial Code)
  *
  */
-
 package org.mozillatranslator.filter;
 
-import org.mozillatranslator.datamodel.*;
+import org.mozillatranslator.datamodel.MozFile;
+import org.mozillatranslator.datamodel.Phrase;
+
 /**
  *
- * @author  Henrik Lynggaard
+ * @author Henrik Lynggaard
  * @version 1.0
  */
-public class LicenseFilter implements Filter
-{
-    
-    private MozFile currentFile=null;
-    
-    /** Creates new FetchUntranslated */
-    public LicenseFilter()
-    {
+public class LicenseFilter implements Filter {
+
+    private MozFile currentFile = null;
+
+    /**
+     * Creates new LicenseFilter
+     */
+    public LicenseFilter() {
     }
-    
-    public boolean check(Phrase ph)
-    {
-        boolean result=false;
+
+    @Override
+    public boolean check(Phrase ph) {
+        boolean result = false;
         MozFile testFile = (MozFile) ph.getParent();
-        if (currentFile!=null && !currentFile.equals(testFile))
-        {
-            result=true;
+        if (currentFile != null && !currentFile.equals(testFile)) {
+            result = true;
         }
-        currentFile=testFile;    
+        currentFile = testFile;
         return result;
     }
-    
 }

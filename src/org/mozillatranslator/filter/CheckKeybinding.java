@@ -24,7 +24,8 @@
 
 package org.mozillatranslator.filter;
 
-import org.mozillatranslator.datamodel.*;
+import org.mozillatranslator.datamodel.Phrase;
+import org.mozillatranslator.datamodel.Translation;
 
 /**
  * Filter to check keybinding in translation
@@ -41,13 +42,14 @@ public class CheckKeybinding implements Filter {
         localeName = ln;
     }
     
+    @Override
     public boolean check(Phrase ph) {
         boolean result = false;
-        Phrase accessPhrase = null;
-        Translation currentTranslation = null;
-        Translation accessTranslation = null;
-        String text = null;
-        String key = null;
+        Phrase accessPhrase;
+        Translation currentTranslation;
+        Translation accessTranslation;
+        String text;
+        String key;
         
         // Find the correct text
         currentTranslation = (Translation) ph.getChildByName(localeName);

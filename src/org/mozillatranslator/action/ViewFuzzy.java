@@ -23,8 +23,9 @@
  */
 package org.mozillatranslator.action;
 
-import org.mozillatranslator.filter.*;
-import org.mozillatranslator.kernel.*;
+import org.mozillatranslator.filter.Filter;
+import org.mozillatranslator.filter.Fuzzy;
+import org.mozillatranslator.kernel.Kernel;
 
 /**
  * @author Serhiy Brytskyy
@@ -40,6 +41,6 @@ public class ViewFuzzy extends DialogAction {
 
     @Override
     protected Filter getFilter(String localeName) {
-        return new Fuzzy(localeName);
+        return new Fuzzy();
     }
 }

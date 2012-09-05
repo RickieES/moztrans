@@ -24,25 +24,29 @@
 
 package org.mozillatranslator.filter;
 
-import org.mozillatranslator.datamodel.*;
+import org.mozillatranslator.datamodel.BinaryFile;
+import org.mozillatranslator.datamodel.Phrase;
+import org.mozillatranslator.datamodel.Translation;
 /**
  *
  * @author  Henrik Lynggaard
  * @version 1.0
  */
 public class Untranslated implements Filter {
-
     private String localeName;
 
-    /** Creates new FetchUntranslated */
+    /** Creates new Untranslated
+     * @param ln Locale code
+     */
     public Untranslated(String ln) {
         localeName = ln;
     }
 
+    @Override
     public boolean check(Phrase ph) {
         boolean result = false;
         Translation currentTranslation;
-        
+
         if (!(ph.getParent() instanceof BinaryFile)) {
             currentTranslation = (Translation) ph.getChildByName(localeName);
             result = ((currentTranslation == null) && (!ph.isKeepOriginal()));

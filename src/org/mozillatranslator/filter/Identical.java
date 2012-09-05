@@ -24,7 +24,8 @@
 
 package org.mozillatranslator.filter;
 
-import org.mozillatranslator.datamodel.*;
+import org.mozillatranslator.datamodel.Phrase;
+import org.mozillatranslator.datamodel.Translation;
 /**
  *
  * @author  Henrik Lynggaard
@@ -33,15 +34,18 @@ import org.mozillatranslator.datamodel.*;
 public class Identical implements Filter {
     private String localeName;
 
-    /** Creates new FetchUntranslated */
+    /** Creates new FetchUntranslated
+     * @param ln Locale code
+     */
     public Identical(String ln) {
         localeName = ln;
     }
 
+    @Override
     public boolean check(Phrase ph) {
         boolean result = false;
-        String orig = "";
-        String trans = "";
+        String orig;
+        String trans;
 
         Translation currentTranslation = (Translation) ph.getChildByName(localeName);
         if (currentTranslation != null) {

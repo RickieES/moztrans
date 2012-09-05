@@ -24,7 +24,7 @@
 
 package org.mozillatranslator.filter;
 
-import org.mozillatranslator.datamodel.*;
+import org.mozillatranslator.datamodel.Phrase;
 
 /**
  *
@@ -32,13 +32,12 @@ import org.mozillatranslator.datamodel.*;
  * @version 1.0
  */
 public class Fuzzy implements Filter {
-    private String localeName;
-    
-    /** Creates new FetchUntranslated */
-    public Fuzzy(String ln) {
-        localeName = ln;
+    /** Creates new Fuzzy
+     */
+    public Fuzzy() {
     }
     
+    @Override
     public boolean check(Phrase ph) {
         return ph.isFuzzy();
     }

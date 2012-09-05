@@ -24,14 +24,13 @@
 
 package org.mozillatranslator.filter;
 
-import org.mozillatranslator.datamodel.*;
+import org.mozillatranslator.datamodel.Phrase;
 
 /**
  * Filter to cover all individual filters considered "Basic automated QA"
  * @author rpalomares
  */
 public class AllAtOnce implements Filter {
-    private String localeName;
     private Untranslated    fltUntranslated;
     private KeepOriginal    fltKeepOriginal;
     private Identical       fltIdentical;
@@ -45,7 +44,6 @@ public class AllAtOnce implements Filter {
      * @param ln Locale code
      */
     public AllAtOnce(String ln) {
-        this.localeName = ln;
         fltUntranslated    = new Untranslated(ln);
         fltKeepOriginal    = new KeepOriginal(ln);
         fltIdentical       = new Identical(ln);
@@ -56,6 +54,7 @@ public class AllAtOnce implements Filter {
         fltCheckDuplicated = new CheckDuplicated(ln);
     }
 
+    @Override
     public boolean check(Phrase ph) {
         boolean result, resultSingle;
 

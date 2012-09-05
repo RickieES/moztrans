@@ -37,14 +37,16 @@ import org.mozillatranslator.datamodel.TrnsStatus;
 public class AllForAutoTranslate implements Filter {
     private String localeName;
     
-    /** Creates new FetchUntranslated */
+    /** Creates new FetchUntranslated
+     * @param ln Locale code
+     */
     public AllForAutoTranslate(String ln) {
         this.localeName = ln;
     }
     
     @Override
     public boolean check(Phrase ph) {
-        boolean result = true;
+        boolean result;
         Translation currentTranslation;
         
         currentTranslation = (Translation) ph.getChildByName(localeName);
