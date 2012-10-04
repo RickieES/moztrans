@@ -35,6 +35,15 @@ import org.mozillatranslator.kernel.Settings;
  * @author Ricardo
  */
 public class MozLicense {
+    public static final String MPL2_DTD_LICENSE_BLOCK =
+                  " This Source Code Form is subject to the terms of the Mozilla Public\n"
+            + "   - License, v. 2.0. If a copy of the MPL was not distributed with this\n"
+            + "   - file, You can obtain one at http://mozilla.org/MPL/2.0/. ";
+    public static final String MPL2_PROPERTIES_LICENSE_BLOCK =
+              "# This Source Code Form is subject to the terms of the Mozilla Public\n"
+            + "# License, v. 2.0. If a copy of the MPL was not distributed with this\n"
+            + "# file, You can obtain one at http://mozilla.org/MPL/2.0/.\n\n";
+
     private static final Logger fLogger = Logger.getLogger(MozLicense.class.getPackage().
             getName());
 
@@ -59,7 +68,10 @@ public class MozLicense {
      */
     MozFile parent;
 
-    /** Creates a new instance of MozLicense */
+    /** Creates a new instance of MozLicense
+     * @param parent the MozFile that will be the parent of this license
+     * (or, in other words, the file this MozLicense belongs to)
+     */
     public MozLicense(MozFile parent) {
         this.parent = parent;
         this.insertionPos = -1;

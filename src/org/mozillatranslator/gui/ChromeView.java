@@ -245,8 +245,6 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
         contributorLabel = new javax.swing.JLabel();
         contributorTextField = new javax.swing.JTextField();
         setToMPL2Button = new javax.swing.JButton();
-        importFromOriginalButton = new javax.swing.JButton();
-        importFromTranslatedButton = new javax.swing.JButton();
         clearButton = new javax.swing.JButton();
 
         setClosable(true);
@@ -639,6 +637,7 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
         licensePanel.add(licenseTitleLabel, gridBagConstraints);
 
         licenseTextArea.setColumns(20);
+        licenseTextArea.setEditable(false);
         licenseTextArea.setRows(5);
         licenseScrollPane.setViewportView(licenseTextArea);
 
@@ -672,7 +671,11 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
         setToMPL2Button.setMnemonic('M');
         setToMPL2Button.setText("Set to MPL2");
         setToMPL2Button.setToolTipText("Reset license to MPL2");
-        setToMPL2Button.setEnabled(false);
+        setToMPL2Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                setToMPL2ButtonActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
@@ -680,35 +683,17 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         licensePanel.add(setToMPL2Button, gridBagConstraints);
 
-        importFromOriginalButton.setMnemonic('e');
-        importFromOriginalButton.setText("Import from en-US");
-        importFromOriginalButton.setToolTipText("Import license from en-US file");
-        importFromOriginalButton.setEnabled(false);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
-        licensePanel.add(importFromOriginalButton, gridBagConstraints);
-
-        importFromTranslatedButton.setMnemonic('m');
-        importFromTranslatedButton.setText("Import from translation");
-        importFromTranslatedButton.setToolTipText("Import from existing translated file (if available)");
-        importFromTranslatedButton.setEnabled(false);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
-        licensePanel.add(importFromTranslatedButton, gridBagConstraints);
-
         clearButton.setMnemonic('l');
         clearButton.setText("Clear");
         clearButton.setToolTipText("Clear existing license and contributor");
-        clearButton.setEnabled(false);
+        clearButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearButtonActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         licensePanel.add(clearButton, gridBagConstraints);
@@ -889,6 +874,14 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
                 this.licenseTextArea.setText("");
                 this.contributorTextField.setText("");
               }
+
+              if ((ourObject instanceof DTDFile) || (ourObject instanceof PropertiesFile)) {
+                  setToMPL2Button.setEnabled(true);
+                  clearButton.setEnabled(true);
+              } else {
+                  setToMPL2Button.setEnabled(false);
+                  clearButton.setEnabled(false);
+              }
           } else {
               dontExportCheckBox.setSelected(false);
               dontExportCheckBox.setEnabled(false);
@@ -917,6 +910,44 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
   private void dontExportCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dontExportCheckBoxActionPerformed
       ((GenericFile) ourObject).setDontExport(dontExportCheckBox.isSelected());
   }//GEN-LAST:event_dontExportCheckBoxActionPerformed
+
+    private void setToMPL2ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setToMPL2ButtonActionPerformed
+        try {
+            ourObject = (org.mozillatranslator.datamodel.TreeNode) lastSelected.getUserObject();
+            MozLicense ml;
+
+            if (ourObject instanceof DTDFile) {
+                DTDFile dtdFile = (DTDFile) ourObject;
+                ml = (dtdFile.getLicenseBlock() == null) ? new MozLicense(dtdFile) : dtdFile.getLicenseBlock();
+                ml.setLicenseBlock(MozLicense.MPL2_DTD_LICENSE_BLOCK);
+                dtdFile.setLicenseBlock(ml);
+            } else if (ourObject instanceof PropertiesFile) {
+                PropertiesFile propFile = (PropertiesFile) ourObject;
+                ml = (propFile.getLicenseBlock() == null) ? new MozLicense(propFile) : propFile.getLicenseBlock();
+                ml.setLicenseBlock(MozLicense.MPL2_PROPERTIES_LICENSE_BLOCK);
+                propFile.setLicenseBlock(ml);
+            }
+            // Display in the license textarea what we have just set in the file
+            licenseTextArea.setText(((MozFile) ourObject).getLicenseBlock().getLicenseBlock());
+        } catch (java.lang.ClassCastException ex) {
+            ourObject = null;
+        }
+    }//GEN-LAST:event_setToMPL2ButtonActionPerformed
+
+    private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
+        try {
+            ourObject = (org.mozillatranslator.datamodel.TreeNode) lastSelected.getUserObject();
+
+            if (ourObject instanceof MozFile) {
+                MozFile mozFile = (MozFile) ourObject;
+                mozFile.setLicenseBlock(null);
+            }
+            // Display in the license textarea what we have just set in the file
+            licenseTextArea.setText("");
+        } catch (java.lang.ClassCastException ex) {
+            ourObject = null;
+        }
+    }//GEN-LAST:event_clearButtonActionPerformed
 
     /**
      * initialize a JTable with the current file. the
@@ -1083,8 +1114,6 @@ public class ChromeView extends javax.swing.JInternalFrame implements MozFrame {
     private javax.swing.JLabel fuzzyPctLabel;
     private javax.swing.JLabel fuzzyStLabel;
     private javax.swing.JLabel fuzzyStValueLabel;
-    private javax.swing.JButton importFromOriginalButton;
-    private javax.swing.JButton importFromTranslatedButton;
     private javax.swing.JScrollPane infoPane;
     private javax.swing.JPanel infoPanel;
     private javax.swing.JSeparator infoSeparator;

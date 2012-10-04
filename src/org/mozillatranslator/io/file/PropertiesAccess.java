@@ -23,7 +23,6 @@
  *                    with INI files)
  *
  */
-
 package org.mozillatranslator.io.file;
 
 import java.io.*;
@@ -39,8 +38,9 @@ import org.mozillatranslator.dataobjects.ImportExportDataObject;
 import org.mozillatranslator.io.common.MozIOException;
 import org.mozillatranslator.util.EnhancedString;
 
-
-/** This class implements the native format for properties files.
+/**
+ * This class implements the native format for properties files.
+ *
  * @author Henrik Lynggaard
  * @version 1.7
  */
@@ -50,23 +50,24 @@ public class PropertiesAccess extends FileAccessAdapter {
     private OutputStreamWriter osw;
     private BufferedWriter bw;
     private boolean isIniFile;
-
     // SortedProperties is defined at the bottom of this file, and extends
     // java.util.Properties
     private SortedProperties prop;
     private Enumeration enumeration;
     private String currentKey;
 
-    /** Creates new PropertiesAccess */
+    /**
+     * Creates new PropertiesAccess
+     */
     public PropertiesAccess() {
     }
 
-/* -----------------------------
- * Save rutines
- * -----------------------------
- */
-
-    /** {@inheritDoc}
+    /*
+     * ----------------------------- Save rutines -----------------------------
+     */
+    /**
+     * {@inheritDoc}
+     *
      * @param dataObject {@inheritDoc}
      * @throws MozIOException {@inheritDoc}
      */
@@ -93,7 +94,9 @@ public class PropertiesAccess extends FileAccessAdapter {
         }
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
+     *
      * @param key {@inheritDoc}
      * @param value {@inheritDoc}
      * @throws MozIOException {@inheritDoc}
@@ -140,11 +143,13 @@ public class PropertiesAccess extends FileAccessAdapter {
             bw.write(line);
         } catch (IOException e) {
             throw new MozIOException("Cannot save "
-                        + ((isIniFile) ? "INI" : "properties") + " file", e);
+                    + ((isIniFile) ? "INI" : "properties") + " file", e);
         }
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
+     *
      * @param dataObject {@inheritDoc}
      * @throws MozIOException {@inheritDoc}
      */
@@ -154,18 +159,18 @@ public class PropertiesAccess extends FileAccessAdapter {
             bw.flush();
         } catch (IOException e) {
             throw new MozIOException("Cannot save "
-                        + ((isIniFile) ? "INI" : "properties") + " file", e);
+                    + ((isIniFile) ? "INI" : "properties") + " file", e);
         }
 
         dataObject.setFileContent(baos.toByteArray());
     }
 
-/* -----------------------------
- * load rutines
- * -----------------------------
- */
-
-    /** {@inheritDoc}
+    /*
+     * ----------------------------- load rutines -----------------------------
+     */
+    /**
+     * {@inheritDoc}
+     *
      * @param dataObject {@inheritDoc}
      * @throws MozIOException {@inheritDoc}
      */
@@ -197,12 +202,12 @@ public class PropertiesAccess extends FileAccessAdapter {
     }
 
     /**
-     * Tests if a license block exists in the ByteArrayInputStream passed as a
-     * parameter
+     * Tests if a license block exists in the ByteArrayInputStream passed as a parameter
      *
-     * @param   bais    the ByteArrayInputStream to test
-     * @return  true if a license block exists, false otherwise
-     **/
+     * @param bais the ByteArrayInputStream to test
+     * @return true if a license block exists, false otherwise
+     *
+     */
     private boolean hasLicense(ByteArrayInputStream bais) throws IOException {
         boolean hasIt = false;
         String line;
@@ -210,19 +215,20 @@ public class PropertiesAccess extends FileAccessAdapter {
 
         while (((line = reader.readLine()) != null) && (!hasIt)) {
             hasIt = (line.indexOf("*** BEGIN LICENSE BLOCK ***") > -1) // Any block-delimited license header
-                 || (line.indexOf("http://mozilla.org/MPL/2.0/") > -1);// MPL2 license header
+                    || (line.indexOf("http://mozilla.org/MPL/2.0/") > -1);// MPL2 license header
         }
         bais.reset();
         return hasIt;
     }
 
     /**
-     * Extracts a license from the ByteArrayInputStream representing the
-     * Properties file and puts it into thisFileLicense
+     * Extracts a license from the ByteArrayInputStream representing the Properties file and puts it into
+     * thisFileLicense
      *
-     * @param   bais            the ByteArrayInputStream containing the license
-     * @param   thisFileLicense the MozLicense to hold the extracted license
-     **/
+     * @param bais the ByteArrayInputStream containing the license
+     * @param thisFileLicense the MozLicense to hold the extracted license
+     *
+     */
     private void extractLicense(ByteArrayInputStream bais, MozLicense thisFileLicense)
             throws IOException {
         String line;
@@ -238,53 +244,59 @@ public class PropertiesAccess extends FileAccessAdapter {
                 && (line.indexOf("This Source Code Form is subject to the ") == -1)) {
         }
 
-        // Since we're replacing the license, the current insertion pos is not valid anymore
-        thisFileLicense.setInsertionPos(-1);
+        // If we've found a license block in the file, we'll replace any previous we could have
+        if (line != null) {
+            // Since we're replacing the license, the current insertion pos is not valid anymore
+            thisFileLicense.setInsertionPos(-1);
 
-        // We add newlines to restore them in the license block, since readLine() removes them
-        theLicense = line + "\n";
+            // We add newlines to restore them in the license block, since readLine() removes them
+            theLicense = line + "\n";
 
-        // Now, let's find the license block end, and while we are at it, locate
-        // the start and end of Contributor(s) section
-        while (((line = reader.readLine()) != null) && (!licenseEndFound)) {
-             // Have we found the Contributor(s) section start?
-             if (!contribSectionFound && line.indexOf("Contributor") > -1) {
-                 contribSectionFound = true;
-             }
+            // Now, let's find the license block end, and while we are at it, locate
+            // the start and end of Contributor(s) section
+            while (((line = reader.readLine()) != null) && (!licenseEndFound)) {
+                // Have we found the Contributor(s) section start?
+                if (!contribSectionFound && line.indexOf("Contributor") > -1) {
+                    contribSectionFound = true;
+                }
 
-             // If the Contributor(s) section has been found, let's find where it ends
-             if (contribSectionFound && !contribEndLocated
-                     && (line.trim().equals("#") || line.trim().equals(";"))) {
-                 contribEndLocated = true;
-                 thisFileLicense.setInsertionPos(theLicense.length());
-             }
+                // If the Contributor(s) section has been found, let's find where it ends
+                if (contribSectionFound && !contribEndLocated
+                        && (line.trim().equals("#") || line.trim().equals(";"))) {
+                    contribEndLocated = true;
+                    thisFileLicense.setInsertionPos(theLicense.length());
+                }
 
-             licenseEndFound = (line.length() == 0) || ((line.charAt(0) != '#') && (line.charAt(0) != ';'))
-                            || (line.indexOf("***** END LICENSE BLOCK *****") != -1);
+                licenseEndFound = (line.length() == 0) || ((line.charAt(0) != '#') && (line.charAt(0) != ';'))
+                        || (line.indexOf("***** END LICENSE BLOCK *****") != -1);
 
-             // We want to add the END LICENSE BLOCK line even though it marks the license header end
-             if (!licenseEndFound || (line.indexOf("***** END LICENSE BLOCK *****") != -1)) {
-                // Add this line to the license, including the newline terminator
-                theLicense += line + "\n";
-             }
+                // We want to add the END LICENSE BLOCK line even though it marks the license header end
+                if (!licenseEndFound || (line.indexOf("***** END LICENSE BLOCK *****") != -1)) {
+                    // Add this line to the license, including the newline terminator
+                    theLicense += line + "\n";
+                }
+            }
+            // We add the license with an extra newline to separate the license header from the rest of the file
+            thisFileLicense.setLicenseBlock(theLicense + "\n");
         }
-
-        // We add the license with an extra newline to separate the license header from the rest of the file
-        thisFileLicense.setLicenseBlock(theLicense + "\n");
         bais.reset();
+
     }
 
-
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
+     *
      * @throws MozIOException {@inheritDoc}
      * @return {@inheritDoc}
      */
     @Override
-    public  boolean hasMore() throws MozIOException {
+    public boolean hasMore() throws MozIOException {
         return enumeration.hasMoreElements();
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
+     *
      * @throws MozIOException {@inheritDoc}
      * @return {@inheritDoc}
      */
@@ -294,16 +306,20 @@ public class PropertiesAccess extends FileAccessAdapter {
         return currentKey;
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
+     *
      * @throws MozIOException {@inheritDoc}
      * @return {@inheritDoc}
      */
     @Override
-    public  String getValue() throws MozIOException {
+    public String getValue() throws MozIOException {
         return (String) prop.get(currentKey);
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
+     *
      * @param dataObject {@inheritDoc}
      * @throws MozIOException {@inheritDoc}
      */
@@ -312,8 +328,8 @@ public class PropertiesAccess extends FileAccessAdapter {
         prop = null;
     }
 
-
     class SortedProperties extends java.util.Properties implements Enumeration {
+
         SortedProperties() {
         }
 
@@ -354,18 +370,18 @@ public class PropertiesAccess extends FileAccessAdapter {
                 if ((c == '#') || (c == '!') || (c == ';')) {
                     // If previous line was a l10n comment, we're still on it,
                     // else this is just a comment
-                    currentStatus = (currentStatus == STATUS_L10N_COMMENT) ?
-                        STATUS_L10N_COMMENT : STATUS_COMMENT;
+                    currentStatus = (currentStatus == STATUS_L10N_COMMENT)
+                            ? STATUS_L10N_COMMENT : STATUS_COMMENT;
 
                     // If the line has "Localization note" inside it, mark it
-                    currentStatus = (line.toUpperCase().contains("LOCALIZATION NOTE")) ?
-                        STATUS_L10N_COMMENT : currentStatus;
+                    currentStatus = (line.toUpperCase().contains("LOCALIZATION NOTE"))
+                            ? STATUS_L10N_COMMENT : currentStatus;
                 } else {
                     // We're definitely NOT reading a comment, since it doesn't
                     // start with # or !; it may be a new key or part of a value
                     // In the second case, currentStatus will be marking it
-                    currentStatus = (currentStatus == STATUS_VALUE) ?
-                        STATUS_VALUE : STATUS_KEY;
+                    currentStatus = (currentStatus == STATUS_VALUE)
+                            ? STATUS_VALUE : STATUS_KEY;
                 }
 
                 switch (currentStatus) {
@@ -382,21 +398,17 @@ public class PropertiesAccess extends FileAccessAdapter {
                         } else {
                             l10nComment = new StringBuilder(line.toString());
 
-                            /* The localization note format should be:
-                             *   LOCALIZATION NOTE (key): comment
-                             * comment may expand several lines
+                            /*
+                             * The localization note format should be: LOCALIZATION NOTE (key): comment comment may
+                             * expand several lines
                              *
-                             * However, sometimes no key is given, so we need
-                             * to take two possible courses of action:
+                             * However, sometimes no key is given, so we need to take two possible courses of action:
                              *
-                             * - if key is given, set entityName to it
-                             * - if no key is given, set entityName to null
+                             * - if key is given, set entityName to it - if no key is given, set entityName to null
                              *
-                             * Since l10n notes get added to the map when a new
-                             * key is parsed, setting entityName will result in
-                             * using the parsed key for the l10n note. L10n notes
-                             * written at the end of file without explicit
-                             * key reference will be discarded.
+                             * Since l10n notes get added to the map when a new key is parsed, setting entityName will
+                             * result in using the parsed key for the l10n note. L10n notes written at the end of file
+                             * without explicit key reference will be discarded.
                              */
 
                             p = Pattern.compile("LOCALIZATION NOTE\\s\\(((.+))\\)",
@@ -414,15 +426,15 @@ public class PropertiesAccess extends FileAccessAdapter {
                         // IMPORTANT: we assume keys don't split over several lines
                         // Let's look for the key - value separator, usually '='
                         keyDelimiter = line.indexOf('=');
-                        keyDelimiter = (keyDelimiter == -1) ?
-                            line.indexOf(':') : keyDelimiter;
+                        keyDelimiter = (keyDelimiter == -1)
+                                ? line.indexOf(':') : keyDelimiter;
 
                         // We may be dealing with INI files too, so we must manage
                         // INI section headers, converting
                         //   [Header]
                         // to
                         //   section.[Header]=[Header]
-                        if ((keyDelimiter == -1) && (line.charAt(0)=='[')) {
+                        if ((keyDelimiter == -1) && (line.charAt(0) == '[')) {
                             line.set("section." + line + "=" + line);
                             keyDelimiter = line.indexOf('=');
                         }
@@ -451,15 +463,16 @@ public class PropertiesAccess extends FileAccessAdapter {
 
                         line.set(line.substring(keyDelimiter + 1));
                         currentStatus = STATUS_VALUE;
-                        // No break here, since we want to process the remaining
-                        // content of line as the value
+                    // No break here, since we want to process the remaining
+                    // content of line as the value
 
                     case STATUS_VALUE:
                         if (value == null) {
                             pos = 0;
-                            while (pos < line.length() &&
-                                   Character.isWhitespace(line.charAt(pos)))
+                            while (pos < line.length()
+                                    && Character.isWhitespace(line.charAt(pos))) {
                                 pos++;
+                            }
                             value = new StringBuilder();
                         } else {
                             line.set(line.ltrim());
@@ -512,8 +525,8 @@ public class PropertiesAccess extends FileAccessAdapter {
                             }
                         }
 
-                        if ((line.length() == 0) ||
-                                (line.charAt(line.length() - 1) != '\\')) {
+                        if ((line.length() == 0)
+                                || (line.charAt(line.length() - 1) != '\\')) {
 
                             put(key.toString(), value.toString());
                             currentStatus = STATUS_NULL;
@@ -535,8 +548,8 @@ public class PropertiesAccess extends FileAccessAdapter {
         }
 
         @Override
-        public Object put(Object key,Object value) {
-            return sortedMap.put(key,value);
+        public Object put(Object key, Object value) {
+            return sortedMap.put(key, value);
         }
 
         @Override
@@ -546,7 +559,7 @@ public class PropertiesAccess extends FileAccessAdapter {
 
         @Override
         public Enumeration keys() {
-            hiddenIterator =sortedMap.keySet().iterator();
+            hiddenIterator = sortedMap.keySet().iterator();
             return this;
         }
 
@@ -559,7 +572,6 @@ public class PropertiesAccess extends FileAccessAdapter {
         public Object nextElement() {
             return hiddenIterator.next();
         }
-
         private Iterator hiddenIterator;
         private LinkedHashMap sortedMap = new LinkedHashMap();
     }
