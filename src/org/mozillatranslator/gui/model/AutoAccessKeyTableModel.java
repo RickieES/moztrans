@@ -137,6 +137,8 @@ public class AutoAccessKeyTableModel extends AbstractTableModel {
                         data.get(row).setProposedValue(value.toString().substring(0, 1));
                     } catch (NullPointerException e) {
                         data.get(row).setProposedValue("");
+                    } catch (StringIndexOutOfBoundsException e) {
+                        data.get(row).setProposedValue("");
                     }
                     break;
             default:
