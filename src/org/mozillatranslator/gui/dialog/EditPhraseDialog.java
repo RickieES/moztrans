@@ -27,17 +27,17 @@
 package org.mozillatranslator.gui.dialog;
 
 import java.awt.Font;
-import javax.swing.undo.UndoManager;
-import javax.swing.text.JTextComponent;
-import javax.swing.text.Document;
-import javax.swing.event.UndoableEditListener;
-import javax.swing.AbstractAction;
-import javax.swing.event.UndoableEditEvent;
 import java.awt.event.ActionEvent;
-import javax.swing.undo.CannotUndoException;
+import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
+import javax.swing.event.UndoableEditEvent;
+import javax.swing.event.UndoableEditListener;
 import javax.swing.table.TableColumn;
+import javax.swing.text.Document;
+import javax.swing.text.JTextComponent;
 import javax.swing.undo.CannotRedoException;
+import javax.swing.undo.CannotUndoException;
+import javax.swing.undo.UndoManager;
 import org.mozillatranslator.datamodel.GenericFile;
 import org.mozillatranslator.datamodel.Phrase;
 import org.mozillatranslator.datamodel.PhraseList;
@@ -958,7 +958,7 @@ public class EditPhraseDialog extends javax.swing.JDialog {
                     // If the user has added/edited the translation and has not
                     // explicitly set the translation status, let's set it to
                     // Translated
-                    if (currentTranslation.getStatus() != status) {
+                    if (currentTranslation.getStatus() == status) {
                         status = TrnsStatus.Translated;
                     }
                 } else {
@@ -1138,8 +1138,8 @@ private void suggCancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//
 
         accessConnection = currentPhrase.getAccessConnection();
         commandConnection = currentPhrase.getCommandConnection();
-        Translation accessTranslation = null;
-        Translation commandTranslation = null;
+        Translation accessTranslation;
+        Translation commandTranslation;
         if (accessConnection != null) {
             advInfoAccessField.setText(accessConnection.getName());
             advOrgAccessField.setText(accessConnection.getText());
@@ -1206,7 +1206,7 @@ private void suggCancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//
             qaresultTextArea.setText(currentPhrase.getFilterResult());
         }
 
-        if (Kernel.settings.getBoolean(Settings.USE_SUGGESTIONS)) {
+        if (Kernel.settings.getBoolean(Settings.USE_SUGGESTIONS) && (currentPhrase.getText().length() < 2048)) {
             pl = Kernel.ts.suggestionsForPhrase(currentPhrase, this.l10n, true);
 
             if ((pl != null) && (pl.size() > 0)) {
