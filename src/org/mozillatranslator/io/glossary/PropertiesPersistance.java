@@ -403,57 +403,54 @@ public class PropertiesPersistance implements GlossaryAccess {
                 subLevelCount = writeFile(model, currentFile, thisLevelPrefix);
 
                 // Save license and external entities information
-                if (currentFile != null) {
+                // Old license information
+                if (currentFile.getLicenseFile() != null
+                        && !"".equals(currentFile.getLicenseFile())) {
+                    model.setProperty(thisLevelPrefix + FILE_LICENSE,
+                            currentFile.getLicenseFile());
+                }
 
-                    // Old license information
-                    if (currentFile.getLicenseFile() != null
-                            && !"".equals(currentFile.getLicenseFile())) {
-                        model.setProperty(thisLevelPrefix + FILE_LICENSE,
-                                currentFile.getLicenseFile());
+                // New license information
+                if (currentFile.getLicenseBlock() != null) {
+                    model.setProperty(thisLevelPrefix + FILE_LICENSE_BLOCK,
+                            currentFile.getLicenseBlock().getLicenseBlock());
+
+                    if (currentFile.getLicenseBlock().getLicenseContributor() != null) {
+                        model.setProperty(thisLevelPrefix + FILE_LICENSE_CONTRIB,
+                                currentFile.getLicenseBlock().getLicenseContributor());
                     }
 
-                    // New license information
-                    if (currentFile.getLicenseBlock() != null) {
-                        model.setProperty(thisLevelPrefix + FILE_LICENSE_BLOCK,
-                                currentFile.getLicenseBlock().getLicenseBlock());
+                    model.setProperty(thisLevelPrefix + FILE_LICENSE_INSPOINT,
+                            "" + currentFile.getLicenseBlock().getInsertionPos());
+                }
 
-                        if (currentFile.getLicenseBlock().getLicenseContributor() != null) {
-                            model.setProperty(thisLevelPrefix + FILE_LICENSE_CONTRIB,
-                                    currentFile.getLicenseBlock().getLicenseContributor());
-                        }
+                model.setProperty(thisLevelPrefix + FILE_DONTEXPORT,
+                        "" + currentFile.isDontExport());
 
-                        model.setProperty(thisLevelPrefix + FILE_LICENSE_INSPOINT,
-                                "" + currentFile.getLicenseBlock().getInsertionPos());
+                // If the file is a DTD, maybe it has external entities to be saved
+                if ((currentFile instanceof DTDFile)
+                        && (((DTDFile) currentFile).getExternalEntities() != null)) {
+                    entityIterator = ((DTDFile) currentFile).getExternalEntities().
+                            iterator();
+                    entityCount = 0;
+                    while (entityIterator.hasNext()) {
+                        curEntity = (ExternalEntity) entityIterator.next();
+                        model.setProperty(thisLevelPrefix + ENTITY_BAG + "."
+                                + entityCount + NAME, curEntity.getName());
+                        model.setProperty(thisLevelPrefix + ENTITY_BAG + "."
+                                + entityCount + PUBLICID, curEntity.getPublicId());
+                        model.setProperty(thisLevelPrefix + ENTITY_BAG + "."
+                                + entityCount + SYSTEMID, curEntity.getSystemId());
+                        entityCount++;
                     }
+                    model.setProperty(thisLevelPrefix + ENTITY_BAG
+                            + COUNT, "" + entityCount);
+                }
 
-                    model.setProperty(thisLevelPrefix + FILE_DONTEXPORT,
-                            "" + currentFile.isDontExport());
-
-                    // If the file is a DTD, maybe it has external entities to be saved
-                    if ((currentFile instanceof DTDFile)
-                            && (((DTDFile) currentFile).getExternalEntities() != null)) {
-                        entityIterator = ((DTDFile) currentFile).getExternalEntities().
-                                iterator();
-                        entityCount = 0;
-                        while (entityIterator.hasNext()) {
-                            curEntity = (ExternalEntity) entityIterator.next();
-                            model.setProperty(thisLevelPrefix + ENTITY_BAG + "."
-                                    + entityCount + NAME, curEntity.getName());
-                            model.setProperty(thisLevelPrefix + ENTITY_BAG + "."
-                                    + entityCount + PUBLICID, curEntity.getPublicId());
-                            model.setProperty(thisLevelPrefix + ENTITY_BAG + "."
-                                    + entityCount + SYSTEMID, curEntity.getSystemId());
-                            entityCount++;
-                        }
-                        model.setProperty(thisLevelPrefix + ENTITY_BAG
-                                + COUNT, "" + entityCount);
-                    }
-
-                    // If the file is a binary file, we have to save its MD5 hash
-                    if (currentFile instanceof BinaryFile) {
-                        model.setProperty(thisLevelPrefix + BINFILE_MD5,
-                                ((BinaryFile) currentFile).getMd5Hash());
-                    }
+                // If the file is a binary file, we have to save its MD5 hash
+                if (currentFile instanceof BinaryFile) {
+                    model.setProperty(thisLevelPrefix + BINFILE_MD5,
+                            ((BinaryFile) currentFile).getMd5Hash());
                 }
                 currentFile.decreaseReferenceCount();
             }
