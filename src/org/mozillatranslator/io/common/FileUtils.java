@@ -265,19 +265,26 @@ public class FileUtils {
      * @param path a path, usually an import original or import/export translation path from a SCM-based product
      * @return the above path with the repo base dir and a separator, if applicable
      */
-    public static String getFullRepoDir(String path) {
+    public static String getFullRepoDir(String path) throws IOException {
         File testDir;
         String repoBase = Kernel.settings.getString(Settings.REPOSITORIES_BASE).trim();
         StringBuilder fullPath = new StringBuilder();
         boolean tryingRepoBase = false;
+        boolean repoBaseTrailingPathSeparator;
+        boolean pathLeadingPathSeparator;
 
         // Adjust path structure to the underlying OS format
         repoBase = repoBase.replace((File.separator.equals("\\") ? "/" : "\\"), File.separator);
         path = path.replace((File.separator.equals("\\") ? "/" : "\\"), File.separator);
+        repoBaseTrailingPathSeparator = repoBase.endsWith(File.separator);
+        pathLeadingPathSeparator = path.startsWith(File.separator);
 
+        // If there is a repositories base dir defined
         if (repoBase.length() > 0) {
-            fullPath.append(Kernel.settings.getString(Settings.REPOSITORIES_BASE).trim());
-            if (path.substring(path.length() - 1, path.length()).equals(File.separator)) {
+            fullPath.append(repoBase);
+            // If neither the repoBase ends with a path separator nor the specific path starts
+            // with it, then add it
+            if (!(repoBaseTrailingPathSeparator || pathLeadingPathSeparator)) {
                 fullPath.append(File.separator);
             }
             tryingRepoBase = true;
@@ -286,20 +293,25 @@ public class FileUtils {
         fullPath.append(path);
         testDir = new File(fullPath.toString());
         if (testDir.exists() && testDir.isDirectory()) {
+            // The path is repoBase + specific path and exists
             return fullPath.toString();
         }
 
         testDir = new File(path);
         if (testDir.exists() && testDir.isDirectory()) {
             if (tryingRepoBase) {
-                fLogger.log(Level.WARNING, "Repositories base dir pref and passed path together ({0}) didn''t point to a valid directory, using just the passed path ({1})",
+                fLogger.log(Level.WARNING, "Repositories base dir pref and passed path together ({0}) "
+                        + "didn''t point to a valid directory, using just the passed path ({1})",
                         new Object[]{fullPath.toString(), path});
             }
+            // The path is just specific path and exists
             return path;
         } else {
-            fLogger.log(Level.WARNING, "Passed path was not valid, with and without repositories base dir");
-            return ".";
+            // There is no valid path at all, this is not good
+            String errorMessage = "Passed path was not valid, with and without repositories base dir:\n"
+                    + "  " + path;
+            fLogger.log(Level.SEVERE, errorMessage);
+            throw new IOException(errorMessage);
         }
     }
-
 }

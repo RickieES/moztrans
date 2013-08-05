@@ -25,6 +25,7 @@ package org.mozillatranslator.action;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.IOException;
 import javax.swing.AbstractAction;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -68,12 +69,12 @@ public class ExportProductToCvsAction extends AbstractAction {
                 Kernel.settings.setString(Settings.GUI_EXPORT_FILE_CHOOSER_PATH, "");
                 prodList = piePanel.getSelectedProducts();
                 for(Product p : prodList) {
-                    File selectedDir = new File((prodList.length == 1) ?
-                            piePanel.getImpExpPath() :
-                            FileUtils.getFullRepoDir(p.getCVSImpExpTranslationPath()));
-                    ExportToCvsRunner runner = new ExportToCvsRunner(p, selectedDir, l10n, piePanel.isExportOnlyModified());
-                    runner.start();
                     try {
+                        File selectedDir = new File((prodList.length == 1) ?
+                                piePanel.getImpExpPath() :
+                                FileUtils.getFullRepoDir(p.getCVSImpExpTranslationPath()));
+                        ExportToCvsRunner runner = new ExportToCvsRunner(p, selectedDir, l10n, piePanel.isExportOnlyModified());
+                        runner.start();
                         // We wait for the thread to end, since the datamodel is not really designed to be
                         // thread-safe
                         runner.join();
@@ -81,6 +82,9 @@ public class ExportProductToCvsAction extends AbstractAction {
                         JOptionPane.showMessageDialog(Kernel.mainWindow, "Operation interrupted while dealing with product "
                                 + p.getName() + ", exitting");
                         return;
+                    } catch (IOException e) {
+                        JOptionPane.showMessageDialog(Kernel.mainWindow, e.getMessage(),
+                                "Error in product " + p.getName(), JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }

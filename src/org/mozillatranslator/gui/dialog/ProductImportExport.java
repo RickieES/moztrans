@@ -24,6 +24,7 @@ package org.mozillatranslator.gui.dialog;
 
 import java.awt.Container;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JCheckBox;
@@ -402,6 +403,10 @@ public class ProductImportExport extends javax.swing.JPanel {
                     f = new File(FileUtils.getFullRepoDir(prod.getCVSImportOriginalPath()));
                 } catch (java.lang.NullPointerException e) {
                     f = new File("");
+                } catch (IOException e) {
+                    JOptionPane.showMessageDialog(Kernel.mainWindow, e.getMessage(),
+                            "Error in product " + prod.getName(), JOptionPane.ERROR_MESSAGE);
+                    f = new File("");
                 }
             }
         }
@@ -457,11 +462,23 @@ public class ProductImportExport extends javax.swing.JPanel {
                     } else {
                         switch (typeAction) {
                             case TYPE_IMPORT_ORIGINAL:
-                                impExpPathTextField.setText(FileUtils.getFullRepoDir(prod.getCVSImportOriginalPath()));
+                                try {
+                                    impExpPathTextField.setText(FileUtils.getFullRepoDir(prod.getCVSImportOriginalPath()));
+                                } catch (IOException e) {
+                                    JOptionPane.showMessageDialog(Kernel.mainWindow, e.getMessage(),
+                                            "Error in product " + prod.getName(), JOptionPane.ERROR_MESSAGE);
+                                    impExpPathTextField.setText("");
+                                }
                                 break;
                             case TYPE_IMPORT_TRANSLATION:
                             case TYPE_EXPORT_TRANSLATION:
-                                impExpPathTextField.setText(FileUtils.getFullRepoDir(prod.getCVSImpExpTranslationPath()));
+                                try {
+                                    impExpPathTextField.setText(FileUtils.getFullRepoDir(prod.getCVSImpExpTranslationPath()));
+                                } catch (IOException e) {
+                                    JOptionPane.showMessageDialog(Kernel.mainWindow, e.getMessage(), "Error with a path",
+                                            JOptionPane.ERROR_MESSAGE);
+                                    impExpPathTextField.setText("");
+                                }
                                 break;
                         }
                     }

@@ -25,6 +25,7 @@
 package org.mozillatranslator.action;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import javax.swing.AbstractAction;
@@ -89,23 +90,23 @@ public class UpdateProductAction extends AbstractAction {
 
             prodList = piePanel.getSelectedProducts();
             for (Product p : prodList) {
-                puDO.setProd(p);
-                puDO.setL10n(Kernel.ORIGINAL_L10N);
-
-                // If CVS Import Path is not empty, we'll run CVS Import Directory,
-                // else traditional JAR Product Update
-                if (p.getCVSImportOriginalPath().trim().length() > 0) {
-                    File selectedDir = new File((prodList.length == 1) ? piePanel.getImpExpPath()
-                                                                       : FileUtils.getFullRepoDir(p.getCVSImportOriginalPath()));
-                    puDO.setImportDir(selectedDir);
-                    runner = new ImportFromCvsRunner(puDO);
-                } else {
-                    puDO.setImportDir(null);
-                    runner = new UpdateProductRunner(puDO);
-                }
-                Kernel.feedback.progress("Updating " + puDO.getProd().getName());
-                runner.start();
                 try {
+                    puDO.setProd(p);
+                    puDO.setL10n(Kernel.ORIGINAL_L10N);
+
+                    // If CVS Import Path is not empty, we'll run CVS Import Directory,
+                    // else traditional JAR Product Update
+                    if (p.getCVSImportOriginalPath().trim().length() > 0) {
+                        File selectedDir = new File((prodList.length == 1) ? piePanel.getImpExpPath()
+                                                                           : FileUtils.getFullRepoDir(p.getCVSImportOriginalPath()));
+                        puDO.setImportDir(selectedDir);
+                        runner = new ImportFromCvsRunner(puDO);
+                    } else {
+                        puDO.setImportDir(null);
+                        runner = new UpdateProductRunner(puDO);
+                    }
+                    Kernel.feedback.progress("Updating " + puDO.getProd().getName());
+                    runner.start();
                     // We wait for the thread to end, since the datamodel is not really designed to be
                     // thread-safe
                     runner.join();
@@ -113,6 +114,9 @@ public class UpdateProductAction extends AbstractAction {
                     JOptionPane.showMessageDialog(Kernel.mainWindow,
                             "Operation interrupted while dealing with product " + p.getName() + ", exitting");
                     return;
+                } catch (IOException e) {
+                    JOptionPane.showMessageDialog(Kernel.mainWindow, e.getMessage(),
+                            "Error in product " + p.getName(), JOptionPane.ERROR_MESSAGE);
                 }
             }
             Kernel.feedback.progress("Sorting change list");

@@ -26,6 +26,7 @@ package org.mozillatranslator.gui.dialog;
 
 import java.awt.CardLayout;
 import java.io.File;
+import java.io.IOException;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JList;
@@ -623,6 +624,10 @@ public class EditProduct extends JDialog {
                 try {
                     f = new File(FileUtils.getFullRepoDir(prod.getCVSImportOriginalPath()));
                 } catch (java.lang.NullPointerException e) {
+                    f = new File("");
+                } catch (IOException e) {
+                    JOptionPane.showMessageDialog(Kernel.mainWindow, e.getMessage(),
+                            "Error in product " + prod.getName(), JOptionPane.ERROR_MESSAGE);
                     f = new File("");
                 }
             }

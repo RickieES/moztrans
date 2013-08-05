@@ -25,6 +25,7 @@ package org.mozillatranslator.action;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.IOException;
 import javax.swing.AbstractAction;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -77,13 +78,13 @@ public class ImportProductTranslationFromCvsAction extends AbstractAction {
                 puDO.setL10n(swd.getSelectedLocale());
 
                 if (p.getCVSImportOriginalPath().trim().length() > 0) {
-                    File selectedDir = new File((prodList.length == 1) ?
-                            piePanel.getImpExpPath()
-                            : FileUtils.getFullRepoDir(p.getCVSImportOriginalPath()));
-                    puDO.setImportDir(selectedDir);
-                    ImportFromCvsRunner runner = new ImportFromCvsRunner(puDO);
-                    runner.start();
                     try {
+                        File selectedDir = new File((prodList.length == 1) ?
+                                piePanel.getImpExpPath()
+                                : FileUtils.getFullRepoDir(p.getCVSImportOriginalPath()));
+                        puDO.setImportDir(selectedDir);
+                        ImportFromCvsRunner runner = new ImportFromCvsRunner(puDO);
+                        runner.start();
                         // We wait for the thread to end, since the datamodel is not really designed to be
                         // thread-safe
                         runner.join();
@@ -91,6 +92,9 @@ public class ImportProductTranslationFromCvsAction extends AbstractAction {
                         JOptionPane.showMessageDialog(Kernel.mainWindow,
                                 "Operation interrupted while dealing with product " + p.getName() + ", exitting");
                         return;
+                    } catch (IOException e) {
+                        JOptionPane.showMessageDialog(Kernel.mainWindow, e.getMessage(),
+                                "Error in product " + p.getName(), JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }
