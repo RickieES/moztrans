@@ -39,7 +39,9 @@ public class ExportComponentRunner extends MozTask {
     public ExportComponentRunner() {
     }
 
-    /** the main method */
+    /** the main method
+     * @throws MozException 
+     */
     @Override
     public void  taskImplementation() throws MozException {
         ComponentTransferDataObject dao = (ComponentTransferDataObject) dataObject;
