@@ -155,7 +155,7 @@ public class PhraseList extends ArrayList<Phrase> implements ListModel,
      * passed in and sorts the PhraseList based on its percentage (values range
      * from 0 to 100)
      * 
-     * @param p the prase for which we want to calculate the matching percentage
+     * @param p the phrase for which we want to calculate the matching percentage
      */
     public void calculateMatchPercentage(Phrase p) {
         this.matchPercentage = new int[this.getSize()];
