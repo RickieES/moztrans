@@ -64,7 +64,11 @@ public class SaveGlossaryRunner extends MozTask {
                     "org.mozillatranslator.io.PropertiesPersistance");
             ga = (GlossaryAccess) Class.forName(pclass).newInstance();
             ga.saveEntireGlossary();
-        } catch (Exception e) {
+        } catch (ClassNotFoundException e) {
+            throw new MozException("Error while saving glossary ", e);
+        } catch (InstantiationException e) {
+            throw new MozException("Error while saving glossary ", e);
+        } catch (IllegalAccessException e) {
             throw new MozException("Error while saving glossary ", e);
         }
     }
