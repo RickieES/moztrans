@@ -164,7 +164,7 @@ public class Settings {
     // Translation Status colors
     public static final String TRNS_STATUS_COLOR = "trnsstatus.color";
 
-    private Properties current;
+    private final Properties current;
 
     /** Creates new Settings */
     public Settings() {
@@ -172,7 +172,7 @@ public class Settings {
 
         // system setting
         startup.setProperty(SETTINGS_FILENAME, "mozillatranslator.properties");
-        startup.setProperty(SYSTEM_VERSION, "5.31");
+        startup.setProperty(SYSTEM_VERSION, "5.40");
         // logging settings
         startup.setProperty(LOGGING_SOUT, "true");
         startup.setProperty(LOGGING_SERR, "false");
@@ -335,7 +335,7 @@ public class Settings {
      * @return the result
      * @param key the key to get */
     public boolean getBoolean(String key) {
-        return Boolean.valueOf(current.getProperty(key, "false")).booleanValue();
+        return Boolean.parseBoolean(current.getProperty(key, "false"));
     }
 
     /** Returns a setting as a boolean
@@ -343,7 +343,7 @@ public class Settings {
      * @param defValue the default value if the setting is not found
      * @param key the key to get */
     public boolean getBoolean(String key, boolean defValue) {
-        return Boolean.valueOf(current.getProperty(key, "" + defValue)).booleanValue();
+        return Boolean.parseBoolean(current.getProperty(key, "" + defValue));
     }
 
     /** Returns a setting as a int,using 0 as the default
