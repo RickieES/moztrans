@@ -26,10 +26,10 @@
 package org.mozillatranslator.gui.dialog;
 
 import javax.swing.*;
-
-import org.mozillatranslator.kernel.*;
 import org.mozillatranslator.datamodel.*;
+import org.mozillatranslator.kernel.*;
 import org.mozillatranslator.util.*;
+
 /**
  *
  * @author  Henrik Lynggaard
@@ -170,10 +170,8 @@ public class ManageProducts extends JDialog
 	 private void editButtonPressed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_editButtonPressed
 	 {//GEN-HEADEREND:event_editButtonPressed
 		 Product prod = (Product) productList.getSelectedValue();
-		 if (prod != null)
-		 {
+		 if (prod != null) {
 			 EditProduct ep = new EditProduct(prod);
-
 			 ep.showDialog();
 		 }
 	 }//GEN-LAST:event_editButtonPressed
@@ -183,8 +181,7 @@ public class ManageProducts extends JDialog
 		 Product prod = new Product("");
 		 EditProduct ep = new EditProduct(prod);
 
-		 if (ep.showDialog())
-		 {
+		 if (ep.showDialog()) {
 			 Kernel.datamodel.addProduct(prod);
 		 }
 	 }//GEN-LAST:event_addButtonPressed
@@ -195,14 +192,11 @@ public class ManageProducts extends JDialog
 		 dispose();
 	 }//GEN-LAST:event_exitButtonPressed
 
-	 public void showDialog()
-	 {
-		 okay = false;
-		 setVisible(true);
-		 dispose();
+	 public void showDialog() {
+            okay = false;
+            setVisible(true);
+            dispose();
 	 }
-
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;
@@ -215,5 +209,4 @@ public class ManageProducts extends JDialog
     private javax.swing.JButton removeButton;
     // End of variables declaration//GEN-END:variables
 	 private boolean okay;
-
 }
