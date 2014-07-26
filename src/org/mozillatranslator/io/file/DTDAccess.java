@@ -92,7 +92,7 @@ public class DTDAccess extends FileAccessAdapter {
 
                     line = "<!ENTITY " + ee.getName().charAt(0) + " " +
                             ee.getName().substring(1) +
-                            ((ee.getPublicId().equals("")) ?
+                            ((ee.getPublicId().isEmpty()) ?
                                 " SYSTEM \"" + ee.getSystemId() :
                                 " PUBLIC \"" + ee.getPublicId()
                                 ) + "\">";
@@ -172,8 +172,8 @@ public class DTDAccess extends FileAccessAdapter {
     public void beginRead(ImportExportDataObject dataObject) throws MozIOException {
         try {
             bais = new ByteArrayInputStream(dataObject.getFileContent());
-            map = new LinkedHashMap();
-            commentMap = new LinkedHashMap();
+            map = new LinkedHashMap(10);
+            commentMap = new LinkedHashMap(10);
 
             DTDFile datamodelFile = (DTDFile) dataObject.getNode();
             DTDReadHelper helper = new DTDReadHelper();
@@ -196,6 +196,8 @@ public class DTDAccess extends FileAccessAdapter {
                 datamodelFile.setExternalEntities(helper.getExternalEntities());
             }
         } catch (Exception e) {
+            System.out.println("Exception found: " + e.getMessage());
+            e.printStackTrace();
             throw new MozIOException("Cannot read dtd file " + dataObject.getNode().getName(), e);
         }
     }

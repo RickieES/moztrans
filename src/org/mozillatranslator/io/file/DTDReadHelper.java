@@ -52,12 +52,6 @@ import org.xml.sax.ext.DefaultHandler2;
  * @author henrik
  */
 public class DTDReadHelper extends DefaultHandler2 {
-    private LinkedHashMap map;
-    private LinkedHashMap commentMap;
-    private InputStream is;
-    private MozLicense thisFileLicense;
-    private ArrayList externalEntities = new ArrayList();
-    private String tempCommentHolder = null;
 
     // In order to get the SAXParser work properly with a DTD file not bound to any XML, we need to trick it into
     // believing it is working with an XML file
@@ -66,6 +60,12 @@ public class DTDReadHelper extends DefaultHandler2 {
             "<dialog></dialog>";
     private static final Logger fLogger = Logger.getLogger(DTDReadHelper.class.getPackage().
             getName());
+    private LinkedHashMap map;
+    private LinkedHashMap commentMap;
+    private InputStream is;
+    private MozLicense thisFileLicense;
+    private ArrayList externalEntities = new ArrayList();
+    private String tempCommentHolder = null;
 
 
     /** Creates a new instance of DTDReadHelper */

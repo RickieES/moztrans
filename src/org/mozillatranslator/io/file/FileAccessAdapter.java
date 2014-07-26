@@ -70,9 +70,9 @@ import org.mozillatranslator.kernel.Settings;
  * @author Henrik Lynggaard
  **/
 public abstract class FileAccessAdapter implements FileAccess {
-    protected LinkedHashMap commentMap;
     private static final Logger fLogger = Logger.getLogger(
             FileAccessAdapter.class.getPackage().getName());
+    protected LinkedHashMap commentMap;
 
     /***************************************************************************
      * Saving files

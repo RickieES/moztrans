@@ -21,33 +21,36 @@
  * Henrik Lynggaard Hansen (Initial Code)
  *
  */
-
 package org.mozillatranslator.io.file;
 
 import org.mozillatranslator.dataobjects.ImportExportDataObject;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import org.mozillatranslator.io.common.*;
-import org.mozillatranslator.datamodel.*;
-import org.mozillatranslator.kernel.*;
+import org.mozillatranslator.datamodel.BinaryFile;
+import org.mozillatranslator.datamodel.Phrase;
+import org.mozillatranslator.kernel.Kernel;
 
 /**
  *
- * @author  Henrik Lynggaard
+ * @author Henrik Lynggaard
  * @version 1.0
  */
 public class BinaryAccess implements FileAccess {
+
     private final static String UNKNOWN_FILETYPE_DEFAULT_KEY = "UNKNOWN_FILETYPE_DEFAULT_KEY";
     // FIXME: the entire binary vs text io needs refactoring
-    
-    /** Creates new BinaryAccess */
+
+    /**
+     * Creates new BinaryAccess
+     */
     public BinaryAccess() {
     }
-    
+
     /**
      * Saves the file
+     *
      * @param dataObject an object with all needed information to perform the
-     *        persistence
+     * persistence
      */
     @Override
     public void save(ImportExportDataObject dataObject) {
@@ -65,23 +68,24 @@ public class BinaryAccess implements FileAccess {
             }
         }
     }
-    
+
     /**
      * Loads the file
+     *
      * @param dataObject an object with all needed information to perform the
-     *        persistence
+     * persistence
      */
     @Override
     public void load(ImportExportDataObject dataObject) {
         Phrase currentPhrase;
-        
+
         // Decide where to put it
         if (dataObject.getL10n().equals(Kernel.ORIGINAL_L10N)) {
             BinaryFile binFile = (BinaryFile) dataObject.getNode();
             binFile.setBinaryContent(dataObject.getFileContent());
             MessageDigest digest;
             byte[] hash;
-            
+
             try {
                 digest = java.security.MessageDigest.getInstance("MD5");
                 digest.update(binFile.getBinaryContent());
@@ -89,21 +93,21 @@ public class BinaryAccess implements FileAccess {
             } catch (NoSuchAlgorithmException ex) {
                 hash = new byte[0];
             }
-            
+
             StringBuilder sb = new StringBuilder();
-            for(int i = 0; i < hash.length; i++) {
+            for (int i = 0; i < hash.length; i++) {
                 String s = Integer.toHexString(0xFF & hash[i]).toUpperCase();
                 sb.append(hash[i] < 0x10 ? "0" : "").append(s);
             }
-            
+
             currentPhrase = (Phrase) binFile.getChildByName(UNKNOWN_FILETYPE_DEFAULT_KEY);
             if (currentPhrase == null) {
                 currentPhrase = new Phrase(UNKNOWN_FILETYPE_DEFAULT_KEY, binFile,
-                                           "Unknown filetype!!!");
+                        "Unknown filetype!!!");
                 binFile.addChild(currentPhrase);
                 currentPhrase.setText("Use Binary edit dialog to Translate");
             }
-            
+
             // Has the binary file changed?
             if (!binFile.getMd5Hash().equals(sb.toString())) {
                 dataObject.getChangeList().add(currentPhrase);
