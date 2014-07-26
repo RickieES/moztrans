@@ -42,7 +42,11 @@ public class Platform extends MozTreeNode implements ProductChild {
     private String jarFile;
     private int type;
 
-    /** Creates new Platform */
+    /** Creates new Platform
+     * @param n Name of the platform
+     * @param p Parent of this platform
+     * @param t Type of the platform
+     */
     public Platform(String n, TreeNode p, int t) {
         super(n, p, TreeNode.LEVEL_PRODUCTCHILD);
         type = t;
@@ -141,7 +145,7 @@ public class Platform extends MozTreeNode implements ProductChild {
             case ProductChild.TYPE_UNIX:
             case ProductChild.TYPE_WINDOWS:
             case ProductChild.TYPE_MAC:
-                result = l10n.substring(0, l10n.indexOf("-")) + getTypeDef(type);
+                result = l10n.substring(0, l10n.indexOf('-')) + getTypeDef(type);
                 break;
         }
         return result;
