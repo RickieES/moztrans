@@ -60,16 +60,16 @@ public class DataUtils {
         KeyValuePair pair;
         List theList = new ArrayList();
 
-        pair = new KeyValuePair(new Integer(ProductChild.TYPE_WINDOWS), Kernel.translate("Windows"));
+        pair = new KeyValuePair(ProductChild.TYPE_WINDOWS, Kernel.translate("Windows"));
         theList.add(pair);
 
-        pair = new KeyValuePair(new Integer(ProductChild.TYPE_UNIX), Kernel.translate("Unix"));
+        pair = new KeyValuePair(ProductChild.TYPE_UNIX, Kernel.translate("Unix"));
         theList.add(pair);
 
-        pair = new KeyValuePair(new Integer(ProductChild.TYPE_MAC), Kernel.translate("Mac"));
+        pair = new KeyValuePair(ProductChild.TYPE_MAC, Kernel.translate("Mac"));
         theList.add(pair);
 
-        pair = new KeyValuePair(new Integer(ProductChild.TYPE_OTHER), Kernel.translate("Other"));
+        pair = new KeyValuePair(ProductChild.TYPE_OTHER, Kernel.translate("Other"));
         theList.add(pair);
 
         return theList;

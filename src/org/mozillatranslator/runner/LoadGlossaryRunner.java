@@ -25,6 +25,9 @@
 
 package org.mozillatranslator.runner;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.mozillatranslator.dataobjects.LoadGlossaryDataObject;
 import org.mozillatranslator.io.glossary.GlossaryAccess;
 import org.mozillatranslator.kernel.Kernel;
@@ -68,10 +71,12 @@ public class LoadGlossaryRunner extends MozTask {
 
             pclass = Kernel.settings.getString(Settings.DATAMODEL_PCLASS,
                     "org.mozillatranslator.io.PropertiesPersistance");
-            ga = (GlossaryAccess) Class.forName(pclass).newInstance();
+            ga = (GlossaryAccess) Class.forName(pclass).getDeclaredConstructor().newInstance();
             ga.loadEntireGlossary((LoadGlossaryDataObject) dataObject);
-        } catch (Exception e) {
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
             throw new MozException("Could not load glossary", e);
+        } catch (NoSuchMethodException | SecurityException | IllegalArgumentException | InvocationTargetException ex) {
+            Logger.getLogger(LoadGlossaryRunner.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

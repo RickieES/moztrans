@@ -226,9 +226,10 @@ public class MainWindow extends javax.swing.JFrame {
         }
 
         private void loadIcon() {
-            URL url = Object.class.getResource("/org/mozillatranslator/resource/mt_icon_small.gif");
+            URL url = MainWindow.class.getResource("/org/mozillatranslator/resource/mt_icon_small.gif");
+            Toolkit tk = Toolkit.getDefaultToolkit();
 
-            Image img = Toolkit.getDefaultToolkit().getImage(url);
+            Image img = tk.getImage(url);
             MediaTracker tracker = new MediaTracker(this);
             tracker.addImage(img, 0);
             try {

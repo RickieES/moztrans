@@ -750,13 +750,15 @@ public class PropertiesPersistance implements GlossaryAccess {
         long alteredTime;
 
         name = model.getProperty(prefix + NAME);
-        jarFile = model.getProperty(prefix + JARFILE);
-        alteredTime = Long.parseLong("0" + model.getProperty(prefix + ALTERED, ""));
+        if (name != null) {
+            jarFile = model.getProperty(prefix + JARFILE);
+            alteredTime = Long.parseLong("0" + model.getProperty(prefix + ALTERED, ""));
 
-        currentRegion = currentProduct.getRegional();
-        currentRegion.setJarFile(jarFile);
-        currentRegion.setAlteredTime(alteredTime);
-        readContent(model, currentRegion, prefix);
+            currentRegion = currentProduct.getRegional();
+            currentRegion.setJarFile(jarFile);
+            currentRegion.setAlteredTime(alteredTime);
+            readContent(model, currentRegion, prefix);
+        }
     }
 
     /**
@@ -769,12 +771,16 @@ public class PropertiesPersistance implements GlossaryAccess {
     private void readCustom(Properties model, CustomContainer localroot, String prefix) {
         int fileMax;
         String filePrefix;
-
-        fileMax = Integer.parseInt(model.getProperty("" + prefix + COUNT));
-        for (int fileCount = 0; fileCount < fileMax; fileCount++) {
-            filePrefix = prefix + "." + fileCount;
-            readFile(model, localroot, filePrefix);
-        } // end of file loop
+        String fileCountProperty;
+        
+        fileCountProperty = model.getProperty("" + prefix + COUNT);
+        if (fileCountProperty != null) {
+            fileMax = Integer.parseInt(fileCountProperty);
+            for (int fileCount = 0; fileCount < fileMax; fileCount++) {
+                filePrefix = prefix + "." + fileCount;
+                readFile(model, localroot, filePrefix);
+            }
+        }
     }
 
     /**

@@ -201,7 +201,7 @@ public class SimpleFontChooser extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         getContentPane().add(sizeLabel, gridBagConstraints);
 
-        sizeSpinner.setValue(new Integer(12));
+        sizeSpinner.setValue(Integer.valueOf(12));
         sizeSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 sizeSpinnerStateChanged(evt);

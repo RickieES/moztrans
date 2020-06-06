@@ -23,12 +23,14 @@
  */
 package org.mozillatranslator.kernel;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.*;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.UnsupportedLookAndFeelException;
 import org.mozillatranslator.datamodel.DataModel;
 import org.mozillatranslator.datamodel.TranslationSuggestions;
 import org.mozillatranslator.gui.MainWindow;
@@ -93,7 +95,7 @@ public class Kernel {
             l10n = new L10nManager();
             datamodel = new DataModel();
             Kernel.appLog.log(Level.INFO, "Kernel.setttings {0}", Kernel.settings);
-        } catch (Exception e) {
+        } catch (IOException | SecurityException e) {
             System.err.println("Could not init \n" + e);
         }
     }
@@ -110,7 +112,7 @@ public class Kernel {
     }
 
     public static List<String> getAvailableLookAndFeels() {
-        ArrayList<String> availableLookAndFeels = new ArrayList<String>();
+        ArrayList<String> availableLookAndFeels = new ArrayList<>(5);
 
         for(LookAndFeelInfo lafInfo : UIManager.getInstalledLookAndFeels()) {
             availableLookAndFeels.add(lafInfo.getName());
@@ -125,14 +127,14 @@ public class Kernel {
             if (lafInfo.getName().equals(preferredLafName)) {
                 try {
                     UIManager.setLookAndFeel(lafInfo.getClassName());
-                } catch (Exception e1) {
+                } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e1) {
                     // UnsupportedLookAndFeelException, ClassNotFoundException,
                     // InstantiationException or IllegalAccessException could be
                     // thrown; in any case, we fallback to the cross-platform L&F
                     try {
                         Kernel.appLog.log(Level.WARNING, "L&F {0} couldn't be applied", preferredLafName);
                         UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-                    } catch (Exception e2) {
+                    } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e2) {
                         Kernel.appLog.log(Level.SEVERE,
                                 "Default Metal L&F couldn't be applied, execution can't continue");
                         return false;
