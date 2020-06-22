@@ -25,6 +25,7 @@
 
 package org.mozillatranslator.runner;
 
+import java.lang.reflect.InvocationTargetException;
 import org.mozillatranslator.io.glossary.GlossaryAccess;
 import org.mozillatranslator.kernel.Kernel;
 import org.mozillatranslator.kernel.MozException;
@@ -62,13 +63,13 @@ public class SaveGlossaryRunner extends MozTask {
         try {
             pclass = Kernel.settings.getString(Settings.DATAMODEL_PCLASS,
                     "org.mozillatranslator.io.PropertiesPersistance");
-            ga = (GlossaryAccess) Class.forName(pclass).newInstance();
+            ga = (GlossaryAccess) Class.forName(pclass)
+                    .getDeclaredConstructor().newInstance();
             ga.saveEntireGlossary();
-        } catch (ClassNotFoundException e) {
-            throw new MozException("Error while saving glossary ", e);
-        } catch (InstantiationException e) {
-            throw new MozException("Error while saving glossary ", e);
-        } catch (IllegalAccessException e) {
+        } catch (ClassNotFoundException | InstantiationException
+                | IllegalAccessException | NoSuchMethodException
+                | SecurityException | IllegalArgumentException
+                | InvocationTargetException e) {
             throw new MozException("Error while saving glossary ", e);
         }
     }

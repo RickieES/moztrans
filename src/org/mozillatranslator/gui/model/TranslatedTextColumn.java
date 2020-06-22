@@ -37,22 +37,22 @@ import org.mozillatranslator.datamodel.TrnsStatus;
  * @version 1.0
  */
 public class TranslatedTextColumn implements ComplexColumn {
-    private static final Class STR_CLASS = "dummy".getClass();
+    private static final Class<? extends Object> STR_CLASS = String.class;
 
     /** Creates new TranslatedTextColumn */
     public TranslatedTextColumn() {
     }
 
     @Override
-    public Class getColumnClass() {
+    public Class<? extends Object> getColumnClass() {
         return STR_CLASS;
     }
 
     @Override
     public Object getValue(Phrase currentPhrase, String currentLocalization) {
-        boolean test = false;
+        boolean test;
         String result = "";
-        String dlgType = "";
+        String dlgType;
 
         if (currentPhrase.getName().equals("MT_UknownFileType")) {
             GenericFile curFile = (GenericFile) currentPhrase.getParent();
@@ -88,11 +88,7 @@ public class TranslatedTextColumn implements ComplexColumn {
         if (currentPhrase.getName().equals("MT_UknownFileType")) {
             result = false;
         } else {
-            if (currentPhrase.isKeepOriginal()) {
-                result = false;
-            } else {
-                result = true;
-            }
+            result = !currentPhrase.isKeepOriginal();
         }
         return result;
     }
@@ -108,7 +104,7 @@ public class TranslatedTextColumn implements ComplexColumn {
         Translation currentTranslation;
         String strValue = (String) value;
 
-        if (!strValue.equals("")) {
+        if (!strValue.isEmpty()) {
             currentTranslation = (Translation) currentPhrase.getChildByName(
                     currentLocalization);
 

@@ -33,8 +33,8 @@ import org.mozillatranslator.datamodel.TreeNode;
  * @version 1.0
  */
 public class ContainerColumn implements ComplexColumn {
-    private static final Class STR_CLASS = "dummy".getClass();
-    private static String[] parentList = {"", "", "", "", "", "", "", "", "", ""};
+    private static final Class<? extends Object> STR_CLASS = String.class;
+    private static final String[] parentList = {"", "", "", "", "", "", "", "", "", ""};
 
     /** Creates new KeyColumn */
     public ContainerColumn() {
@@ -42,7 +42,7 @@ public class ContainerColumn implements ComplexColumn {
     }
     
     @Override
-    public Class getColumnClass()
+    public Class<? extends Object> getColumnClass()
     {
         return STR_CLASS;
     }

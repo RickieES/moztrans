@@ -36,7 +36,7 @@ import org.mozillatranslator.datamodel.TrnsStatus;
  * @version 1.0
  */
 public class TranslatedStatusColumn implements ComplexColumn {
-    private static final Class STATUS_CLASS = TrnsStatus.class;
+    private static final Class<? extends Object> STATUS_CLASS = TrnsStatus.class;
 
     /** Creates new KeyColumn */
     public TranslatedStatusColumn() {
@@ -44,7 +44,7 @@ public class TranslatedStatusColumn implements ComplexColumn {
     }
 
     @Override
-    public Class getColumnClass() {
+    public Class<? extends Object> getColumnClass() {
         return STATUS_CLASS;
     }
 
@@ -93,7 +93,7 @@ public class TranslatedStatusColumn implements ComplexColumn {
 
     @Override
     public void init(JTable table) {
-        JComboBox editCombo = new JComboBox();
+        JComboBox<TrnsStatus> editCombo = new JComboBox<>();
 
         for(TrnsStatus ts : TrnsStatus.values()) {
             editCombo.addItem(ts);

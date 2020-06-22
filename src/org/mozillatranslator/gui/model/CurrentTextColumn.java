@@ -34,14 +34,14 @@ import org.mozillatranslator.datamodel.TrnsStatus;
  * @version 1.0
  */
 public class CurrentTextColumn implements ComplexColumn {
-    private static final Class STR_CLASS = "dummy".getClass();
+    private static final Class<? extends Object> STR_CLASS = String.class;
 
     /** Creates new TranslatedTextColumn */
     public CurrentTextColumn() {
     }
 
     @Override
-    public Class getColumnClass() {
+    public Class<? extends Object> getColumnClass() {
         return STR_CLASS;
     }
 
@@ -89,7 +89,7 @@ public class CurrentTextColumn implements ComplexColumn {
         Translation currentTranslation;
         String strValue = (String) value;
 
-        if (!strValue.equals("")) {
+        if (!strValue.isEmpty()) {
             currentTranslation = (Translation)
                     currentPhrase.getChildByName(currentLocalization);
             if (currentTranslation == null) {

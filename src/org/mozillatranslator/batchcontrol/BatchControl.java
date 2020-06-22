@@ -28,8 +28,8 @@ package org.mozillatranslator.batchcontrol;
  * @version 1.0
  */
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,21 +45,23 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 public class BatchControl {
-    private HashMap commandMap = new HashMap();
+    private HashMap<String, BatchCommand> commandMap = new HashMap<>(10);
 
     public BatchControl() {
         int count = Kernel.settings.getInteger(Settings.BATCH_COMMAND_COUNT);
         for (int i = 0; i < count; i++) {
             try {
-                String curName = Kernel.settings.getString(Settings.BATCH_COMMAND_PREFIX + i + Settings.BATCH_COMMAND_NAME);
-                String curClass = Kernel.settings.getString(Settings.BATCH_COMMAND_PREFIX + i + Settings.BATCH_COMMAND_CLASS);
-                BatchCommand curCommand = (BatchCommand) Class.forName(curClass).newInstance();
+                String curName = Kernel.settings.getString(
+                        Settings.BATCH_COMMAND_PREFIX + i + Settings.BATCH_COMMAND_NAME);
+                String curClass = Kernel.settings.getString(
+                        Settings.BATCH_COMMAND_PREFIX + i + Settings.BATCH_COMMAND_CLASS);
+                BatchCommand curCommand = (BatchCommand) Class.forName(curClass)
+                        .getDeclaredConstructor().newInstance();
                 commandMap.put(curName, curCommand);
-            } catch (InstantiationException ex) {
-                Logger.getLogger(BatchControl.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IllegalAccessException ex) {
-                Logger.getLogger(BatchControl.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
+            } catch (InstantiationException | IllegalAccessException
+                    | ClassNotFoundException | NoSuchMethodException
+                    | SecurityException | IllegalArgumentException
+                    | InvocationTargetException ex) {
                 Logger.getLogger(BatchControl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -90,21 +92,13 @@ public class BatchControl {
                 if (currentNode.getNodeType() == Element.ELEMENT_NODE) {
                     commandName = currentNode.getNodeName();
                     if (commandMap.containsKey(commandName)) {
-                        currentCommand = (BatchCommand) commandMap.get(commandName);
+                        currentCommand = commandMap.get(commandName);
                         failed = currentCommand.action((Element) currentNode);
                     }
                 }
                 i++;
             }
-        } catch (BatchException ex) {
-            Logger.getLogger(BatchControl.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SAXException ex) {
-            Logger.getLogger(BatchControl.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(BatchControl.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(BatchControl.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ParserConfigurationException ex) {
+        } catch (BatchException | SAXException | IOException | ParserConfigurationException ex) {
             Logger.getLogger(BatchControl.class.getName()).log(Level.SEVERE, null, ex);
         }
 

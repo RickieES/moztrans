@@ -32,7 +32,7 @@ import org.mozillatranslator.datamodel.Phrase;
  * @version 1.0
  */
 public class ComponentColumn implements ComplexColumn {
-    private static final Class STR_CLASS = "dummy".getClass();
+    private static final Class<? extends Object> STR_CLASS = String.class;
 
     /** Creates new KeyColumn */
     public ComponentColumn() {
@@ -40,7 +40,7 @@ public class ComponentColumn implements ComplexColumn {
     }
     
     @Override
-    public Class getColumnClass() {
+    public Class<? extends Object> getColumnClass() {
         return STR_CLASS;
     }
     

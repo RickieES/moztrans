@@ -32,7 +32,7 @@ import org.mozillatranslator.datamodel.Phrase;
  * @version 1.0
  */
 public class KeepOriginalColumn implements ComplexColumn {
-    private static final Class BOOL_CLASS = Boolean.TRUE.getClass();
+    private static final Class<? extends Object> BOOL_CLASS = Boolean.class;
     
     /** Creates new KeyColumn */
     public KeepOriginalColumn() {
@@ -40,13 +40,13 @@ public class KeepOriginalColumn implements ComplexColumn {
     }
     
     @Override
-    public Class getColumnClass() {
+    public Class<? extends Object> getColumnClass() {
         return BOOL_CLASS;
     }
     
     @Override
     public Object getValue(Phrase currentPhrase, String currentLocalization) {
-        return Boolean.valueOf(currentPhrase.isKeepOriginal());
+        return currentPhrase.isKeepOriginal();
     }
     
     @Override
@@ -62,7 +62,7 @@ public class KeepOriginalColumn implements ComplexColumn {
     @Override
     public void setValue(Phrase currentPhrase, Object value, String currentLocalization) {
         Boolean boolValue = (Boolean) value;
-        currentPhrase.setKeepOriginal(boolValue.booleanValue());
+        currentPhrase.setKeepOriginal(boolValue);
     }
     
     @Override

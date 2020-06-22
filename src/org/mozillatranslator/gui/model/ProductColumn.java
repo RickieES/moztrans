@@ -26,7 +26,6 @@ package org.mozillatranslator.gui.model;
 
 import javax.swing.JTable;
 import org.mozillatranslator.datamodel.Phrase;
-import org.mozillatranslator.datamodel.TreeNode;
 
 /**
  *
@@ -34,8 +33,9 @@ import org.mozillatranslator.datamodel.TreeNode;
  * @version 1.0
  */
 public class ProductColumn implements ComplexColumn {
-    private static final Class STR_CLASS = "dummy".getClass();
-    private static String[] parentList = {"", "", "", "", "", "", "", "", "", ""};
+    private static final Class<? extends Object> STR_CLASS = String.class;
+    // Next line is commented out because parenList seems not being used anywhere 
+    // private static final String[] parentList = {"", "", "", "", "", "", "", "", "", ""};
 
     /** Creates new KeyColumn */
     public ProductColumn() {
@@ -43,7 +43,7 @@ public class ProductColumn implements ComplexColumn {
     }
     
     @Override
-    public Class getColumnClass() {
+    public Class<? extends Object> getColumnClass() {
         return STR_CLASS;
     }
     

@@ -33,7 +33,7 @@ import org.mozillatranslator.datamodel.Phrase;
  * @version 1.0
  */
 public class OriginalTextColumn implements ComplexColumn {
-    private static final Class STR_CLASS = "dummy".getClass();
+    private static final Class<? extends Object> STR_CLASS = String.class;
 
     /** Creates new OriginalTextColumn */
     public OriginalTextColumn() {
@@ -41,13 +41,13 @@ public class OriginalTextColumn implements ComplexColumn {
     }
 
     @Override
-    public Class getColumnClass() {
+    public Class<? extends Object> getColumnClass() {
         return STR_CLASS;
     }
 
     @Override
     public Object getValue(Phrase currentPhrase, String currentLocalization) {
-        String result = "";
+        String result;
         if (currentPhrase.getName().equals("MT_UknownFileType")) {
             if (currentPhrase.getParent() instanceof BinaryFile) {
                 result = "Binary files cannot be translated";

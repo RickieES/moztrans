@@ -48,7 +48,7 @@ public interface ComplexColumn {
      * Returns the class type of the column contents
      * @return the class type of the column contents
      */
-    public Class getColumnClass();
+    public Class<? extends Object> getColumnClass();
 
     /**
      * Reports if a specific cell of this column is editable

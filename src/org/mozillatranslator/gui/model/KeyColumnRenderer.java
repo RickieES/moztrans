@@ -40,9 +40,10 @@ import org.mozillatranslator.kernel.Settings;
  * @author rpalomares
  */
 public class KeyColumnRenderer extends DefaultTableCellRenderer {
-    private String localeName;
+    private final String localeName;
 
-    /** Creates a new instance of KeyColumnRenderer */
+    /** Creates a new instance of KeyColumnRenderer
+     * @param localeName Key code for locale (e.g.: en-US) */
     public KeyColumnRenderer(String localeName) {
         super();
         this.localeName = localeName;

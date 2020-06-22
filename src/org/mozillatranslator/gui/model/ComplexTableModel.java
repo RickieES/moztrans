@@ -42,9 +42,9 @@ import org.mozillatranslator.gui.ThreeDotKeyAdapter;
  */
 public class ComplexTableModel extends AbstractTableModel {
 
-    private List phrases;
+    private List<Phrase> phrases;
     private int rowCount;
-    private List columns;
+    private List<TableColumn> columns;
     private int columnCount;
     private String currentLocalization;
 
@@ -52,12 +52,15 @@ public class ComplexTableModel extends AbstractTableModel {
      * rows when a change happens */
     private JTable jTableReference;
 
-    /** Creates new ComplexTableModel */
-    public ComplexTableModel(List p, List c, String l) {
+    /** Creates new ComplexTableModel
+     * @param p List of phrases displayed in the table as rows
+     * @param c List of columns displayed in the table
+     * @param l locale code */
+    public ComplexTableModel(List<Phrase> p, List<TableColumn> c, String l) {
         init(p, c, l);
     }
 
-    public final void init(List p, List c, String l) {
+    public final void init(List<Phrase> p, List<TableColumn> c, String l) {
         phrases = p;
         columns = c;
         currentLocalization = l;
@@ -82,7 +85,7 @@ public class ComplexTableModel extends AbstractTableModel {
         DefaultTableColumnModel columnModel = new DefaultTableColumnModel();
         TableColumn column;
 
-        Iterator it = columns.iterator();
+        Iterator<TableColumn> it = columns.iterator();
         int i = 0;
         while (it.hasNext()) {
             ComplexColumn currentColumn = (ComplexColumn) it.next();
@@ -110,7 +113,7 @@ public class ComplexTableModel extends AbstractTableModel {
     }
 
     @Override
-    public Class getColumnClass(int index) {
+    public Class<? extends Object> getColumnClass(int index) {
         ComplexColumn currentColumn = (ComplexColumn) columns.get(index);
 
         return currentColumn.getColumnClass();
@@ -119,7 +122,7 @@ public class ComplexTableModel extends AbstractTableModel {
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         ComplexColumn currentColumn = (ComplexColumn) columns.get(columnIndex);
-        Phrase currentRow = (Phrase) phrases.get(rowIndex);
+        Phrase currentRow = phrases.get(rowIndex);
 
         return currentColumn.isCellEditable(currentRow, currentLocalization);
     }
@@ -129,7 +132,7 @@ public class ComplexTableModel extends AbstractTableModel {
         ComplexColumn currentColumn = (ComplexColumn) columns.get(columnIndex);
         Phrase currentRow;
         try {
-            currentRow = (Phrase) phrases.get(rowIndex);
+            currentRow = phrases.get(rowIndex);
             return currentColumn.getValue(currentRow, currentLocalization);
         } catch (RuntimeException e) {
             System.err.println(e);
@@ -143,7 +146,7 @@ public class ComplexTableModel extends AbstractTableModel {
         int curjTableCol;
 
         ComplexColumn currentColumn = (ComplexColumn) columns.get(columnIndex);
-        Phrase currentRow = (Phrase) phrases.get(rowIndex);
+        Phrase currentRow = phrases.get(rowIndex);
 
         currentColumn.setValue(currentRow, aValue, currentLocalization);
         curjTableRow = this.getJTableReference().getSelectedRow();
@@ -158,7 +161,7 @@ public class ComplexTableModel extends AbstractTableModel {
     }
 
     public Phrase getRow(int index) {
-        return (Phrase) phrases.get(index);
+        return phrases.get(index);
     }
 
     public JTable getJTableReference() {

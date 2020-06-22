@@ -45,7 +45,7 @@ public class DTDAccess extends FileAccessAdapter {
     private ByteArrayOutputStream baos;
     private OutputStreamWriter osw;
     private BufferedWriter bw;
-    private LinkedHashMap map;
+    private LinkedHashMap<String, String> map;
     private Iterator mapIterator;
     String currentKey;
 
@@ -120,7 +120,7 @@ public class DTDAccess extends FileAccessAdapter {
         String delim = "\"";
         try {
             String line;
-            if (writeValue.indexOf(delim) != -1) {
+            if (writeValue.contains(delim)) {
                 delim = "'";
             }
 
@@ -172,11 +172,11 @@ public class DTDAccess extends FileAccessAdapter {
     public void beginRead(ImportExportDataObject dataObject) throws MozIOException {
         try {
             bais = new ByteArrayInputStream(dataObject.getFileContent());
-            map = new LinkedHashMap(10);
-            commentMap = new LinkedHashMap(10);
+            map = new LinkedHashMap<>(10);
+            commentMap = new LinkedHashMap<>(10);
 
             DTDFile datamodelFile = (DTDFile) dataObject.getNode();
-            DTDReadHelper helper = new DTDReadHelper();
+            DTDReadHelper helper = new DTDReadHelper(dataObject.getFileName());
             helper.loadOriginal(bais, map, commentMap);
 
             if (helper.getThisFileLicense() != null) {
@@ -195,10 +195,12 @@ public class DTDAccess extends FileAccessAdapter {
             if (helper.getExternalEntities() != null) {
                 datamodelFile.setExternalEntities(helper.getExternalEntities());
             }
-        } catch (Exception e) {
-            System.out.println("Exception found: " + e.getMessage());
-            e.printStackTrace();
-            throw new MozIOException("Cannot read dtd file " + dataObject.getNode().getName(), e);
+        } catch (MozIOException e) {
+            System.out.println("Exception found while reading "
+                    + dataObject.getFileName() + ": "
+                    + e.getMessage());
+            throw new MozIOException("Cannot read dtd file "
+                    + dataObject.getNode().getName(), e);
         }
     }
 
@@ -227,7 +229,7 @@ public class DTDAccess extends FileAccessAdapter {
      */
     @Override
     public String getValue() throws MozIOException {
-        return (String) map.get(currentKey);
+        return map.get(currentKey);
     }
 
     /** {@inheritDoc}

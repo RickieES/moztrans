@@ -53,7 +53,7 @@ public class ComplexTableSorter extends ComplexTableMap {
     private Class columnType;
     private boolean ascending = true;
     private int compares;
-    private ArrayList columnHeaders = new ArrayList();
+    private ArrayList<Object> columnHeaders = new ArrayList<>(10);
     private boolean sorted = false;
 
     /**
@@ -82,10 +82,11 @@ public class ComplexTableSorter extends ComplexTableMap {
         super.setModel(model);
         reallocateIndexes();
 
-        columnHeaders = new ArrayList();
-        Enumeration enumeration = model.getTableColumnModel().getColumns();
+        columnHeaders = new ArrayList<>(10);
+        Enumeration<TableColumn> enumeration = model.getTableColumnModel().getColumns();
         while (enumeration.hasMoreElements()) {
-            columnHeaders.add(((TableColumn) enumeration.nextElement()).getHeaderValue());
+            TableColumn tc = enumeration.nextElement();
+            columnHeaders.add(tc.getHeaderValue());
         }
     }
 
@@ -159,9 +160,9 @@ public class ComplexTableSorter extends ComplexTableMap {
             }
         } else if (columnType == Boolean.class) {
             Boolean bool1 = (Boolean) o1;
-            boolean b1 = bool1.booleanValue();
+            boolean b1 = bool1;
             Boolean bool2 = (Boolean) o2;
-            boolean b2 = bool2.booleanValue();
+            boolean b2 = bool2;
 
             if (b1 == b2) {
                 return 0;
@@ -379,19 +380,19 @@ public class ComplexTableSorter extends ComplexTableMap {
 
                 if (e.getClickCount() == 1 && column != -1) {
                     //System.out.println("Sorting ...");
-                    int shiftPressed = e.getModifiers() & InputEvent.SHIFT_MASK;
+                    int shiftPressed = e.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK;
                     boolean ascending = (shiftPressed == 0);
 
                     DefaultTableColumnModel newColumnModel = new DefaultTableColumnModel();
 
-                    ArrayList columns = new ArrayList();
-                    Enumeration enumeration = columnModel.getColumns();
+                    ArrayList<TableColumn> columns = new ArrayList<>(10);
+                    Enumeration<TableColumn> enumeration = columnModel.getColumns();
                     while (enumeration.hasMoreElements()) {
                         columns.add(enumeration.nextElement());
                     }
 
                     for (int i = 0; i < columns.size(); i++) {
-                        TableColumn col = (TableColumn) columns.get(i);
+                        TableColumn col = columns.get(i);
                         String s = (String) columnHeaders.get(i);
                         if (i == column) {
                             if (ascending) {

@@ -28,6 +28,7 @@
 package org.mozillatranslator.io.file;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import org.mozillatranslator.datamodel.ExternalEntity;
@@ -55,37 +57,62 @@ public class DTDReadHelper extends DefaultHandler2 {
 
     // In order to get the SAXParser work properly with a DTD file not bound to any XML, we need to trick it into
     // believing it is working with an XML file
-    private static String dummyXml="<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+    private static final String DUMMYXML ="<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
             "<!DOCTYPE dialog SYSTEM \"MozillaTranslator\">" +
             "<dialog></dialog>";
+    private static final String BRANDDUMMYDTD = "";
     private static final Logger fLogger = Logger.getLogger(DTDReadHelper.class.getPackage().
             getName());
-    private LinkedHashMap map;
-    private LinkedHashMap commentMap;
+    private LinkedHashMap<String, String> map;
+    private LinkedHashMap<String, String> commentMap;
     private InputStream is;
     private MozLicense thisFileLicense;
-    private ArrayList externalEntities = new ArrayList();
+    private final ArrayList<ExternalEntity> externalEntities = new ArrayList<>(10);
     private String tempCommentHolder = null;
+    private final String fileName;
 
 
-    /** Creates a new instance of DTDReadHelper */
-    public DTDReadHelper() {
+    /** Creates a new instance of DTDReadHelper
+     * @param filename full pathname to be read/write */
+    public DTDReadHelper(String filename) {
         super();
+        fileName = filename;
         thisFileLicense = null;
     }
 
+
+//    @Override
+//    public InputSource resolveEntity(java.lang.String name, java.lang.String publicId,
+//            java.lang.String baseURI, java.lang.String systemId) {
+//
+//        if ((name != null) && (name.startsWith("%"))) {
+//            return new InputSource(new StringReader(""));
+//        } else {
+//            return new InputSource(is);
+//        }
+//    }
 
     @Override
     public InputSource resolveEntity(java.lang.String name, java.lang.String publicId,
             java.lang.String baseURI, java.lang.String systemId) {
 
-        if ((name != null) && (name.startsWith("%"))) {
-            return new InputSource(new StringReader(""));
+        if (name == null) {
+            switch (systemId) {
+                // Trick to get a SAX XML Parser to parse a DTD
+                case "MozillaTranslator":
+                    return new InputSource(is);
+
+                // Trick to resolve references to brand.dtd without
+                // actually having to resolve, load and parse
+                // the chrome: URI
+                case "chrome://branding/locale/brand.dtd":
+                default:
+                    return new InputSource(new ByteArrayInputStream(BRANDDUMMYDTD.getBytes()));
+            }
         } else {
-            return new InputSource(is);
+            return new InputSource(new StringReader(""));
         }
     }
-
 
     @Override
 public void externalEntityDecl(String name, String publicId, String systemId) {
@@ -107,17 +134,17 @@ public void externalEntityDecl(String name, String publicId, String systemId) {
 
 
         // Have we found the MPL1 license block?
-        if (thisComment.indexOf("*** BEGIN LICENSE BLOCK ***") > -1) {
+        if (thisComment.contains("*** BEGIN LICENSE BLOCK ***")) {
             contribLine = thisComment.indexOf("Contributor");
             blankLine = thisComment.indexOf("   -\n", contribLine);
             thisFileLicense = new MozLicense(null);
             thisFileLicense.setLicenseBlock(thisComment);
             thisFileLicense.setInsertionPos(blankLine);
-        } else if (thisComment.indexOf("http://mozilla.org/MPL/2.0/") > -1) {
+        } else if (thisComment.contains("http://mozilla.org/MPL/2.0/")) {
             thisFileLicense = new MozLicense(null);
             thisFileLicense.setLicenseBlock(thisComment);
             thisFileLicense.setInsertionPos(-1); // No contributors to be added in this license
-        } else if (thisComment.toUpperCase().indexOf("LOCALIZATION NOTE") > -1) {
+        } else if (thisComment.toUpperCase().contains("LOCALIZATION NOTE")) {
             /* The localization note format should be:
              *   LOCALIZATION NOTE (entity): comment
              * comment may expand several lines
@@ -161,8 +188,8 @@ public void externalEntityDecl(String name, String publicId, String systemId) {
     }
 
 
-    public void loadOriginal(InputStream is, LinkedHashMap map,
-            LinkedHashMap commentMap) throws MozIOException {
+    public void loadOriginal(InputStream is, LinkedHashMap<String, String> map,
+            LinkedHashMap<String, String> commentMap) throws MozIOException {
         try {
             this.is = is;
             this.map = map;
@@ -174,10 +201,10 @@ public void externalEntityDecl(String name, String publicId, String systemId) {
             XMLReader xmlread = saxParser.getXMLReader();
             xmlread.setProperty("http://xml.org/sax/properties/lexical-handler", this );
             xmlread.setProperty("http://xml.org/sax/properties/declaration-handler", this);
-
-            saxParser.parse(new ByteArrayInputStream(dummyXml.getBytes()), this);
-        } catch (Exception e) {
-            throw new MozIOException("DTD load original",e);
+            
+            saxParser.parse(new ByteArrayInputStream(DUMMYXML.getBytes()), this);
+        } catch (IOException | ParserConfigurationException | SAXException e) {
+            throw new MozIOException("DTD load error while reading " + fileName, e);
         }
     }
 
@@ -198,7 +225,7 @@ public void externalEntityDecl(String name, String publicId, String systemId) {
         }
     }
 
-    public ArrayList getExternalEntities() {
+    public ArrayList<ExternalEntity> getExternalEntities() {
         return externalEntities;
     }
 }

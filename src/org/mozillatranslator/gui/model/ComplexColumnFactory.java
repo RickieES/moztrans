@@ -23,6 +23,7 @@
  */
 package org.mozillatranslator.gui.model;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -37,36 +38,32 @@ import org.mozillatranslator.kernel.Settings;
 public class ComplexColumnFactory {
     private static List<ComplexColumn> columnList;
 
-    public static void init() {
+    public static void init() throws NoSuchMethodException, IllegalArgumentException,
+            InvocationTargetException {
         int count;
         String currentClass;
         String currentPreference;
         ComplexColumn currentColumn;
 
-        columnList = new ArrayList<ComplexColumn>();
+        columnList = new ArrayList<>(10);
         count = Kernel.settings.getInteger(Settings.COLUMN_COUNT);
         for (int i = 0; i < count; i++) {
             try {
                 currentPreference = Settings.COLUMN_CLASS_PREFIX + i
                                     + Settings.COLUMN_CLASS_SUFFIX;
                 currentClass = Kernel.settings.getString(currentPreference);
-                currentColumn = (ComplexColumn) Class.forName(currentClass).
-                        newInstance();
+                currentColumn = (ComplexColumn) Class.forName(currentClass)
+                    .getDeclaredConstructor().newInstance();
                 columnList.add(currentColumn);
-            } catch (InstantiationException ex) {
-                Logger.getLogger(ComplexColumnFactory.class.getName()).log(Level.SEVERE,
-                                    null, ex);
-            } catch (IllegalAccessException ex) {
-                Logger.getLogger(ComplexColumnFactory.class.getName()).log(Level.SEVERE,
-                                    null, ex);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(ComplexColumnFactory.class.getName()).log(Level.SEVERE,
-                                    null, ex);
+            } catch (InstantiationException | IllegalAccessException
+                    | ClassNotFoundException ex) {
+                Logger.getLogger(ComplexColumnFactory.class.getName())
+                        .log(Level.SEVERE, null, ex);
             }
         }
     }
 
     public static ComplexColumn[] toArray() {
-        return (ComplexColumn[]) columnList.toArray(new ComplexColumn[Kernel.settings.getInteger(Settings.COLUMN_COUNT)]);
+        return columnList.toArray(new ComplexColumn[Kernel.settings.getInteger(Settings.COLUMN_COUNT)]);
     }
 }

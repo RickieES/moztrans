@@ -72,7 +72,7 @@ import org.mozillatranslator.kernel.Settings;
 public abstract class FileAccessAdapter implements FileAccess {
     private static final Logger fLogger = Logger.getLogger(
             FileAccessAdapter.class.getPackage().getName());
-    protected LinkedHashMap commentMap;
+    protected LinkedHashMap<String, String> commentMap;
 
     /***************************************************************************
      * Saving files

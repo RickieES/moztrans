@@ -33,7 +33,7 @@ import org.mozillatranslator.datamodel.*;
  * @version 1.0
  */
 public class TranslatedCommentColumn implements ComplexColumn {
-    private static final Class STR_CLASS = "dummy".getClass();
+    private static final Class<? extends Object> STR_CLASS = String.class;
     
     /** Creates new TranslatedTextColumn */
     public TranslatedCommentColumn() {
@@ -41,7 +41,7 @@ public class TranslatedCommentColumn implements ComplexColumn {
     }
     
     @Override
-    public Class getColumnClass() {
+    public Class<? extends Object> getColumnClass() {
         return STR_CLASS;
     }
     

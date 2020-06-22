@@ -33,14 +33,14 @@ import org.mozillatranslator.datamodel.TrnsStatus;
  * @version 1.0
  */
 public class TranslatedCommandColumn implements ComplexColumn {
-    private static final Class STR_CLASS = "dummy".getClass();
+    private static final Class<? extends Object> STR_CLASS = String.class;
 
     /** Creates new OriginalTextColumn */
     public TranslatedCommandColumn() {
     }
 
     @Override
-    public Class getColumnClass() {
+    public Class<? extends Object> getColumnClass() {
         return STR_CLASS;
     }
 
@@ -80,7 +80,7 @@ public class TranslatedCommandColumn implements ComplexColumn {
         String strValue = (String) value;
         Phrase commandPhrase = currentPhrase.getCommandConnection();
 
-        if (!strValue.equals("")) {
+        if (!strValue.isEmpty()) {
             Translation commandTranslation = (Translation)
                     commandPhrase.getChildByName(currentLocalization);
             if (commandTranslation == null) {

@@ -24,6 +24,7 @@
 package org.mozillatranslator.kernel;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -105,7 +106,11 @@ public class Kernel {
         if (!Kernel.setBestAvailableLookAndFeel()) {
             System.exit(1);
         }
-        ComplexColumnFactory.init();
+        try {
+            ComplexColumnFactory.init();
+        } catch (NoSuchMethodException | IllegalArgumentException | InvocationTargetException ex) {
+            Kernel.appLog.log(Level.SEVERE, null, ex);
+        }
         mainWindow = new MainWindow();
         mainWindow.setVisible(true);
         editPhrase = new EditPhraseDialog();

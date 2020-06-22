@@ -33,8 +33,9 @@ import org.mozillatranslator.datamodel.Phrase;
  * @version 1.0
  */
 public class FileLicenseColumn implements ComplexColumn {
-    private static final Class STR_CLASS = "dummy".getClass();
-    private static String[] parentList = {"", "", "", "", "", "", "", "", "", ""};
+    private static final Class<? extends Object> STR_CLASS = String.class;
+    // Next line is commented out because parentList seems not being used anywhere
+    // private static final String[] parentList = {"", "", "", "", "", "", "", "", "", ""};
 
     /** Creates new KeyColumn */
     public FileLicenseColumn() {
@@ -42,7 +43,7 @@ public class FileLicenseColumn implements ComplexColumn {
     }
     
     @Override
-    public Class getColumnClass() {
+    public Class<? extends Object> getColumnClass() {
         return STR_CLASS;
     }
     
